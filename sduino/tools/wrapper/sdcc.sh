@@ -85,7 +85,7 @@ shift 4
 case "$SRC" in
 	*.cpp)
 		# rename .cpp to .c and compile
-		>&2 echo -e "${RED}cpp gefunden${OFF}";
+		>&2 echo -e "${RED}cpp found${OFF}";
 		CSRC="${SRC%pp}"
 		(
 			# add a reference to main to pull in main.c
@@ -104,9 +104,12 @@ case "$SRC" in
 		;;
 esac
 
+# Deqing: For some reason my version of SDCC don't generate rel file, it creates o file directly, so I modified the SDCC command below
 # copy the generated .rel files as an .o file to avoid recompiling the next time
-if [ -e "${REL}" ]; then
-	cp -a "${REL}" "${OBJ}"
+# if OBJ is a .o file we copy back
+if [[ "${OBJ}" == *.o ]]
+then
+	cp -a "${OBJ}" "${REL}"
 fi
 
 # propagate the sdcc exit code
