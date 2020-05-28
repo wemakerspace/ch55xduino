@@ -29,9 +29,10 @@
 //#include <avr/pgmspace.h>
 //#include <avr/io.h>
 //#include <avr/interrupt.h>
-#include <stm8s.h>
+#include "include/ch554.h"
+#include "include/ch554_usb.h"
 
-#include "binary.h"
+//!!!!#include "binary.h"
 
 // FIXME: workarounds for missing features or unimplemented functions
 // cancel out the PROGMEM attribute - used only for atmel CPUs
@@ -252,7 +253,7 @@ void alternateFunction(uint8_t val);
 #define PL 12
 #endif
 
-#include "pins_arduino.h"
+//#include "pins_arduino.h"
 
 enum {
     NOT_ON_TIMER = 0,
@@ -277,7 +278,7 @@ enum {
 
 //FIXME#include "WCharacter.h"
 //FIXME#include "WString.h"
-#include "HardwareSerial.h"
+//!!!!!#include "HardwareSerial.h"
 
 //uint16_t makeWord(uint16_t w);
 //uint16_t makeWord(byte h, byte l);
