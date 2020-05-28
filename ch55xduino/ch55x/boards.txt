@@ -4,16 +4,13 @@ menu.upload_method=Upload method
 ##############################################################
 
 ch552.name=CH552 Board
-
-#ch552.upload.tool=stm8flash
-#ch552.upload.protocol=stlinkv2
-#ch552.upload.mcu=stm8s103?3
+ch552.upload.tool=vnproch55x
+ch552.upload.protocol=ch55x2_3_1
+#ch552.upload.mcu=ch552
 #CH552 has 16K flash
 ch552.upload.maximum_size=16384
 #no USB yet
 ch552.upload.maximum_data_size=1024
-
-#ch552.bootloader.tool=stm8flash
 
 ch552.build.mcu=mcs51
 ch552.build.f_cpu=16000000L
