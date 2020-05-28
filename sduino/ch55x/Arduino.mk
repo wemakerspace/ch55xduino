@@ -317,8 +317,8 @@ else
         ifeq ($(ARCHITECTURE),sam)
             ARDUINO_ARCH_FLAG = -DARDUINO_ARCH_SAM
         else
-            ifeq ($(ARCHITECTURE),stm8)
-                ARDUINO_ARCH_FLAG = -DARDUINO_ARCH_STM8
+            ifeq ($(ARCHITECTURE),mcs51)
+                ARDUINO_ARCH_FLAG = -DARDUINO_ARCH_MCS51
             else
                 ARDUINO_ARCH_FLAG = -DARDUINO_ARCH_$(shell echo $(ARCHITECTURE) | tr '[:lower:]' '[:upper:]')
             endif
@@ -1463,7 +1463,7 @@ pre-build:
 
 $(TARGET_HEX): 	$(LOCAL_OBJS) $(CORE_LIB) $(OTHER_OBJS)
 	$(CC) $(LDFLAGS) $(LOCAL_OBJS) $(CORE_LIB) $(OTHER_OBJS) \
-		$(OTHER_LIBS) -lstm8 $(LINKER_SCRIPTS) -o $@
+		$(OTHER_LIBS) -lmcs51 $(LINKER_SCRIPTS) -o $@
 	$(call avr_size,$<,$@)
 ifneq ($(strip $(HEX_MAXIMUM_SIZE)),)
 	@if [ `$(SIZE) $@ | awk 'FNR == 2 {print $$2}'` -le $(HEX_MAXIMUM_SIZE) ]; then touch $@.sizeok; fi

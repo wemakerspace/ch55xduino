@@ -1,5 +1,5 @@
 
-MCU_FLAG_NAME	= mstm8 -D
+MCU_FLAG_NAME	= mmcs51 -D
 
 
 all:
@@ -78,7 +78,7 @@ endif
 
 OVERRIDE_EXECUTABLES=yes
     CC      = $(SDCC_PATH)/sdcc
-    AS      = $(SDCC_PATH)/sdasstm8
+    AS      = $(SDCC_PATH)/sdas8051
     AR      = $(SDCC_PATH)/sdar
     SIZE    ?= /usr/bin/size
 
@@ -86,18 +86,17 @@ OVERRIDE_EXECUTABLES=yes
 # avoid using the regular paths starting at $(ARDUINO_DIR)/hardware/$(VENDOR)
 # as our makefile is now part of the core archive
 ARDUINO_VERSION = 186
-ALTERNATE_CORE    = sduino
+ALTERNATE_CORE    = ch55xduino
 ALTERNATE_CORE_PATH = $(ARDUINO_DIR)
 
 ARDUINO_SKETCHBOOK	= /tmp	# temporarly, to prevent usage of the real libs
-ARDMK_VENDOR	= sduino
-ARCHITECTURE	= stm8
+ARDMK_VENDOR	= ch55xduino
+ARCHITECTURE	= msc51
 CPPFLAGS	+= -Ddouble=float -DUSE_STDINT \
-	-I. -I$(ARDUINO_DIR)/STM8S_StdPeriph_Driver/inc \
-	-I/opt/sdcc/share/sdcc/include/
-#CFLAGS		= -I ../STM8S_StdPeriph_Driver/inc
+	-I. -I/opt/sdcc/share/sdcc/include/
+#CFLAGS		= 
 #LDFLAGS		= --out-fmt-elf 
-LDFLAGS		+= -L $(ARDUINO_DIR)/STM8S_StdPeriph_Driver/lib -L/opt/sdcc/share/sdcc/lib/stm8
+#LDFLAGS		+= 
 
 
 
