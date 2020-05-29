@@ -43,7 +43,7 @@ compiler.tools.path={runtime.tools.avr-gcc.path}/bin
 compiler.c.cmd=sdcc
 compiler.c.wrapper=sdcc.sh
 compiler.c.flags=-MMD -c -Ddouble=float -DUSE_STDINT -D__PROG_TYPES_COMPAT__ {compiler.warning_flags}
-compiler.c.elf.flags=--code-size {upload.maximum_size} --xram-size {upload.maximum_data_size}
+compiler.c.elf.flags=--code-size {upload.maximum_size} --xram-size {upload.maximum_data_size} --xram-loc {upload.xdata_location}
 
 compiler.c.elf.cmd=sdcc
 compiler.c.elf.wrapper=sdcc-link.sh
@@ -120,7 +120,7 @@ recipe.output.save_file={build.project_name}.{build.variant}.hex
 # RAM usage = DATA + INITIALIZED
 recipe.size.pattern="{compiler.size.cmd}" "{build.path}/{build.project_name}.mem"
 recipe.size.regex=^(?:\s+ROM\/EPROM\/FLASH)\s+0x[A-Fa-f0-9]+\s+0x[A-Fa-f0-9]+\s+([0-9]+).*
-recipe.size.regex.data=^(?:DATA|INITIALIZED)\s+([0-9]+).*
+recipe.size.regex.data=^(?:\s+EXTERNAL RAM)\s+0x[A-Fa-f0-9]+\s+0x[A-Fa-f0-9]+\s+([0-9]+).*
 
 ## Preprocessor (re11, re12)
 preproc.includes.flags=-M -MG -MP

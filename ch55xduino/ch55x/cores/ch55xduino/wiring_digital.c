@@ -3,7 +3,7 @@
 #include "pins_arduino.h"
 
 
-void sendCharDebug(char c);
+void sendCharDebug(char c);//!!!!!!!
 
 
 

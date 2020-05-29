@@ -20,9 +20,14 @@
 #include <Arduino.h>
 
 // make sure to define prototypes for all used interrupts
-//#include "stm8s_it.h"
+void USBInterrupt(void);
 
 unsigned char runSerialEvent;
+
+void DeviceInterrupt(void) __interrupt (INT_NO_USB)                       //USB interrupt service, using register bank 1
+{
+    USBInterrupt();
+}
 
 int main(void)
 {

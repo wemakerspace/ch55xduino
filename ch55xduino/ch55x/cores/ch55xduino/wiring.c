@@ -1,6 +1,10 @@
 #include "wiring_private.h"
 
+void mDelaymS( uint16_t n );    //used for delay without timer
 
+void USBDeviceCfg();
+void USBDeviceIntCfg();
+void USBDeviceEndPointCfg();
 
 void init()
 {
@@ -29,5 +33,14 @@ void init()
 #endif
     
     SAFE_MOD = 0x00;
+    
+    mDelaymS(5); //needed to stablize internal RC
+    
+    USBDeviceCfg();
+    USBDeviceEndPointCfg();                                               //????
+    USBDeviceIntCfg();                                                    //?????
+    UEP0_T_LEN = 0;
+    UEP1_T_LEN = 0;                                                       //????????????
+    UEP2_T_LEN = 0;                                                       //????????????
 }
 
