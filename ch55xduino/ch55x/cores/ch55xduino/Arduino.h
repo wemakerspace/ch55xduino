@@ -210,13 +210,12 @@ void loop(void);
 // On the ATmega1280, the addresses of some of the port registers are
 // greater than 255, so we can't store them in uint8_t's.
 extern const uint16_t port_to_mode_PGM[];
-extern const uint16_t PROGMEM port_to_input_PGM[];
 extern const uint16_t PROGMEM port_to_output_PGM[];
 
 extern const uint8_t PROGMEM digital_pin_to_port_PGM[];
 // extern const uint8_t PROGMEM digital_pin_to_bit_PGM[];
-extern const uint8_t PROGMEM digital_pin_to_bit_mask_PGM[];
-extern const uint8_t PROGMEM digital_pin_to_timer_PGM[];
+extern __code uint8_t digital_pin_to_bit_mask_PGM[];
+extern __code uint8_t digital_pin_to_timer_PGM[];
 
 #ifdef SUPPORT_ALTERNATE_MAPPINGS
 // helper function for STM8S: switch to the alternate pin functions
@@ -229,9 +228,6 @@ void alternateFunction(uint8_t val);
 #define digitalPinToPort(P) ( digital_pin_to_port_PGM[(P)] )
 #define digitalPinToBitMask(P) ( digital_pin_to_bit_mask_PGM[(P)] )
 #define digitalPinToTimer(P) ( digital_pin_to_timer_PGM[(P)] )
-#define analogInPinToBit(P) (P)
-#define portOutputRegister(P) ( (volatile uint8_t *)( port_to_output_PGM[(P)]) )
-#define portInputRegister(P) ( (volatile uint8_t *)( port_to_input_PGM[(P)]) )
 #define portModeRegister(P) ( (volatile uint8_t *)( port_to_mode_PGM[(P)]) )
 
 #define NOT_A_PIN 0
@@ -240,17 +236,10 @@ void alternateFunction(uint8_t val);
 #define NOT_AN_INTERRUPT -1
 
 #ifdef ARDUINO_MAIN
-#define PA 1
-#define PB 2
-#define PC 3
-#define PD 4
-#define PE 5
-#define PF 6
-#define PG 7
-#define PH 8
-#define PJ 10
-#define PK 11
-#define PL 12
+#define P0PORT 1
+#define P1PORT 2
+#define P2PORT 3
+#define P3PORT 4
 #endif
 
 //#include "pins_arduino.h"

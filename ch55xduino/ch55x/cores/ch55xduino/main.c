@@ -28,15 +28,21 @@ int main(void)
 {
 	init();
 
-	initVariant();
+	//!!!initVariant();
 
 	setup();
     
 	for (;;) {
 		loop();
-		if (runSerialEvent) serialEvent();
+		//!!!!!!      if (runSerialEvent) serialEvent();
 	}
         
 //	return 0;
 }
+
+unsigned char _sdcc_external_startup (void) __nonbanked
+{
+    return 0;
+}
+
 
