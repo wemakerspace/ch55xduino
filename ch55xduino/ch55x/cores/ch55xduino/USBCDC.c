@@ -13,6 +13,9 @@ volatile __xdata uint8_t USBBufOutPointEP2 = 0;    //取数据指针
 volatile __xdata uint8_t UpPoint2_Busy  = 0;   //上传端点是否忙标志
 volatile __xdata uint8_t controlLineState = 0;
 
+typedef void( *pTaskFn)( void );
+pTaskFn tasksArr[1];
+void mDelaymS( uint16_t n );
 
 void resetCDCParameters(){
 
@@ -24,7 +27,7 @@ void setLineCodingHandler(){
     for (uint8_t i=0;i<((LINE_CODEING_SIZE<=USB_RX_LEN)?LINE_CODEING_SIZE:USB_RX_LEN);i++){
         LineCoding[i] = Ep0Buffer[i];
     }
-
+    
     //!!!!!Config_Uart0(LineCoding);
 }
 
@@ -41,6 +44,17 @@ uint16_t getLineCodingHandler(){
 
 void setControlLineStateHandler(){
     controlLineState = Ep0Buffer[2];
+
+    // We check DTR state to determine if host port is open (bit 0 of lineState).
+    if ( ((controlLineState & 0x01) == 0) && (*((__xdata uint32_t *)LineCoding) == 1200) ){ //both linecoding and sdcc are little-endian
+        USB_CTRL = 0;
+        EA = 0;                                                                    //关闭总中断，必加
+        tasksArr[0] = 0x3800;
+        mDelaymS( 100 );     
+        (tasksArr[0])( );                                                          //跳至BOOT升级程序,使用ISP工具升级
+        while(1);
+    }
+    
 }
 
 
