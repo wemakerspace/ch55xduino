@@ -25,6 +25,7 @@
 #include <string.h>
 #include <math.h>
 #include <stdint.h>
+#include <stdio.h>
 
 //#include <avr/pgmspace.h>
 //#include <avr/io.h>
@@ -308,6 +309,7 @@ inline unsigned int makeWord(unsigned char h, unsigned char l) { return (h << 8)
 bool USBSerial();
 uint8_t USBSerial_print_n(char *buf, int len);
 void USBSerial_flush(void);
-
+uint8_t USBSerial_available();
+char USBSerial_read();
 
 #endif

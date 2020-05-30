@@ -19,6 +19,7 @@ __xdata uint8_t usbWritePointer = 0;
 
 typedef void( *pTaskFn)( void );
 pTaskFn tasksArr[1];
+void mDelayuS( uint16_t n );
 void mDelaymS( uint16_t n );
 
 void resetCDCParameters(){
@@ -80,14 +81,14 @@ void USBSerial_flush(void){
 }
 
 uint8_t USBSerial_print_n(char *buf, int len){  //3 bytes generic pointer
-    uint8_t waitWriteCount;
+    uint16_t waitWriteCount;
     if (controlLineState > 0) {
         while (len>0){
             waitWriteCount = 0;
-            while (UpPoint2_Busy){//wait for 250ms or give up
+            while (UpPoint2_Busy){//wait for 250ms or give up, on my mac it takes about 256us
                 waitWriteCount++;
-                mDelaymS(1);   
-                if (waitWriteCount>=250) return 0;
+                mDelayuS(5);   
+                if (waitWriteCount>=50000) return 0;
             }
             while (len>0){
                 if (usbWritePointer<MAX_PACKET_SIZE){
@@ -98,17 +99,26 @@ uint8_t USBSerial_print_n(char *buf, int len){  //3 bytes generic pointer
                     USBSerial_flush();  //go back to first while
                     break;
                 }
-                
             }
         }
-        
     }
     return 0;
 }
 
+uint8_t USBSerial_available(){
+    return USBByteCountEP2;
+}
 
-
-
+char USBSerial_read(){
+    if(USBByteCountEP2==0) return 0;
+    char data = Ep2Buffer[USBBufOutPointEP2];
+    USBBufOutPointEP2++;
+    USBByteCountEP2--;
+    if(USBByteCountEP2==0) {
+        UEP2_CTRL = UEP2_CTRL & ~ MASK_UEP_R_RES | UEP_R_RES_ACK;
+    }
+    return data;
+}
 
 void USB_EP2_IN(){
     UEP2_T_LEN = 0;                                                    //预使用发送长度一定要清空
