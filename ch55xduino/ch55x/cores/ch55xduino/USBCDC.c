@@ -1,8 +1,10 @@
 #include <stdint.h>
+#include <stdbool.h>
 #include "include/ch554.h"
 #include "include/ch554_usb.h"
 
 extern __xdata __at (EP0_ADDR) uint8_t  Ep0Buffer[];
+extern __xdata __at (EP2_ADDR) uint8_t  Ep2Buffer[];
 
 #define LINE_CODEING_SIZE 7
 __xdata uint8_t LineCoding[LINE_CODEING_SIZE]={0x00,0xe1,0x00,0x00,0x00,0x00,0x08};   //初始化波特率为57600，1停止位，无校验，8数据位。
@@ -12,6 +14,8 @@ volatile __xdata uint8_t USBBufOutPointEP2 = 0;    //取数据指针
 
 volatile __xdata uint8_t UpPoint2_Busy  = 0;   //上传端点是否忙标志
 volatile __xdata uint8_t controlLineState = 0;
+
+__xdata uint8_t usbWritePointer = 0;
 
 typedef void( *pTaskFn)( void );
 pTaskFn tasksArr[1];
@@ -49,13 +53,61 @@ void setControlLineStateHandler(){
     if ( ((controlLineState & 0x01) == 0) && (*((__xdata uint32_t *)LineCoding) == 1200) ){ //both linecoding and sdcc are little-endian
         USB_CTRL = 0;
         EA = 0;                                                                    //关闭总中断，必加
-        tasksArr[0] = 0x3800;
+        tasksArr[0] = (pTaskFn)0x3800;
         mDelaymS( 100 );     
         (tasksArr[0])( );                                                          //跳至BOOT升级程序,使用ISP工具升级
         while(1);
     }
     
 }
+
+bool USBSerial(){
+    bool result = false;
+	if (controlLineState > 0) 
+		result = true;
+	//mDelaymS(10); not doing it for now
+	return result;
+}
+
+
+void USBSerial_flush(void){
+    if (!UpPoint2_Busy && usbWritePointer>0){
+        UEP2_T_LEN = usbWritePointer;                                                    //预使用发送长度一定要清空
+        UEP2_CTRL = UEP2_CTRL & ~ MASK_UEP_T_RES | UEP_T_RES_ACK;            //应答ACK
+        UpPoint2_Busy = 1;
+        usbWritePointer = 0;
+    }
+}
+
+uint8_t USBSerial_print_n(char *buf, int len){  //3 bytes generic pointer
+    uint8_t waitWriteCount;
+    if (controlLineState > 0) {
+        while (len>0){
+            waitWriteCount = 0;
+            while (UpPoint2_Busy){//wait for 250ms or give up
+                waitWriteCount++;
+                mDelaymS(1);   
+                if (waitWriteCount>=250) return 0;
+            }
+            while (len>0){
+                if (usbWritePointer<MAX_PACKET_SIZE){
+                    Ep2Buffer[MAX_PACKET_SIZE+usbWritePointer] = *buf++;
+                    usbWritePointer++;
+                    len--;
+                }else{
+                    USBSerial_flush();  //go back to first while
+                    break;
+                }
+                
+            }
+        }
+        
+    }
+    return 0;
+}
+
+
+
 
 
 void USB_EP2_IN(){

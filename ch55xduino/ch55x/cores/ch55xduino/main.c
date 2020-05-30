@@ -22,7 +22,7 @@
 // make sure to define prototypes for all used interrupts
 void USBInterrupt(void);
 
-unsigned char runSerialEvent;
+//unsigned char runSerialEvent;
 
 void DeviceInterrupt(void) __interrupt (INT_NO_USB)                       //USB interrupt service, using register bank 1
 {
@@ -39,7 +39,10 @@ int main(void)
     
 	for (;;) {
 		loop();
-		//!!!!!!      if (runSerialEvent) serialEvent();
+		if (1) {
+            USBSerial_flush();
+            //serialEvent();
+        }
 	}
         
 //	return 0;

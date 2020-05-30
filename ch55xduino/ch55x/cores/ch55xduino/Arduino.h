@@ -304,5 +304,10 @@ inline unsigned int makeWord(unsigned char h, unsigned char l) { return (h << 8)
 #define INT_TIM2_OVF		( 8| (uint16_t)(ITC_IRQ_TIM2_OVF << 8))
 
 
+//USB Serial functions. Don't exist in Arduino AVR core Arduino.h, may be moved later
+bool USBSerial();
+uint8_t USBSerial_print_n(char *buf, int len);
+void USBSerial_flush(void);
+
 
 #endif
