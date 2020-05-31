@@ -80,7 +80,29 @@ void USBSerial_flush(void){
     }
 }
 
-uint8_t USBSerial_print_n(char *buf, int len){  //3 bytes generic pointer
+uint8_t USBSerial_write(char c){  //3 bytes generic pointer
+    uint16_t waitWriteCount;
+    if (controlLineState > 0) {
+        while (true){
+            waitWriteCount = 0;
+            while (UpPoint2_Busy){//wait for 250ms or give up, on my mac it takes about 256us
+                waitWriteCount++;
+                mDelayuS(5);   
+                if (waitWriteCount>=50000) return 0;
+            }
+            if (usbWritePointer<MAX_PACKET_SIZE){
+                Ep2Buffer[MAX_PACKET_SIZE+usbWritePointer] = c;
+                usbWritePointer++;
+                return 1;
+            }else{
+                USBSerial_flush();  //go back to first while
+            }
+        }
+    }
+    return 0;
+}
+
+uint8_t USBSerial_print_n(char *buf, int len){  //3 bytes generic pointer, not using USBSerial_write for a bit efficiency
     uint16_t waitWriteCount;
     if (controlLineState > 0) {
         while (len>0){
