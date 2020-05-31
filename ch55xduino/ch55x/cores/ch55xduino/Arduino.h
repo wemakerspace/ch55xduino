@@ -52,8 +52,6 @@ void yield(void);
 #define OUTPUT 0x1
 #define INPUT_PULLUP 0x2
 #define	OUTPUT_OD 0x03
-#define OUTPUT_FAST 0x05
-#define OUTPUT_OD_FAST 0x07
 
 // undefine mathlib's pi if encountered
 #ifdef PI
@@ -182,7 +180,7 @@ extern unsigned char runSerialEvent;
 
 void pinMode(uint8_t pin, uint8_t mode);
 void digitalWrite(uint8_t pin, uint8_t val);
-int digitalRead(uint8_t pin);
+uint8_t digitalRead(uint8_t pin);
 int analogRead(uint8_t pin);
 void analogReference(uint8_t mode);
 void analogWrite(uint8_t pin, int val);
@@ -216,7 +214,7 @@ extern const uint16_t PROGMEM port_to_output_PGM[];
 extern const uint8_t PROGMEM digital_pin_to_port_PGM[];
 // extern const uint8_t PROGMEM digital_pin_to_bit_PGM[];
 extern __code uint8_t digital_pin_to_bit_mask_PGM[];
-extern __code uint8_t digital_pin_to_timer_PGM[];
+extern __code uint8_t digital_pin_to_pwm_PGM[];
 
 #ifdef SUPPORT_ALTERNATE_MAPPINGS
 // helper function for STM8S: switch to the alternate pin functions
@@ -228,7 +226,7 @@ void alternateFunction(uint8_t val);
 // 
 #define digitalPinToPort(P) ( digital_pin_to_port_PGM[(P)] )
 #define digitalPinToBitMask(P) ( digital_pin_to_bit_mask_PGM[(P)] )
-#define digitalPinToTimer(P) ( digital_pin_to_timer_PGM[(P)] )
+#define digitalPinToPWM(P) ( digital_pin_to_pwm_PGM[(P)] )
 #define portModeRegister(P) ( (volatile uint8_t *)( port_to_mode_PGM[(P)]) )
 
 #define NOT_A_PIN 0
@@ -246,23 +244,12 @@ void alternateFunction(uint8_t val);
 //#include "pins_arduino.h"
 
 enum {
-    NOT_ON_TIMER = 0,
-#ifdef NEED_TIMER_11_12
-    TIMER11,
-    TIMER12,
-#endif
-    TIMER13,
-    TIMER14,
-    TIMER21,
-    TIMER22,
-#ifdef NEED_TIMER_23
-    TIMER23,
-#endif
-#ifdef NEED_TIMER_31_32
-    TIMER31,
-    TIMER32,
-#endif
-    NUM_TIMERS
+    NOT_ON_PWM = 0,
+    PIN_PWM1,
+    PIN_PWM2,
+    PIN_PWM1_,
+    PIN_PWM2_,
+    NUM_PWM_PINS
 };
 
 
