@@ -7,6 +7,21 @@ void USBDeviceCfg();
 void USBDeviceIntCfg();
 void USBDeviceEndPointCfg();
 
+extern __idata volatile uint32_t timer0_millis;
+
+uint32_t millis()
+{
+	unsigned long m;
+	uint8_t interruptOn = EA;
+    EA = 0;
+
+	// disable interrupts while we read timer0_millis or we might get an
+	// inconsistent value (e.g. in the middle of a write to timer0_millis)
+	m = timer0_millis;
+	if (interruptOn) EA = 1;
+	return m;
+}
+
 void init()
 {
     //set internal clock 
@@ -49,5 +64,12 @@ void init()
 	PWM_CK_SE = 93;		//DIV by 94 for 1K freq on 24M clk
 	PWM_CTRL = 0;
 	
+	//init T0 for millis
+	TMOD = (TMOD & ~0x0F)|(bT0_M1);//mode 2 for autoreload 
+	T2MOD = T2MOD & ~bT0_CLK;	//bT0_CLK=0;clk Div by 12
+	TH0 = 255-250+1;
+	TF0 = 0;
+	ET0 = 1;
+	TR0 = 1;
 }
 

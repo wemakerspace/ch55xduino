@@ -186,7 +186,7 @@ uint8_t analogRead(uint8_t pin);
 void analogReference(uint8_t mode);
 void analogWrite(uint8_t pin, uint16_t val);
 
-unsigned long millis(void);
+uint32_t millis(void);
 unsigned long micros(void);
 void delay(unsigned long ms);
 void delayMicroseconds(unsigned int us);
