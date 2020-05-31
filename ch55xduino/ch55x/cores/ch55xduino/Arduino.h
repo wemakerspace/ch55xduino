@@ -183,7 +183,7 @@ void digitalWrite(uint8_t pin, uint8_t val);
 uint8_t digitalRead(uint8_t pin);
 int analogRead(uint8_t pin);
 void analogReference(uint8_t mode);
-void analogWrite(uint8_t pin, int val);
+void analogWrite(uint8_t pin, uint16_t val);
 
 unsigned long millis(void);
 unsigned long micros(void);
@@ -229,28 +229,6 @@ void alternateFunction(uint8_t val);
 #define digitalPinToPWM(P) ( digital_pin_to_pwm_PGM[(P)] )
 #define portModeRegister(P) ( (volatile uint8_t *)( port_to_mode_PGM[(P)]) )
 
-#define NOT_A_PIN 0
-#define NOT_A_PORT 0
-
-#define NOT_AN_INTERRUPT -1
-
-#ifdef ARDUINO_MAIN
-#define P0PORT 1
-#define P1PORT 2
-#define P2PORT 3
-#define P3PORT 4
-#endif
-
-//#include "pins_arduino.h"
-
-enum {
-    NOT_ON_PWM = 0,
-    PIN_PWM1,
-    PIN_PWM2,
-    PIN_PWM1_,
-    PIN_PWM2_,
-    NUM_PWM_PINS
-};
 
 
 //FIXME#include "WCharacter.h"

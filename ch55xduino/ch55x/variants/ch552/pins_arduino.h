@@ -23,54 +23,56 @@
 #ifndef Pins_Arduino_h
 #define Pins_Arduino_h
 
+#include "pins_arduino_include.h"
+
 #ifndef _BV
 #define _BV(X) (1<<(X))
 #endif
 
-__code uint8_t digital_pin_to_timer_PGM[] = {
-    NOT_ON_TIMER, //PIN00
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,	//not exist
-    NOT_ON_TIMER, //not exist
+__code uint8_t digital_pin_to_pwm_PGM[] = {
+    NOT_ON_PWM, //PIN00
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,	//not exist
+    NOT_ON_PWM, //not exist
 	
-    NOT_ON_TIMER, //PIN10
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,	//not exist
-    NOT_ON_TIMER, //not exist
+    NOT_ON_PWM, //PIN10
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    PIN_PWM1,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,	//not exist
+    NOT_ON_PWM, //not exist
 	
-    NOT_ON_TIMER, //PIN20
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,	//not exist
-    NOT_ON_TIMER, //not exist
+    NOT_ON_PWM, //PIN20
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,	//not exist
+    NOT_ON_PWM, //not exist
 	
-    NOT_ON_TIMER, //PIN30
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,
-    NOT_ON_TIMER,	//not exist
-    NOT_ON_TIMER, //not exist
+    PIN_PWM1_, //PIN30
+    PIN_PWM2_,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    PIN_PWM2,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,
+    NOT_ON_PWM,	//not exist
+    NOT_ON_PWM, //not exist
 };
 
 __code uint8_t PROGMEM digital_pin_to_port_PGM[] = {

@@ -1,4 +1,5 @@
 #include "wiring_private.h"
+#include "pins_arduino.h"   //only include once
 
 void mDelaymS( uint16_t n );    //used for delay without timer
 
@@ -36,11 +37,17 @@ void init()
     
     mDelaymS(5); //needed to stablize internal RC
     
+	//init USB
     USBDeviceCfg();
     USBDeviceEndPointCfg();                                               //????
     USBDeviceIntCfg();                                                    //?????
     UEP0_T_LEN = 0;
     UEP1_T_LEN = 0;                                                       //????????????
     UEP2_T_LEN = 0;                                                       //????????????
+	
+	//init PWM
+	PWM_CK_SE = 93;		//DIV by 94 for 1K freq on 24M clk
+	PWM_CTRL = 0;
+	
 }
 

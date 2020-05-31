@@ -1,6 +1,6 @@
 #define ARDUINO_MAIN
 #include "wiring_private.h"
-#include "pins_arduino.h"
+#include "pins_arduino_include.h"
 
 void pinMode(uint8_t pin, uint8_t mode)	//only P1 & P3 can set mode
 {
@@ -82,7 +82,7 @@ uint8_t digitalRead(uint8_t pin)
 
 	// If the pin that support PWM output, we need to turn it off
 	// before getting a digital reading.
-	if (pwm != NOT_ON_PWM) digitalPinToPWM(pwm);
+	if (pwm != NOT_ON_PWM) turnOffPWM(pwm);
 	
 	uint8_t portBuf = 0;
 	
@@ -112,7 +112,7 @@ void digitalWrite(uint8_t pin, uint8_t val)
     
     // If the pin that support PWM output, we need to turn it off
 	// before doing a digital write.
-	if (pwm != NOT_ON_PWM) digitalPinToPWM(pwm);
+	if (pwm != NOT_ON_PWM) turnOffPWM(pwm);
     
     //C pointers cannot be used to access the 8051's SFRs (special function registers).
     
