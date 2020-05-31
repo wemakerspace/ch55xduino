@@ -11,6 +11,7 @@
 #define NOT_A_PORT 0
 
 #define NOT_AN_INTERRUPT -1
+#define NOT_ANALOG 255
 
 
 #define P0PORT 1
@@ -29,10 +30,20 @@ enum {
 };
 
 
-extern __code uint8_t digital_pin_to_timer_PGM[];
+extern __code uint8_t digital_pin_to_pwm_PGM[];
 
-extern __code uint8_t PROGMEM digital_pin_to_port_PGM[];
+extern __code uint8_t digital_pin_to_port_PGM[];
 
 extern __code uint8_t digital_pin_to_bit_mask_PGM[];
+
+extern __code uint8_t digital_pin_to_channel_PGM[];
+
+// Get the bit location within the hardware port of the given virtual pin.
+// This comes from the pins_*.c file for the active board configuration.
+// 
+#define digitalPinToPort(P) ( digital_pin_to_port_PGM[(P)] )
+#define digitalPinToBitMask(P) ( digital_pin_to_bit_mask_PGM[(P)] )
+#define digitalPinToPWM(P) ( digital_pin_to_pwm_PGM[(P)] )
+#define analogPinToChannel(P)  ( digital_pin_to_channel_PGM[(P)] )
 
 #endif

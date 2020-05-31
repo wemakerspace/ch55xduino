@@ -167,4 +167,50 @@ __code uint8_t digital_pin_to_bit_mask_PGM[] = {
     0, //not exist
 };
 
+__code uint8_t digital_pin_to_channel_PGM[] = {
+    NOT_ANALOG, //PIN00
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,	//not exist
+    NOT_ANALOG, //not exist
+	
+    NOT_ANALOG, //PIN10
+    0,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    1,
+    2,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,	//not exist
+    NOT_ANALOG, //not exist
+	
+    NOT_ANALOG, //PIN20
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,	//not exist
+    NOT_ANALOG, //not exist
+	
+    NOT_ANALOG, //PIN30
+    NOT_ANALOG,
+    3,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,
+    NOT_ANALOG,	//not exist
+    NOT_ANALOG, //not exist
+};
+
 #endif

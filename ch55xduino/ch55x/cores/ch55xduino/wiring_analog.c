@@ -3,6 +3,24 @@
 #include "pins_arduino_include.h"
 
 
+uint8_t analogRead(uint8_t pin)
+{
+	pin = analogPinToChannel(pin);
+	
+	if (pin == NOT_ANALOG) return 0;
+	
+	ADC_CFG = bADC_EN | bADC_CLK;
+
+	ADC_CTRL = (ADC_CTRL & ~(0x03)) | (0x03&pin);
+	
+	ADC_START = 1;
+	
+	while(ADC_START);
+	
+	return ADC_DATA;
+}
+
+
 // Right now, PWM output only works on the pins with
 // hardware support.  These are defined in the appropriate
 // pins_*.c file.  For the rest of the pins, we default

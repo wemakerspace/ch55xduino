@@ -32,6 +32,7 @@
 //#include <avr/interrupt.h>
 #include "include/ch554.h"
 #include "include/ch554_usb.h"
+#include "pins_arduino_include.h"
 
 //!!!!#include "binary.h"
 
@@ -181,7 +182,7 @@ extern unsigned char runSerialEvent;
 void pinMode(uint8_t pin, uint8_t mode);
 void digitalWrite(uint8_t pin, uint8_t val);
 uint8_t digitalRead(uint8_t pin);
-int analogRead(uint8_t pin);
+uint8_t analogRead(uint8_t pin);
 void analogReference(uint8_t mode);
 void analogWrite(uint8_t pin, uint16_t val);
 
@@ -208,26 +209,14 @@ void loop(void);
 
 // On the ATmega1280, the addresses of some of the port registers are
 // greater than 255, so we can't store them in uint8_t's.
-extern const uint16_t port_to_mode_PGM[];
-extern const uint16_t PROGMEM port_to_output_PGM[];
 
-extern const uint8_t PROGMEM digital_pin_to_port_PGM[];
-// extern const uint8_t PROGMEM digital_pin_to_bit_PGM[];
-extern __code uint8_t digital_pin_to_bit_mask_PGM[];
-extern __code uint8_t digital_pin_to_pwm_PGM[];
 
 #ifdef SUPPORT_ALTERNATE_MAPPINGS
 // helper function for STM8S: switch to the alternate pin functions
 void alternateFunction(uint8_t val);
 #endif
 
-// Get the bit location within the hardware port of the given virtual pin.
-// This comes from the pins_*.c file for the active board configuration.
-// 
-#define digitalPinToPort(P) ( digital_pin_to_port_PGM[(P)] )
-#define digitalPinToBitMask(P) ( digital_pin_to_bit_mask_PGM[(P)] )
-#define digitalPinToPWM(P) ( digital_pin_to_pwm_PGM[(P)] )
-#define portModeRegister(P) ( (volatile uint8_t *)( port_to_mode_PGM[(P)]) )
+
 
 
 
