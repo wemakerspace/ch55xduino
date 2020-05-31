@@ -278,12 +278,12 @@ char USBSerial_read();
 #define USBSerial_print_ib(P) ( Print_print_ib(USBSerial_write,(P)) )
 #define USBSerial_print_ub(P) ( Print_print_ub(USBSerial_write,(P)) )
 
-#define USBSerial_println(P) ( Print_println(USBSerial_write,(P)) )
-#define USBSerial_println_s(P) ( Print_println_s(USBSerial_write,(P)) )
-#define USBSerial_println_sn(P) ( Print_println_sn(USBSerial_write,(P)) )
-#define USBSerial_println_i(P) ( Print_println_i(USBSerial_write,(P)) )
-#define USBSerial_println_u(P) ( Print_println_u(USBSerial_write,(P)) )
-#define USBSerial_println_ib(P) ( Print_println_ib(USBSerial_write,(P)) )
-#define USBSerial_println_ub(P) ( Print_println_ub(USBSerial_write,(P)) )
+#define USBSerial_println() ( Print_println(USBSerial_write) )
+#define USBSerial_println_s(P) ( Print_print_s(USBSerial_write,(P)) + Print_println(USBSerial_write) )
+#define USBSerial_println_sn(P) ( Print_print_sn(USBSerial_write,(P)) + Print_println(USBSerial_write) )
+#define USBSerial_println_i(P) ( Print_print_i(USBSerial_write,(P)) + Print_println(USBSerial_write) )
+#define USBSerial_println_u(P) ( Print_print_u(USBSerial_write,(P)) + Print_println(USBSerial_write) )
+#define USBSerial_println_ib(P) ( Print_print_ib(USBSerial_write,(P)) + Print_println(USBSerial_write) )
+#define USBSerial_println_ub(P) ( Print_print_ub(USBSerial_write,(P)) + Print_println(USBSerial_write) )
 
 #endif

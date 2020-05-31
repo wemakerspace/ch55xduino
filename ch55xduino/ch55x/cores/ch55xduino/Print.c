@@ -75,58 +75,6 @@ uint8_t Print_print_i(writefunc_p writefunc, __xdata long n)
 	return printInt(writefunc, n,10);
 }
 
-// Variants of the above functions with an added newline //////////////////////
-
-uint8_t Print_println_sn(writefunc_p writefunc, __xdata const uint8_t *buffer, __xdata uint8_t size)
-{
-	uint8_t r;
-
-	r = Print_print_sn(writefunc, buffer, size);
-	return r + Print_println(writefunc);
-}
-
-uint8_t Print_println_s(writefunc_p writefunc, __xdata const char *str)
-{
-	uint8_t r;
-
-	r = Print_print_s(writefunc, str);
-	return r + Print_println(writefunc);
-}
-
-uint8_t Print_println_u(writefunc_p writefunc, __xdata unsigned long n)
-{
-	uint8_t r;
-
-	r = printNumber(writefunc, n,10);
-	return r + Print_println(writefunc);
-}
-
-uint8_t Print_println_i(writefunc_p writefunc, __xdata long n)
-{
-	uint8_t r;
-
-	r = printInt(writefunc, n,10);
-	return r + Print_println(writefunc);
-}
-
-uint8_t Print_println_ub(writefunc_p writefunc, __xdata unsigned long n, __xdata uint8_t base)
-{
-	uint8_t r;
-
-	r = printNumber(writefunc, n,base);
-	return r + Print_println(writefunc);
-}
-
-uint8_t Print_println_ib(writefunc_p writefunc, __xdata long n, __xdata uint8_t base)
-{
-	uint8_t r;
-
-	r = printInt(writefunc, n,base);
-	return r + Print_println(writefunc);
-}
-
-
-
 // (not so) Private Methods /////////////////////////////////////////////////////////////
 
 uint8_t Print_println(writefunc_p writefunc)

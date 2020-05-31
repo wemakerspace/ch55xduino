@@ -68,17 +68,6 @@ inline uint8_t Print_print_f(writefunc_p writefunc, __xdata double number) {
 
 // Variants of the above with a newline added at the and:
 uint8_t Print_println(writefunc_p writefunc);
-uint8_t Print_println_s(writefunc_p writefunc, __xdata const char *str);
-uint8_t Print_println_sn(writefunc_p writefunc, __xdata const uint8_t *buffer, __xdata uint8_t size);
-uint8_t Print_println_i(writefunc_p writefunc, __xdata long n);
-uint8_t Print_println_u(writefunc_p writefunc, __xdata unsigned long n);
-uint8_t Print_println_ib(writefunc_p writefunc, __xdata long n, __xdata uint8_t base);
-uint8_t Print_println_ub(writefunc_p writefunc, __xdata unsigned long n, __xdata uint8_t base);
-uint8_t Print_println_fd(writefunc_p writefunc, __xdata double number, __xdata uint8_t digits);
-//#define Print_println_f(W,N)	Print_println_fd(W,N,2)
-inline uint8_t Print_println_f(writefunc_p writefunc, double number) {
-  return Print_println_fd(writefunc, number, 2);
-}
 
 
 #endif
