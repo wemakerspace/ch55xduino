@@ -32,9 +32,21 @@ void analogWrite(uint8_t pin, uint16_t val)
 				PWM_CTRL |= bPWM1_OUT_EN;
 				PWM_DATA1 = val;
 				break;
-
-
-
+			case PIN_PWM2:
+				PIN_FUNC &= ~(bPWM2_PIN_X);
+				PWM_CTRL |= bPWM2_OUT_EN;
+				PWM_DATA2 = val;
+				break;
+			case PIN_PWM1_:
+				PIN_FUNC |= (bPWM1_PIN_X);
+				PWM_CTRL |= bPWM1_OUT_EN;
+				PWM_DATA1 = val;
+				break;
+			case PIN_PWM2_:
+				PIN_FUNC |= (bPWM2_PIN_X);
+				PWM_CTRL |= bPWM2_OUT_EN;
+				PWM_DATA2 = val;
+				break;
 			case NOT_ON_PWM:
 			default:
 				if (val < 128) {
