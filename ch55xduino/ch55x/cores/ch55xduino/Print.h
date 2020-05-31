@@ -48,33 +48,33 @@ typedef uint8_t (*writefunc_p)(uint8_t c);
 // to mimic polymorphism.
 
 // print strings (C-Style or buffer contents)
-uint8_t Print_print_s(writefunc_p writefunc, const char *str);
-uint8_t Print_print_sn(writefunc_p writefunc, const uint8_t *buffer, uint8_t size);
+uint8_t Print_print_s(writefunc_p writefunc, __xdata const char *str);
+uint8_t Print_print_sn(writefunc_p writefunc, __xdata const uint8_t *buffer, __xdata uint8_t size);
 
 // print signed/unsigned values (char, short, int, long) as decimal values
-uint8_t Print_print_i(writefunc_p writefunc, long n);
-uint8_t Print_print_u(writefunc_p writefunc, unsigned long n);
+uint8_t Print_print_i(writefunc_p writefunc, __xdata long n);
+uint8_t Print_print_u(writefunc_p writefunc, __xdata unsigned long n);
 
 // print signed/unsigned integer values (char, short, int, long) to base B
-uint8_t Print_print_ib(writefunc_p writefunc, long n, uint8_t base);
-uint8_t Print_print_ub(writefunc_p writefunc, unsigned long n, uint8_t base);
+uint8_t Print_print_ib(writefunc_p writefunc, __xdata long n, __xdata uint8_t base);
+uint8_t Print_print_ub(writefunc_p writefunc, __xdata unsigned long n, __xdata uint8_t base);
 
 // print float values with two digits precision/specified number of digits
-uint8_t Print_print_fd(writefunc_p writefunc, double number, uint8_t digits);
+uint8_t Print_print_fd(writefunc_p writefunc, __xdata double number, __xdata uint8_t digits);
 //#define Print_print_f(W,N)	Print_print_fd(W,N,2)
-inline uint8_t Print_print_f(writefunc_p writefunc, double number) {
+inline uint8_t Print_print_f(writefunc_p writefunc, __xdata double number) {
   return Print_print_fd(writefunc, number, 2);
 }
 
 // Variants of the above with a newline added at the and:
 uint8_t Print_println(writefunc_p writefunc);
-uint8_t Print_println_s(writefunc_p writefunc, const char *str);
-uint8_t Print_println_sn(writefunc_p writefunc, const uint8_t *buffer, uint8_t size);
-uint8_t Print_println_i(writefunc_p writefunc, long n);
-uint8_t Print_println_u(writefunc_p writefunc, unsigned long n);
-uint8_t Print_println_ib(writefunc_p writefunc, long n, uint8_t base);
-uint8_t Print_println_ub(writefunc_p writefunc, unsigned long n, uint8_t base);
-uint8_t Print_println_fd(writefunc_p writefunc, double number, uint8_t digits);
+uint8_t Print_println_s(writefunc_p writefunc, __xdata const char *str);
+uint8_t Print_println_sn(writefunc_p writefunc, __xdata const uint8_t *buffer, __xdata uint8_t size);
+uint8_t Print_println_i(writefunc_p writefunc, __xdata long n);
+uint8_t Print_println_u(writefunc_p writefunc, __xdata unsigned long n);
+uint8_t Print_println_ib(writefunc_p writefunc, __xdata long n, __xdata uint8_t base);
+uint8_t Print_println_ub(writefunc_p writefunc, __xdata unsigned long n, __xdata uint8_t base);
+uint8_t Print_println_fd(writefunc_p writefunc, __xdata double number, __xdata uint8_t digits);
 //#define Print_println_f(W,N)	Print_println_fd(W,N,2)
 inline uint8_t Print_println_f(writefunc_p writefunc, double number) {
   return Print_println_fd(writefunc, number, 2);

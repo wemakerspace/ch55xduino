@@ -40,7 +40,7 @@ void printNL(void);
 
 // Public Methods //////////////////////////////////////////////////////////////
 
-uint8_t Print_print_sn(writefunc_p writefunc, const uint8_t *buffer, uint8_t size)
+uint8_t Print_print_sn(writefunc_p writefunc, __xdata const uint8_t *buffer, __xdata uint8_t size)
 {
   uint8_t n = 0;
   while (size--) {
@@ -50,7 +50,7 @@ uint8_t Print_print_sn(writefunc_p writefunc, const uint8_t *buffer, uint8_t siz
   return n;
 }
 
-uint8_t Print_print_s(writefunc_p writefunc, const char *str)
+uint8_t Print_print_s(writefunc_p writefunc, __xdata const char *str)
 {
 	uint8_t		n = 0;
 	char c;
@@ -65,19 +65,19 @@ uint8_t Print_print_s(writefunc_p writefunc, const char *str)
 }
 
 
-uint8_t Print_print_u(writefunc_p writefunc, unsigned long n)
+uint8_t Print_print_u(writefunc_p writefunc, __xdata unsigned long n)
 {
 	return printNumber(writefunc, n,10);
 }
 
-uint8_t Print_print_i(writefunc_p writefunc, long n)
+uint8_t Print_print_i(writefunc_p writefunc, __xdata long n)
 {
 	return printInt(writefunc, n,10);
 }
 
 // Variants of the above functions with an added newline //////////////////////
 
-uint8_t Print_println_sn(writefunc_p writefunc, const uint8_t *buffer, uint8_t size)
+uint8_t Print_println_sn(writefunc_p writefunc, __xdata const uint8_t *buffer, __xdata uint8_t size)
 {
 	uint8_t r;
 
@@ -85,7 +85,7 @@ uint8_t Print_println_sn(writefunc_p writefunc, const uint8_t *buffer, uint8_t s
 	return r + Print_println(writefunc);
 }
 
-uint8_t Print_println_s(writefunc_p writefunc, const char *str)
+uint8_t Print_println_s(writefunc_p writefunc, __xdata const char *str)
 {
 	uint8_t r;
 
@@ -93,7 +93,7 @@ uint8_t Print_println_s(writefunc_p writefunc, const char *str)
 	return r + Print_println(writefunc);
 }
 
-uint8_t Print_println_u(writefunc_p writefunc, unsigned long n)
+uint8_t Print_println_u(writefunc_p writefunc, __xdata unsigned long n)
 {
 	uint8_t r;
 
@@ -101,7 +101,7 @@ uint8_t Print_println_u(writefunc_p writefunc, unsigned long n)
 	return r + Print_println(writefunc);
 }
 
-uint8_t Print_println_i(writefunc_p writefunc, long n)
+uint8_t Print_println_i(writefunc_p writefunc, __xdata long n)
 {
 	uint8_t r;
 
@@ -109,7 +109,7 @@ uint8_t Print_println_i(writefunc_p writefunc, long n)
 	return r + Print_println(writefunc);
 }
 
-uint8_t Print_println_ub(writefunc_p writefunc, unsigned long n, uint8_t base)
+uint8_t Print_println_ub(writefunc_p writefunc, __xdata unsigned long n, __xdata uint8_t base)
 {
 	uint8_t r;
 
@@ -117,7 +117,7 @@ uint8_t Print_println_ub(writefunc_p writefunc, unsigned long n, uint8_t base)
 	return r + Print_println(writefunc);
 }
 
-uint8_t Print_println_ib(writefunc_p writefunc, long n, uint8_t base)
+uint8_t Print_println_ib(writefunc_p writefunc, __xdata long n, __xdata uint8_t base)
 {
 	uint8_t r;
 
@@ -139,10 +139,10 @@ uint8_t Print_println(writefunc_p writefunc)
 }
 
 
-uint8_t Print_print_ub(writefunc_p writefunc, unsigned long n, uint8_t base)
+uint8_t Print_print_ub(writefunc_p writefunc, __xdata unsigned long n, __xdata uint8_t base)
 {
   __xdata char buf[8 * sizeof(long) + 1]; // Assumes 8-bit chars plus zero byte.
-  char *str = &buf[sizeof(buf) - 1];
+  __xdata char *str = &buf[sizeof(buf) - 1];
 
   *str = '\0';
 
@@ -159,7 +159,7 @@ uint8_t Print_print_ub(writefunc_p writefunc, unsigned long n, uint8_t base)
   return Print_print_s(writefunc, str);
 }
 
-uint8_t Print_print_ib(writefunc_p writefunc, long n, uint8_t base)
+uint8_t Print_print_ib(writefunc_p writefunc, __xdata long n, __xdata uint8_t base)
 {
   if (base == 0) {
     return writefunc((unsigned char) n);
