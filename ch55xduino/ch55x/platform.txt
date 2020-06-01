@@ -72,6 +72,7 @@ compiler.ldflags=
 
 #we use mem file directly, because we don't need to use size command
 compiler.size.cmd=cat
+compiler.size.cmd.windows={runtime.tools.MCS51Tools.path}/win/busybox" cat "
 
 compiler.systemincludes="-I{compiler.syslibs.stdlib.path}/include"
 
