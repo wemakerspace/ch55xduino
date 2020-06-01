@@ -183,13 +183,12 @@ void pinMode(uint8_t pin, uint8_t mode);
 void digitalWrite(uint8_t pin, uint8_t val);
 uint8_t digitalRead(uint8_t pin);
 uint8_t analogRead(uint8_t pin);
-void analogReference(uint8_t mode);
 void analogWrite(uint8_t pin, uint16_t val);
 
 uint32_t millis(void);
-unsigned long micros(void);
-void delay(unsigned long ms);
-void delayMicroseconds(unsigned int us);
+uint32_t micros(void);
+void delay(uint32_t ms);
+//void delayMicroseconds(unsigned int us);
 unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
 unsigned long pulseInLong(uint8_t pin, uint8_t state, unsigned long timeout);
 

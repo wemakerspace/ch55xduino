@@ -29,14 +29,14 @@ void DeviceUSBInterrupt(void) __interrupt (INT_NO_USB)                       //U
     USBInterrupt();
 }
 
-__idata volatile uint8_t timer0Counter = 0;
+//__idata volatile uint8_t timer0Counter = 0;
 __idata volatile uint32_t timer0_millis = 0;
+__idata volatile uint32_t timer0_overflow_count = 0;
 
 void Timer0Interrupt(void) __interrupt (INT_NO_TMR0)                       
 {
-    timer0Counter++;
-    if (timer0Counter == 8) {
-        timer0Counter = 0;
+    timer0_overflow_count++;
+    if ((timer0_overflow_count & 7) == 0) { //inc by 8
         timer0_millis++;
     }
 }
