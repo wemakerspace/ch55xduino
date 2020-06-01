@@ -107,7 +107,7 @@ esac
 # Deqing: For some reason my version of SDCC don't generate rel file, it creates o file directly, so I modified the SDCC command below
 # copy the generated .rel files as an .o file to avoid recompiling the next time
 # if OBJ is a .o file we copy back
-if [[ "${OBJ}" == *.o ]]
+if [[ ${OBJ%.o} != $OBJ ]]
 then
 	cp -a "${OBJ}" "${REL}"
 fi
