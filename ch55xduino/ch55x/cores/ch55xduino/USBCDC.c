@@ -102,7 +102,7 @@ uint8_t USBSerial_write(char c){  //3 bytes generic pointer
     return 0;
 }
 
-uint8_t USBSerial_print_n(char *buf, int len){  //3 bytes generic pointer, not using USBSerial_write for a bit efficiency
+uint8_t USBSerial_print_n(uint8_t * __xdata buf, int len){  //3 bytes generic pointer, not using USBSerial_write for a bit efficiency
     uint16_t waitWriteCount;
     if (controlLineState > 0) {
         while (len>0){

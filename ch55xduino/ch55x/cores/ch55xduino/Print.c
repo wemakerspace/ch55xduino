@@ -40,7 +40,7 @@ void printNL(void);
 
 // Public Methods //////////////////////////////////////////////////////////////
 
-uint8_t Print_print_sn(writefunc_p writefunc, __xdata const uint8_t *buffer, __xdata uint8_t size)
+uint8_t Print_print_sn(writefunc_p writefunc, uint8_t * __xdata buffer, __xdata uint8_t size)
 {
   uint8_t n = 0;
   while (size--) {
@@ -50,7 +50,7 @@ uint8_t Print_print_sn(writefunc_p writefunc, __xdata const uint8_t *buffer, __x
   return n;
 }
 
-uint8_t Print_print_s(writefunc_p writefunc, __xdata const char *str)
+uint8_t Print_print_s(writefunc_p writefunc, char * __xdata str)
 {
 	uint8_t		n = 0;
 	char c;

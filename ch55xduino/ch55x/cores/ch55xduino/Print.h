@@ -48,8 +48,8 @@ typedef uint8_t (*writefunc_p)(uint8_t c);
 // to mimic polymorphism.
 
 // print strings (C-Style or buffer contents)
-uint8_t Print_print_s(writefunc_p writefunc, __xdata const char *str);
-uint8_t Print_print_sn(writefunc_p writefunc, __xdata const uint8_t *buffer, __xdata uint8_t size);
+uint8_t Print_print_s(writefunc_p writefunc, char * __xdata str);
+uint8_t Print_print_sn(writefunc_p writefunc, uint8_t * __xdata buffer, __xdata uint8_t size);
 
 // print signed/unsigned values (char, short, int, long) as decimal values
 uint8_t Print_print_i(writefunc_p writefunc, __xdata long n);
