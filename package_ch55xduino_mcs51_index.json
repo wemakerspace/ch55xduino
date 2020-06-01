@@ -15,30 +15,30 @@
                     "version": "0.1",
                     "category": "Contributed",
                     "boards": [
-                        {"name": "CH552 Board"},
+                        {"name": "CH552 Board"}
                     ],
                     "toolsDependencies": [
                         {
                             "name": "MCS51Tools",
                             "version": "2020.05.31",
-                            "packager": "ch55xduino"
+                            "packager": "CH55xDuino"
                         },
                         {
                             "name": "sdcc",
                             "version": "build.11630",
-                            "packager": "ch55xduino"
+                            "packager": "CH55xDuino"
                         }
                     ],
                     "url": "http://192.168.1.150/ch55xduino-core-0.0.1.tar.bz2",
                     "archiveFileName": "ch55xduino-core-0.0.1.tar.bz2",
                     "checksum": "SHA-256:5005445edde4cd3173c831b49bc6ab91748f991761ea29b50ccf2a437747b084",
                     "size": "45954"
-                },
+                }
             ],
             "tools" : [
                 {
                     "name": "MCS51Tools",
-                    "version": "2019.02.05",
+                    "version": "2020.05.31",
                     "systems": [
                         {
                             "host": "i686-pc-linux-gnu",
@@ -103,7 +103,7 @@
                             "size": "1986083"
                         }
                     ]
-                },
+                }
             ]
         }
     ]
