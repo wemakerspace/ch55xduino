@@ -135,9 +135,9 @@ recipe.preproc.macros="{compiler.wrapper.path}/{compiler.cpp.cmd}.sh" "{compiler
 tools.vnproch55x.cmd=vnproch55x
 # these lines are for manual install. For board manager installs they get converted to use
 # {runtime.tools.MCS51Tools.path} instead of {runtime.hardware.path}/tools
-tools.vnproch55x.path={runtime.hardware.path}/tools/linux
-tools.vnproch55x.path.windows={runtime.hardware.path}/tools/win
-tools.vnproch55x.path.macosx={runtime.hardware.path}/tools/macosx
+tools.vnproch55x.path={runtime.tools.MCS51Tools.path}/linux
+tools.vnproch55x.path.windows={runtime.tools.MCS51Tools.path}/win
+tools.vnproch55x.path.macosx={runtime.tools.MCS51Tools.path}/macosx
 
 #tools.stm8flash.upload.params.verify=
 tools.vnproch55x.upload.params.verbose=
