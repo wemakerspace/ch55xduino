@@ -78,9 +78,7 @@ void yield(void);
 #define LSBFIRST 0
 #define MSBFIRST 1
 
-#define CHANGE 1
-#define FALLING 2
-#define RISING 3
+#define FALLING 1
 
 /*
 #if defined(__AVR_ATtiny24__) || defined(__AVR_ATtiny44__) || defined(__AVR_ATtiny84__)
@@ -195,8 +193,8 @@ unsigned long pulseInLong(uint8_t pin, uint8_t state, unsigned long timeout);
 void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
 uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
 
-void attachInterrupt(uint8_t, void (*)(void), int mode);
-void detachInterrupt(uint8_t);
+void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), __xdata uint8_t mode);
+void detachInterrupt(uint8_t interruptNum);
 
 void setup(void);
 void loop(void);
