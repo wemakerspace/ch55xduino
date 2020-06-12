@@ -179,11 +179,11 @@ int atexit(void (*func)());	// __attribute__((weak));
 void serialEvent(void);		// weak
 extern unsigned char runSerialEvent;
 
-void pinMode(uint8_t pin, uint8_t mode);
-void digitalWrite(uint8_t pin, uint8_t val);
+void pinMode(uint8_t pin, __xdata uint8_t mode);
+void digitalWrite(uint8_t pin, __xdata uint8_t val);
 uint8_t digitalRead(uint8_t pin);
 uint8_t analogRead(uint8_t pin);
-void analogWrite(uint8_t pin, uint16_t val);
+void analogWrite(uint8_t pin, __xdata uint16_t val);
 
 uint32_t millis(void);
 uint32_t micros(void);
@@ -260,7 +260,7 @@ inline unsigned int makeWord(unsigned char h, unsigned char l) { return (h << 8)
 
 //USB Serial functions. Don't exist in Arduino AVR core Arduino.h, may be moved later
 bool USBSerial();
-uint8_t USBSerial_print_n(uint8_t * __xdata buf, int len);
+uint8_t USBSerial_print_n(uint8_t * __xdata buf, __xdata int len);
 uint8_t USBSerial_write(char c);
 void USBSerial_flush(void);
 uint8_t USBSerial_available();
