@@ -221,7 +221,7 @@ void alternateFunction(uint8_t val);
 
 //FIXME#include "WCharacter.h"
 //FIXME#include "WString.h"
-//!!!!!#include "HardwareSerial.h"
+#include "HardwareSerial.h"
 
 //uint16_t makeWord(uint16_t w);
 //uint16_t makeWord(byte h, byte l);
@@ -284,5 +284,22 @@ char USBSerial_read();
 #define USBSerial_println_u(P) ( Print_print_u(USBSerial_write,(P)) + Print_println(USBSerial_write) )
 #define USBSerial_println_ib(P) ( Print_print_ib(USBSerial_write,(P)) + Print_println(USBSerial_write) )
 #define USBSerial_println_ub(P) ( Print_print_ub(USBSerial_write,(P)) + Print_println(USBSerial_write) )
+
+
+#define Serial0_print_s(P) ( Print_print_s(Serial0_write,(P)) )
+#define Serial0_print_sn(P) ( Print_print_sn(Serial0_write,(P)) )
+#define Serial0_print_i(P) ( Print_print_i(Serial0_write,(P)) )
+#define Serial0_print_u(P) ( Print_print_u(Serial0_write,(P)) )
+#define Serial0_print_ib(P) ( Print_print_ib(Serial0_write,(P)) )
+#define Serial0_print_ub(P) ( Print_print_ub(Serial0_write,(P)) )
+
+#define Serial0_println() ( Print_println(Serial0_write) )
+#define Serial0_println_s(P) ( Print_print_s(Serial0_write,(P)) + Print_println(Serial0_write) )
+#define Serial0_println_sn(P) ( Print_print_sn(Serial0_write,(P)) + Print_println(Serial0_write) )
+#define Serial0_println_i(P) ( Print_print_i(Serial0_write,(P)) + Print_println(Serial0_write) )
+#define Serial0_println_u(P) ( Print_print_u(Serial0_write,(P)) + Print_println(Serial0_write) )
+#define Serial0_println_ib(P) ( Print_print_ib(Serial0_write,(P)) + Print_println(Serial0_write) )
+#define Serial0_println_ub(P) ( Print_print_ub(Serial0_write,(P)) + Print_println(Serial0_write) )
+
 
 #endif
