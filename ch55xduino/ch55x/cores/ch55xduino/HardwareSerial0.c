@@ -42,10 +42,12 @@ void Serial0_begin(unsigned long baud){
     T2MOD = T2MOD | bTMR_CLK | bT1_CLK;                                        //Timer1 clk selection. trade off: bTMR_CLK is low, will make Uart0 not accurate. bTMR_CLK is high, make T2 timeout is short, multiple timeout must be allowed in 1st edge, as reset may take long
     TH1 = 0-x;                                                                 //baud/12 is real rate
     TR1 = 1;                                                                   //start timer1
-    TI = 1;
+    TI = 0;
     REN = 1;                                                                   //Enable serial 0 receive
     
     ES = 1;                                                                       //Enable serial 0 interrupt
+    
+    serial0Initialized = 1;
 }
 
 uint8_t Serial0_write(uint8_t SendDat)
@@ -75,7 +77,20 @@ void Serial0_flush(void){
     while( (uart0_flags & UART0_FLG_SENDING) );
 }
 
+uint8_t Serial0_available(void){
+    uint8_t rxBufLength = ((uint8_t)(SERIAL0_RX_BUFFER_SIZE + uart0_rx_buffer_head - uart0_rx_buffer_tail)) % SERIAL0_RX_BUFFER_SIZE;
+    return rxBufLength;
+}
 
+uint8_t Serial0_read(void){
+    uint8_t rxBufLength = ((uint8_t)(SERIAL0_RX_BUFFER_SIZE + uart0_rx_buffer_head - uart0_rx_buffer_tail)) % SERIAL0_RX_BUFFER_SIZE;
+    if(rxBufLength>0){
+        uint8_t result = Receive_Uart0_Buf[uart0_rx_buffer_tail];
+        uart0_rx_buffer_tail = (((uint8_t)(uart0_rx_buffer_tail + 1)) % SERIAL0_RX_BUFFER_SIZE);
+        return result;
+    }
+    return 0;
+}
 
 void uart0IntRxHandler(){
     uint8_t nextHead = (uart0_rx_buffer_head + 1) % SERIAL0_RX_BUFFER_SIZE;
