@@ -4,11 +4,11 @@ __xdata unsigned char serial0Initialized = 0;
 
 __xdata uint8_t Receive_Uart0_Buf[SERIAL0_RX_BUFFER_SIZE];   //arduino style serial buffer
 __xdata uint8_t Transmit_Uart0_Buf[SERIAL0_TX_BUFFER_SIZE];   //arduino style serial buffer
-volatile __xdata uint8_t uart0_rx_buffer_head;
-volatile __xdata uint8_t uart0_rx_buffer_tail;
-volatile __xdata uint8_t uart0_tx_buffer_head;
-volatile __xdata uint8_t uart0_tx_buffer_tail;
-volatile __xdata uint8_t uart0_flags;
+volatile __xdata uint8_t uart0_rx_buffer_head=0;
+volatile __xdata uint8_t uart0_rx_buffer_tail=0;
+volatile __xdata uint8_t uart0_tx_buffer_head=0;
+volatile __xdata uint8_t uart0_tx_buffer_tail=0;
+volatile __xdata uint8_t uart0_flags=0;
 
 #define UART0_FLG_SENDING     (1<<0)
 

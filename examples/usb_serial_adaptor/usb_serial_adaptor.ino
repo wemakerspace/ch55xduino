@@ -1,9 +1,8 @@
-extern __xdata uint8_t LineCoding[7]; //lineCoding of CDC is located in this array
-__xdata uint8_t LineCodingOld[7];
+extern __xdata uint8_t LineCoding[]; //lineCoding of CDC is located in this array
+__xdata uint32_t oldBaudRate = 9600;
 
 void setup() {
   Serial0_begin(9600);
-  memset(LineCodingOld, 0, 7);
 }
 
 void loop() {
@@ -16,15 +15,11 @@ void loop() {
     USBSerial_write(serialChar);
   }
 
-  if (memcmp ( LineCoding, LineCodingOld, 7 ) != 0) {
-    memcpy(LineCodingOld, LineCoding, 7);
-    uint32_t uart0_buad = 0;
-    *((uint8_t *)&uart0_buad) = LineCoding[0];
-    *((uint8_t *)&uart0_buad+1) = LineCoding[1];
-    *((uint8_t *)&uart0_buad+2) = LineCoding[2];
-    *((uint8_t *)&uart0_buad+3) = LineCoding[3];
-    
-    Serial0_begin(uart0_buad);
+  __xdata uint32_t currentBaudRate = *((__xdata uint32_t *)LineCoding); //both linecoding and sdcc are little-endian
+
+  if (oldBaudRate != currentBaudRate) {
+    oldBaudRate = currentBaudRate;
+    Serial0_begin(currentBaudRate);
   }
 
 }
