@@ -234,9 +234,9 @@ void noTone(uint8_t _pin);
 
 // WMath prototypes
 long random(long howbig);
-long random_minmax(long howsmall, long howbig);
+long random_minmax(long howsmall, __xdata long howbig);
 void randomSeed(unsigned long seed);
-long map(long x, long in_min, long in_max, long out_min, long out_max);
+long map(long x, __xdata long in_min, __xdata long in_max, __xdata long out_min, __xdata long out_max);
 
 inline unsigned int makeWord(unsigned char h, unsigned char l) { return (h << 8) | l; }
 
