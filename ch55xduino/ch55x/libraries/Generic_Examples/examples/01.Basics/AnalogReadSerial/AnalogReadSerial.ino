@@ -22,7 +22,7 @@ void setup() {
 
 // the loop routine runs over and over again forever:
 void loop() {
-  // read the input on analog pin 0, P1.1:
+  // read the input on analog pin P1.1. You may use P1.1, P1.4, P1.5 and P3.2
   int sensorValue = analogRead(11);
   // print out the value you read:
   USBSerial_println_u(sensorValue);
