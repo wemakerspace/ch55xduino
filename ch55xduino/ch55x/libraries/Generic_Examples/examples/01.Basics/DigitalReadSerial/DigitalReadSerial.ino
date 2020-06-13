@@ -1,7 +1,7 @@
 /*
   DigitalReadSerial
 
-  Reads a digital input on pin 2, prints the result to the Serial Monitor
+  Reads a digital input on pin P1.1, prints the result to the Serial Monitor
 
   This example code is in the public domain.
 
