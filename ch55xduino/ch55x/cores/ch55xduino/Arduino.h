@@ -171,11 +171,11 @@ typedef unsigned char byte;
 //typedef uint8_t byte;
 
 void init(void);
-void initVariant(void);		// weak
+//void initVariant(void);		// weak
 
-int atexit(void (*func)());	// __attribute__((weak));
-void serialEvent(void);		// weak
-extern unsigned char runSerialEvent;
+//int atexit(void (*func)());	// __attribute__((weak));
+//void serialEvent(void);		// weak
+//extern unsigned char runSerialEvent;
 
 void pinMode(uint8_t pin, __xdata uint8_t mode);
 void digitalWrite(uint8_t pin, __xdata uint8_t val);
@@ -187,11 +187,11 @@ uint32_t millis(void);
 uint32_t micros(void);
 void delay(uint32_t ms);
 //void delayMicroseconds(unsigned int us);
-unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
-unsigned long pulseInLong(uint8_t pin, uint8_t state, unsigned long timeout);
+//unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
+//unsigned long pulseInLong(uint8_t pin, uint8_t state, unsigned long timeout);
 
-void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
-uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
+//void shiftOut(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder, uint8_t val);
+//uint8_t shiftIn(uint8_t dataPin, uint8_t clockPin, uint8_t bitOrder);
 
 void attachInterrupt(uint8_t interruptNum, void (*userFunc)(void), __xdata uint8_t mode);
 void detachInterrupt(uint8_t interruptNum);
@@ -210,7 +210,7 @@ void loop(void);
 
 #ifdef SUPPORT_ALTERNATE_MAPPINGS
 // helper function for STM8S: switch to the alternate pin functions
-void alternateFunction(uint8_t val);
+//void alternateFunction(uint8_t val);
 #endif
 
 
@@ -226,11 +226,11 @@ void alternateFunction(uint8_t val);
 
 //#define word(...) makeWord(__VA_ARGS__)
 
-unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
-unsigned long pulseInLong(uint8_t pin, uint8_t state, unsigned long timeout);
+//unsigned long pulseIn(uint8_t pin, uint8_t state, unsigned long timeout);
+//unsigned long pulseInLong(uint8_t pin, uint8_t state, unsigned long timeout);
 
-void tone(uint8_t _pin, unsigned int frequency, unsigned long duration);
-void noTone(uint8_t _pin);
+//void tone(uint8_t _pin, unsigned int frequency, unsigned long duration);
+//void noTone(uint8_t _pin);
 
 // WMath prototypes
 long random(long howbig);
