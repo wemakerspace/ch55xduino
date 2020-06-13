@@ -39,11 +39,11 @@
 
 uint8_t Print_print_fd(writefunc_p writefunc, __xdata double number, __xdata uint8_t digits)
 { 
-  size_t n = 0;
-  uint8_t i;
-  unsigned long int_part;
-  double remainder, rounding;
-  unsigned int toPrint;
+  __xdata uint8_t n = 0;
+  __xdata uint8_t i;
+  __xdata unsigned long int_part;
+  __xdata double remainder, rounding;
+  __xdata unsigned int toPrint;
 
   if (isnan(number)) return printStr(writefunc,"nan");
   if (isinf(number)) return printStr(writefunc,"inf");
