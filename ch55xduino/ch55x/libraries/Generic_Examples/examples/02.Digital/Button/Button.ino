@@ -1,14 +1,14 @@
 /*
   Button
 
-  Turns on and off a light emitting diode(LED) connected to digital pin 3.3,
-  when pressing a pushbutton attached to pin 1.1.
+  Turns on and off a light emitting diode(LED) connected to digital pin P3.3,
+  when pressing a pushbutton attached to pin P1.1.
 
   The circuit:
-  - LED attached from pin 3.3 to VCC
-  - pushbutton attached to pin 1.1 from ground
+  - LED attached from pin P3.3 to ground
+  - pushbutton attached to pin P1.1 from ground
 
-  - Note: on the STM8S103 breakout board there is already an LED on the board
+  - Note: on the simpleCH552 breakout board there is already an LED on the board
     attached to pin P3.3.
 
   created 2005
@@ -17,6 +17,8 @@
   by Tom Igoe
   modified 13 Feb 2017 for use with sduino
   by Michael Mayer
+  modified 13 Jun 2020
+  by Deqing Sun for use with CH55xduino
 
   This example code is in the public domain.
 

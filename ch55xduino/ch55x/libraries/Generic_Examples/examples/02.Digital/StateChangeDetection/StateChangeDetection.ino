@@ -10,16 +10,17 @@
   and on to off.
 
   The circuit:
-  - pushbutton attached to pin 2 from +3.3V
-  - 10 kilohm resistor attached to pin 2 from ground
-  - LED attached from pin 3 to VCC (or use the built-in LED on
-    the STM8S103 breakout board)
+  - pushbutton attached to pin P1.1 from ground
+  - LED attached from pin P3.3 to VCC (or use the built-in LED on
+    the simpleCH552 breakout board)
 
   created  27 Sep 2005
   modified 30 Aug 2011
   by Tom Igoe
   modified 13 Feb 2017 for use with sduino
   by Michael Mayer
+  modified 13 Jun 2020
+  by Deqing Sun for use with CH55xduino
 
   This example code is in the public domain.
 
@@ -29,7 +30,7 @@
 #include <Serial.h>
 
 // this constant won't change:
-const int  buttonPin = 11;    // the pin that the pushbutton is attached to
+const int buttonPin = 11;    // the pin that the pushbutton is attached to
 const int ledPin = 33;        // the pin that the LED is attached to
 
 // Variables will change:

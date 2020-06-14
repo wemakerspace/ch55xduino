@@ -1,26 +1,28 @@
 /*
   Analog Input
 
-  Demonstrates analog input by reading an analog sensor on analog pin 0 and
-  turning on and off a light emitting diode(LED) connected to digital pin 3.
+  Demonstrates analog input by reading an analog sensor on analog pin P1.1 and
+  turning on and off a light emitting diode(LED) connected to digital pin P3.3.
   The amount of time the LED will be on and off depends on the value obtained
   by analogRead().
 
   The circuit:
   - potentiometer
-    center pin of the potentiometer to the analog input 0
+    center pin of the potentiometer to the analog input P1.1
     one side pin (either one) to ground
     the other side pin to +5V
   - LED
-    anode (long leg) attached to digital output 13
+    anode (long leg) attached to digital output P3.3
     cathode (short leg) attached to ground
 
-  - Note: because the STM8S103 breakout board has a built-in LED attached to
-    pin 3 on the board, the LED is optional.
+  - Note: because the simpleCH552 breakout board has a built-in LED attached to
+    pin P3.3 on the board, the LED is optional.
 
   created by David Cuartielles
   modified 30 Aug 2011
   By Tom Igoe
+  modified 13 Jun 2020
+  by Deqing Sun for use with CH55xduino
 
   This example code is in the public domain.
 

@@ -7,7 +7,7 @@
   averages them.
 
   The circuit:
-  - analog sensor (potentiometer will do) attached to analog input 0
+  - analog sensor (potentiometer will do) attached to analog input P1.1
 
   created 22 Apr 2007
   by David A. Mellis  <dam@mellis.org>
@@ -15,6 +15,8 @@
   by Tom Igoe
   modified 28 Feb 2017 for use with sduino
   by Michael Mayer
+  modified 13 Jun 2020
+  by Deqing Sun for use with CH55xduino
 
   This example code is in the public domain.
 
@@ -27,7 +29,8 @@
 // value to determine the size of the readings array.
 #define numReadings 10
 
-int readings[numReadings];      // the readings from the analog input
+//This is a fairly large array, store it in external memory with keyword __xdata
+__xdata int readings[numReadings];      // the readings from the analog input.
 int readIndex = 0;              // the index of the current reading
 int total = 0;                  // the running total
 int average = 0;                // the average

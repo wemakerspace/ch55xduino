@@ -1,3 +1,21 @@
+/*
+  Attach Interrupts
+
+  Add counter value using attachInterrupt function. 
+
+  The circuit:
+  - Connect a push button between P3.2 and ground
+    Connect another push button between P3.3 and ground
+    No debouncing is implemented here. Add a debouncing capacitor if needed. 
+  
+  created 2020
+  by Deqing Sun for use with CH55xduino
+
+  This example code is in the public domain.
+
+  http://www.arduino.cc/en/Tutorial/BlinkWithoutDelay
+*/
+
 volatile uint8_t int0Count = 0;
 uint8_t int0CountOld = 0;
 volatile uint8_t int1Count = 0;

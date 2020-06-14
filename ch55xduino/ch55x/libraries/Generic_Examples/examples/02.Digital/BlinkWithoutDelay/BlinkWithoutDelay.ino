@@ -24,6 +24,8 @@
   by Arturo Guadalupi
   modified 13 Feb 2017 for use with sduino
   by Michael Mayer
+  modified 13 Jun 2020
+  by Deqing Sun for use with CH55xduino
 
   This example code is in the public domain.
 

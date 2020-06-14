@@ -10,7 +10,7 @@
 
 #include <Serial.h>
 
-// digital pin P1.0 has a pushbutton attached to it. Give it a name:
+// digital pin P1.1 has a pushbutton attached to it. Give it a name:
 int pushButton = 11;
 
 // the setup routine runs once when you press reset:

@@ -13,7 +13,7 @@
   can see the value of the analog input changing over time.
 
   The circuit:
-  - any analog input sensor attached to analog in pin 0
+  - any analog input sensor attached to analog in pin P1.1
 
   created 2006
   by David A. Mellis
@@ -21,6 +21,8 @@
   by Tom Igoe and Scott Fitzgerald
   modified 28 Feb 2017 for use with sduino
   by Michael Mayer
+  modified 13 Jun 2020
+  by Deqing Sun for use with CH55xduino
 
   This example code is in the public domain.
 

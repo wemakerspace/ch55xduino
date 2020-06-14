@@ -7,7 +7,7 @@
   set the brightness of the LED.
 
   The circuit:
-  - LED attached from digital pin 9 to ground.
+  - LED attached from digital pin P3.4 to ground.
   - Serial connection to Processing, Max/MSP, or another serial application
 
   created 2006
@@ -16,6 +16,8 @@
   by Tom Igoe and Scott Fitzgerald
   modified 28 Feb 2017 for use with sduino
   by Michael Mayer
+  modified 13 Jun 2020
+  by Deqing Sun for use with CH55xduino
 
   This example code is in the public domain.
 

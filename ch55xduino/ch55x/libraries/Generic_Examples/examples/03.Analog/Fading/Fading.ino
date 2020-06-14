@@ -4,7 +4,7 @@
   This example shows how to fade an LED using the analogWrite() function.
 
   The circuit:
-  - LED attached from digital pin 9 to ground.
+  - LED attached from digital pin P3.4 to ground.
 
   created 1 Nov 2008
   by David A. Mellis
@@ -12,6 +12,8 @@
   by Tom Igoe
   modified 28 Feb 2017 for use with sduino
   by Michael Mayer
+  modified 13 Jun 2020
+  by Deqing Sun for use with CH55xduino
 
   This example code is in the public domain.
 

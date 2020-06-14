@@ -1,9 +1,9 @@
 /*
   ReadAnalogVoltage
 
-  Reads an analog input on pin 0, converts it to voltage, and prints the result to the Serial Monitor.
+  Reads an analog input on pin P1.1, converts it to voltage, and prints the result to the Serial Monitor.
   Graphical representation is available using Serial Plotter (Tools > Serial Plotter menu).
-  Attach the center pin of a potentiometer to pin A0, and the outside pins to +3.3V and ground.
+  Attach the center pin of a potentiometer to pin P1.1, and the outside pins to +5V and ground.
 
   This example code is in the public domain.
 
@@ -16,7 +16,7 @@
 void setup() {
   // No need to init USBSerial
 
-  //By default 8051 enable every pin's pull up resistor. Disable pull-up to get full input range.
+  // By default 8051 enable every pin's pull up resistor. Disable pull-up to get full input range.
   pinMode(11, INPUT);
 }
 
@@ -28,7 +28,7 @@ void loop() {
   float voltage = sensorValue * (5.0 / 255.0);
   // print out the value you read:
   USBSerial_println_f(voltage);
-  //or with precision:
+  // or with precision:
   //USBSerial_println_fd(voltage,1);
 
   delay(10);

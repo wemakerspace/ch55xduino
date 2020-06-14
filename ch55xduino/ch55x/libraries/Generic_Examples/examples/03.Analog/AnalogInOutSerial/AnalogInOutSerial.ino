@@ -6,16 +6,18 @@
   Also prints the results to the Serial Monitor.
 
   The circuit:
-  - potentiometer connected to analog pin 0.
+  - potentiometer connected to analog pin P1.1.
     Center pin of the potentiometer goes to the analog pin.
-    side pins of the potentiometer go to +3.3V and ground
-  - LED connected from digital pin 9 to ground
+    side pins of the potentiometer go to +5V and ground
+  - LED connected from digital pin P3.4 to ground
 
   created 29 Dec. 2008
   modified 9 Apr 2012
   by Tom Igoe
   modified 28 Feb 2017 for use with sduino
   by Michael Mayer
+  modified 13 Jun 2020
+  by Deqing Sun for use with CH55xduino
 
   This example code is in the public domain.
 

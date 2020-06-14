@@ -6,12 +6,11 @@
   minimum delay between toggles to debounce the circuit (i.e. to ignore noise).
 
   The circuit:
-  - LED attached from pin 3 to VCC
-  - pushbutton attached from pin 2 to +5V
-  - 10 kilohm resistor attached from pin 2 to ground
+  - LED attached from pin P3.3 to ground
+  - pushbutton attached from pin P1.1 to ground
 
-  - Note: On the STM8S103 breakout board, there is already an LED on the board connected
-    to pin 3, so you don't need any extra components for this example.
+  - Note: On the simpleCH552 breakout board, there is already an LED on the board connected
+    to pin P3.3, so you don't need any extra components for this example.
 
   created 21 Nov 2006
   by David A. Mellis
@@ -23,6 +22,8 @@
   by Arturo Guadalupi
   modified 13 Feb 2017 for use with sduino
   by Michael Mayer
+  modified 13 Jun 2020
+  by Deqing Sun for use with CH55xduino
 
   This example code is in the public domain.
 

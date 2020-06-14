@@ -1,4 +1,17 @@
+/*
+  Echo
 
+  A simple example echoes back every line of data it receives.
+  Also it prints how many lines it has echoed.
+
+  created 2020
+  by Deqing Sun for use with CH55xduino
+
+  This example code is in the public domain.
+
+*/
+
+//This is a fairly large array, store it in external memory with keyword __xdata
 __xdata char recvStr[64];
 uint8_t recvStrPtr = 0;
 bool stringComplete = false;

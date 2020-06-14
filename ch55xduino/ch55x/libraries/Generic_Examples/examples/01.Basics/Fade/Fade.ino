@@ -1,12 +1,12 @@
 /*
   Fade
 
-  This example shows how to fade an LED on pin 5 using the analogWrite()
+  This example shows how to fade an LED on pin P3.4 using the analogWrite()
   function.
 
   The analogWrite() function uses PWM, so if you want to change the pin you're
-  using, be sure to use another PWM capable pin. On most Arduino, the PWM pins
-  are identified with a "~" sign, like ~3, ~5, ~6, ~9, ~10 and ~11.
+  using, be sure to use another PWM capable pin. On CH552, You may use 
+  P1.5/P3.0 (mutually exclusive) and P3.4/P3.1 (mutually exclusive)
 
   This example code is in the public domain.
 
