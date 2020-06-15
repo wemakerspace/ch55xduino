@@ -26,11 +26,16 @@ __xdata uint8_t touchCycleCounter = 0;
 __xdata uint16_t touchBaseline[6];
 __xdata uint8_t touchBaselineNoiseCount[6];
 __xdata uint8_t prevDiffBaselinePos;
+__xdata uint8_t touchNextCalibrateCycleCounter = 0;
 
 __xdata uint8_t touchMaxHalfDelta;
 __xdata uint8_t touchNoiseHalfDelta;
 __xdata uint8_t touchNoiseCountLimit;
 __xdata uint8_t touchFilterDelayLimit;
+__xdata uint8_t touchThreshold;
+__xdata uint8_t releaseThreshold;
+
+__xdata uint8_t touchKeyPressed;
 
 void TouchKey_ISR_Handler(void){
     uint8_t index = TKEY_CTRL & 0x07;
@@ -75,16 +80,22 @@ void TouchKey_begin(uint8_t channelToEnableBitMask){
         P1_MOD_OC &= ~(1<<7);
     }
     
-    touchMaxHalfDelta = 50;
+    touchMaxHalfDelta = 5;
     touchNoiseHalfDelta = 2;
     touchNoiseCountLimit = 10;
+    touchFilterDelayLimit = 5;
     
-    
-    //touchMaxHalfDelta = 0;
-    //touchNoiseCountLimit = 50;
-    //touchNoiseHalfDelta = 10;
+    touchThreshold = 100;
+    releaseThreshold = 80;  
     
     touchKeyHandler = TouchKey_ISR_Handler;
+    
+    //sample all channels to prefill baselines
+    for (uint8_t i=0;i<6;i++){
+        TKEY_CTRL = bTKC_2MS | (1+i);
+        while((TKEY_CTRL&bTKC_IF) == 0);
+        touchBaseline[i]=TKEY_DAT;
+    }
     
     TKEY_CTRL = bTKC_2MS | 1;
     
@@ -104,52 +115,61 @@ uint8_t TouchKey_Process(){ //call this function every 12ms or less.
                 
                 int16_t diff = rawData - touchBaseline[processIndex];
                 
-                if ( (diff<touchMaxHalfDelta) && (diff>-touchMaxHalfDelta) ){ //case 1. Small incremental changes to the system represent long term slow (environmental) changes in the system. 
-                    touchBaseline[processIndex] = rawData;
-                }else{
-                    uint8_t noiseCount;
-                    if (diff>0){
-                        if ( (prevDiffBaselinePos&indexBitMask) ){  //same side noise, case 2
-                            noiseCount = touchBaselineNoiseCount[processIndex];
-                            noiseCount++;
-                            if (noiseCount>=touchNoiseCountLimit){
-                                noiseCount = 0;
-                                touchBaseline[processIndex] += touchNoiseHalfDelta;
-                            }
-                            touchBaselineNoiseCount[processIndex] = noiseCount;
-                        }else{  //different side noise, case 3
-                            prevDiffBaselinePos|=indexBitMask;
-                            touchBaselineNoiseCount[processIndex] = 1;
-                        }
+                if (touchNextCalibrateCycleCounter == touchCycleCounter){ //similar to case 4, not using average to save some memory on CH552.
+                    if ( (diff<touchMaxHalfDelta) && (diff>-touchMaxHalfDelta) ){ //case 1. Small incremental changes to the system represent long term slow (environmental) changes in the system. 
+                        touchBaseline[processIndex] = rawData;
                     }else{
-                         if ( (prevDiffBaselinePos&indexBitMask)==0 ){  //same side noise, case 2
-                            noiseCount = touchBaselineNoiseCount[processIndex];
-                            noiseCount++;
-                            if (noiseCount>=touchNoiseCountLimit){
-                                noiseCount = 0;
-                                touchBaseline[processIndex] -= touchNoiseHalfDelta;
+                        uint8_t noiseCount;
+                        if (diff>0){
+                            if ( (prevDiffBaselinePos&indexBitMask) ){  //same side noise, case 2
+                                noiseCount = touchBaselineNoiseCount[processIndex];
+                                noiseCount++;
+                                if (noiseCount>=touchNoiseCountLimit){
+                                    noiseCount = 0;
+                                    touchBaseline[processIndex] += touchNoiseHalfDelta;
+                                }
+                                touchBaselineNoiseCount[processIndex] = noiseCount;
+                            }else{  //different side noise, case 3
+                                prevDiffBaselinePos|=indexBitMask;
+                                touchBaselineNoiseCount[processIndex] = 1;
                             }
-                            touchBaselineNoiseCount[processIndex] = noiseCount;
-                        }else{  //different side noise, case 3
-                            prevDiffBaselinePos&=~indexBitMask;
-                            touchBaselineNoiseCount[processIndex] = 1;
+                        }else{
+                             if ( (prevDiffBaselinePos&indexBitMask)==0 ){  //same side noise, case 2
+                                noiseCount = touchBaselineNoiseCount[processIndex];
+                                noiseCount++;
+                                if (noiseCount>=touchNoiseCountLimit){
+                                    noiseCount = 0;
+                                    touchBaseline[processIndex] -= touchNoiseHalfDelta;
+                                }
+                                touchBaselineNoiseCount[processIndex] = noiseCount;
+                            }else{  //different side noise, case 3
+                                prevDiffBaselinePos&=~indexBitMask;
+                                touchBaselineNoiseCount[processIndex] = 1;
+                            }
                         }
                     }
-                    
-                    
-   
                 }
-                
-                
 
+                //use 2 threshold to avoid glitching
+                if (touchKeyPressed & indexBitMask){
+                    if ((-diff)<releaseThreshold){
+                        touchKeyPressed &= ~indexBitMask;
+                    }
+                }else{
+                    if ((-diff)>touchThreshold){
+                        touchKeyPressed |= indexBitMask;
+                    }
+                }
 
-                
             }
             
             touchCounterProcessed++;
             processIndex++;
             if (processIndex>=6){
                 processIndex = 0;
+                if (touchNextCalibrateCycleCounter == touchCycleCounter){
+                    touchNextCalibrateCycleCounter = touchCycleCounter + touchFilterDelayLimit;
+                }
                 touchCycleCounter++;
             }
         }
@@ -157,6 +177,33 @@ uint8_t TouchKey_Process(){ //call this function every 12ms or less.
     return touchCycleCounter;
 }
 
+uint8_t TouchKey_Get(){
+    return touchKeyPressed;
+}
+
+void TouchKey_SetMaxHalfDelta(uint8_t val){
+    touchMaxHalfDelta = val;
+}
+
+void TouchKey_SetNoiseHalfDelta(uint8_t val){
+    touchNoiseHalfDelta = val;
+}
+
+void TouchKey_SetNoiseCountLimit(uint8_t val){
+    touchNoiseCountLimit = val;
+}
+
+void TouchKey_SetFilterDelayLimit(uint8_t val){
+    touchFilterDelayLimit = val;
+}
+
+void TouchKey_SetTouchThreshold(uint8_t val){
+    touchThreshold = val;
+}
+
+void TouchKey_SetReleaseThreshold(uint8_t val){
+    releaseThreshold = val;
+}
 
 void TouchKey_end(void){
     touchKeyHandler = NULL;

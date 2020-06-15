@@ -15,5 +15,13 @@
 void TouchKey_begin(uint8_t channelToEnableBitMask);
 void TouchKey_end(void);
 uint8_t TouchKey_Process();
+uint8_t TouchKey_Get();
+
+void TouchKey_SetMaxHalfDelta(uint8_t val);
+void TouchKey_SetNoiseHalfDelta(uint8_t val);
+void TouchKey_SetNoiseCountLimit(uint8_t val);
+void TouchKey_SetFilterDelayLimit(uint8_t val);
+void TouchKey_SetTouchThreshold(uint8_t val);
+void TouchKey_SetReleaseThreshold(uint8_t val);
 
 #endif
