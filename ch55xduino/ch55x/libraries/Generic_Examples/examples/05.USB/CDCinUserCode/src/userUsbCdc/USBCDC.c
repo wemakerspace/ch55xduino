@@ -3,6 +3,7 @@
 #include "include/ch554.h"
 #include "include/ch554_usb.h"
 #include "USBconstant.h"
+#include "USBhandler.h"
 
 extern __xdata __at (EP0_ADDR) uint8_t  Ep0Buffer[];
 extern __xdata __at (EP2_ADDR) uint8_t  Ep2Buffer[];

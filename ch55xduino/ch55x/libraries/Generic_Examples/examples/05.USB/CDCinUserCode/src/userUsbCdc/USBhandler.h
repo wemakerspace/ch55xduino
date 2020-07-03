@@ -50,6 +50,9 @@ extern "C" {
 #endif
 
 void USBInterrupt(void);
+void USBDeviceCfg();
+void USBDeviceIntCfg();
+void USBDeviceEndPointCfg();
 
 #ifdef __cplusplus
 } // extern "C"
