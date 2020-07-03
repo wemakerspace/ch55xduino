@@ -1,3 +1,5 @@
+#ifndef USER_USB_RAM
+
 #ifndef __USB_HANDLER_H__
 #define __USB_HANDLER_H__
 
@@ -50,3 +52,4 @@ void USBInterrupt(void);
 
 #endif
 
+#endif

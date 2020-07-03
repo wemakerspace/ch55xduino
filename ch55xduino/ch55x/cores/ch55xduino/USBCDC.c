@@ -1,3 +1,5 @@
+#ifndef USER_USB_RAM
+
 #include <stdint.h>
 #include <stdbool.h>
 #include "include/ch554.h"
@@ -157,3 +159,5 @@ void USB_EP2_OUT(){
         if (USBByteCountEP2)    UEP2_CTRL = UEP2_CTRL & ~ MASK_UEP_R_RES | UEP_R_RES_NAK;       //收到一包数据就NAK，主函数处理完，由主函数修改响应方式
     }
 }
+
+#endif

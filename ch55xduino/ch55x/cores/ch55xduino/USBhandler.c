@@ -1,3 +1,5 @@
+#ifndef USER_USB_RAM
+
 #include "USBhandler.h"
 
 #include "USBconstant.h"
@@ -515,3 +517,4 @@ void USBDeviceEndPointCfg()
     UEP0_CTRL = UEP_R_RES_ACK | UEP_T_RES_NAK;                //?????OUT????ACK?IN????NAK
 }
 
+#endif
