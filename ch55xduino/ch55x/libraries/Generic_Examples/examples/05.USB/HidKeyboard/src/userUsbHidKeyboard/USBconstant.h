@@ -7,7 +7,6 @@
 
 #define  EP0_ADDR 0
 #define  EP1_ADDR 10
-#define  EP2_ADDR 20
 
 extern __code uint8_t DevDesc[];
 extern __code uint8_t CfgDesc[];
