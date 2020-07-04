@@ -63,10 +63,10 @@ void setControlLineStateHandler(){
 
 bool USBSerial(){
     bool result = false;
-	if (controlLineState > 0) 
-		result = true;
-	//mDelaymS(10); not doing it for now
-	return result;
+    if (controlLineState > 0)
+        result = true;
+    //mDelaymS(10); not doing it for now
+    return result;
 }
 
 
