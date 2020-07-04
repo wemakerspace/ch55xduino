@@ -16,9 +16,11 @@
 
 #include "src/userUsbHidKeyboard/USBHIDKeyboard.h"
 
-#define BUTTON1_PIN 11
-#define BUTTON2_PIN 11
-#define BUTTON3_PIN 34
+#define BUTTON1_PIN 30
+#define BUTTON2_PIN 31
+#define BUTTON3_PIN 32
+
+#define LED_BUILTIN 33
 
 bool button1PressPrev = false;
 bool button2PressPrev = false;
@@ -28,6 +30,9 @@ bool button3PressPrev = false;
 void setup() {
   USBInit();
   pinMode(BUTTON1_PIN, INPUT_PULLUP);
+  pinMode(BUTTON2_PIN, INPUT_PULLUP);
+  pinMode(BUTTON3_PIN, INPUT_PULLUP);
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
@@ -60,8 +65,18 @@ void loop() {
   if (button3PressPrev != button3Press) {
     button3PressPrev = button3Press;
     if (button3Press) {
-      Keyboard_write(KEY_CAPS_LOCK);
+      Keyboard_press(KEY_CAPS_LOCK);
+      delay(100); //a quick capslock press is not recognized on mac
+      Keyboard_release(KEY_CAPS_LOCK);
     }
+  }
+
+  //map capsLock to LED
+  //Bit 0: NUM lock, Bit 1: CAPS lock, Bit 2: SCROLL lock, Bit 3: Compose, Bit 4: Kana,
+  if (Keyboard_getLEDStatus() & 2) {
+    digitalWrite(LED_BUILTIN, HIGH);
+  } else {
+    digitalWrite(LED_BUILTIN, LOW);
   }
 
   delay(50);  //naive debouncing

@@ -1,5 +1,5 @@
-#ifndef __USB_CDC_H__
-#define __USB_CDC_H__
+#ifndef __USB_HID_KBD_H__
+#define __USB_HID_KBD_H__
 
 #include <stdint.h>
 #include "include/ch554.h"
@@ -66,6 +66,8 @@ uint8_t Keyboard_release(uint8_t k);
 void Keyboard_releaseAll(void);
 
 uint8_t Keyboard_write(uint8_t c);
+
+uint8_t Keyboard_getLEDStatus();
 
 #ifdef __cplusplus
 } // extern "C"

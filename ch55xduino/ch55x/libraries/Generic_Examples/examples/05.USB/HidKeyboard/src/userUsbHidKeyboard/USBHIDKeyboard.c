@@ -173,7 +173,6 @@ void USB_EP1_OUT(){
     if ( U_TOG_OK )                                                     // Discard unsynchronized packets
     {
 
-      //  if (USBByteCountEP2)    UEP2_CTRL = UEP2_CTRL & ~ MASK_UEP_R_RES | UEP_R_RES_NAK;       //Respond NAK after a packet. Let main code change response after handling.
     }
 }
 
@@ -275,9 +274,12 @@ void Keyboard_releaseAll(void){
 	USB_EP1_send();
 }
 
-
 uint8_t Keyboard_write(uint8_t c){
 	uint8_t p = Keyboard_press(c);  // Keydown
 	Keyboard_release(c);            // Keyup
 	return p;              // just return the result of press() since release() almost always returns 1
+}
+
+uint8_t Keyboard_getLEDStatus(){
+    return Ep1Buffer[0];    //The only info we gets
 }

@@ -1,5 +1,5 @@
-#ifndef __CONST_DATA_H__
-#define __CONST_DATA_H__
+#ifndef __USB_CONST_DATA_H__
+#define __USB_CONST_DATA_H__
 
 #include <stdint.h>
 #include "include/ch554.h"
