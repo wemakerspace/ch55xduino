@@ -6,8 +6,8 @@ void USBDeviceIntCfg();
 void USBDeviceEndPointCfg();
 #endif
 
-extern __idata volatile uint32_t timer0_millis;
 extern __idata volatile uint32_t timer0_overflow_count;
+extern __idata volatile uint8_t timer0_overflow_count_5th_byte;
 
 uint32_t micros(){
     volatile uint32_t m;
@@ -39,7 +39,7 @@ uint32_t millis()
     
     // disable interrupts while we read timer0_millis or we might get an
     // inconsistent value (e.g. in the middle of a write to timer0_millis)
-    m = timer0_millis;
+    m = timer0_overflow_count>>3;
     if (interruptOn) EA = 1;
     return m;
 }
