@@ -20,7 +20,6 @@ volatile __xdata uint8_t controlLineState = 0;
 __xdata uint8_t usbWritePointer = 0;
 
 void delayMicroseconds(uint16_t us);
-void mDelaymS( uint16_t n );
 
 void resetCDCParameters(){
 
@@ -54,7 +53,8 @@ void setControlLineStateHandler(){
     if ( ((controlLineState & 0x01) == 0) && (*((__xdata uint32_t *)LineCoding) == 1200) ){ //both linecoding and sdcc are little-endian
         USB_CTRL = 0;
         EA = 0;                                                                    //Disabling all interrupts is required.
-        mDelaymS( 100 );     
+        delayMicroseconds(50000);
+        delayMicroseconds(50000);
         __asm__ ("lcall #0x3800");                                                 //Jump to bootloader code
         while(1);
     }
@@ -65,7 +65,7 @@ bool USBSerial(){
     bool result = false;
     if (controlLineState > 0)
         result = true;
-    //mDelaymS(10); not doing it for now
+    //delay(10); not doing it for now
     return result;
 }
 

@@ -1,7 +1,5 @@
 #include "wiring_private.h"
 
-void mDelaymS( uint16_t n );    //used for delay without timer
-
 #ifndef USER_USB_RAM
 void USBDeviceCfg();
 void USBDeviceIntCfg();
@@ -141,7 +139,7 @@ void init()
     
     SAFE_MOD = 0x00;
     
-    mDelaymS(5); //needed to stablize internal RC
+    delayMicroseconds(5000); //needed to stablize internal RC
     
 #ifndef USER_USB_RAM
     //init USB

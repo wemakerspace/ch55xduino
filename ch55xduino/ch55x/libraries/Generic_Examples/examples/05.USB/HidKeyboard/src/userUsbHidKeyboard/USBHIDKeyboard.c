@@ -149,7 +149,6 @@ __code uint8_t _asciimap[128] =
 typedef void( *pTaskFn)( void );
 
 void delayMicroseconds(uint16_t us);
-void mDelaymS( uint16_t n );
 
 void USBInit(){
     USBDeviceCfg();                                                       //Device mode configuration

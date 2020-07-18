@@ -11,7 +11,6 @@ extern volatile __xdata uint8_t uart0_tx_buffer_tail;
 extern volatile __xdata uint8_t uart0_flags;
 
 //extern wait functions
-void mDelaymS( uint16_t n );
 void delayMicroseconds(uint16_t us);
 
 uint8_t Serial0(void){

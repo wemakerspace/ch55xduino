@@ -22,7 +22,6 @@ __xdata uint8_t usbWritePointer = 0;
 typedef void( *pTaskFn)( void );
 
 void delayMicroseconds(uint16_t us);
-void mDelaymS( uint16_t n );
 
 void USBInit(){
     USBDeviceCfg();                                                       //Device mode configuration
@@ -67,7 +66,8 @@ void setControlLineStateHandler(){
         USB_CTRL = 0;
         EA = 0;                                                                    //Disabling all interrupts is required.
         tasksArr[0] = (pTaskFn)0x3800;
-        mDelaymS( 100 );     
+        delayMicroseconds(50000);
+        delayMicroseconds(50000);
         (tasksArr[0])( );                                                          //Jump to bootloader code
         while(1);
     }
@@ -78,7 +78,7 @@ bool USBSerial(){
     bool result = false;
 	if (controlLineState > 0) 
 		result = true;
-	//mDelaymS(10); not doing it for now
+	//delay(10); not doing it for now
 	return result;
 }
 
