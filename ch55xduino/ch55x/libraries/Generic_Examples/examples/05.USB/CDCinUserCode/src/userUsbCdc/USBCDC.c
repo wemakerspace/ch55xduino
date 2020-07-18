@@ -21,7 +21,7 @@ __xdata uint8_t usbWritePointer = 0;
 
 typedef void( *pTaskFn)( void );
 
-void mDelayuS( uint16_t n );
+void delayMicroseconds(uint16_t us);
 void mDelaymS( uint16_t n );
 
 void USBInit(){
@@ -99,7 +99,7 @@ uint8_t USBSerial_write(char c){  //3 bytes generic pointer
             waitWriteCount = 0;
             while (UpPoint2_Busy){//wait for 250ms or give up, on my mac it takes about 256us
                 waitWriteCount++;
-                mDelayuS(5);   
+                delayMicroseconds(5);
                 if (waitWriteCount>=50000) return 0;
             }
             if (usbWritePointer<MAX_PACKET_SIZE){
@@ -121,7 +121,7 @@ uint8_t USBSerial_print_n(uint8_t * __xdata buf, __xdata int len){  //3 bytes ge
             waitWriteCount = 0;
             while (UpPoint2_Busy){//wait for 250ms or give up, on my mac it takes about 256us
                 waitWriteCount++;
-                mDelayuS(5);   
+                delayMicroseconds(5);   
                 if (waitWriteCount>=50000) return 0;
             }
             while (len>0){

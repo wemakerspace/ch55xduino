@@ -38,6 +38,7 @@ void sendCharDebug(char c) //8Mbps under 24M clk
     //  return charToSend;
 }
 
+/*
 void    mDelayuS( uint16_t n )  
 {
 #ifdef    F_CPU
@@ -87,7 +88,7 @@ void    mDelayuS( uint16_t n )
 #endif
         -- n;
     }
-}
+}*/
 
 void    mDelaymS( uint16_t n ){                                                 
     while ( n ) {
