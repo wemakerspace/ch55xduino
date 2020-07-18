@@ -33,15 +33,64 @@ uint32_t micros(){
 
 uint32_t millis()
 {
-    uint32_t m;
-    uint8_t interruptOn = EA;
-    EA = 0;
-    
+
     // disable interrupts while we read timer0_millis or we might get an
     // inconsistent value (e.g. in the middle of a write to timer0_millis)
-    m = timer0_overflow_count>>3;
-    if (interruptOn) EA = 1;
-    return m;
+
+    __asm__ (";uint8_t interruptOn = EA; //to c            \n"
+             ";clr and mov won't affect c                  \n"
+             "    mov c,_EA                                \n"
+             ";EA = 0;                                     \n"
+             "    clr _EA                                  \n"
+             ";Copy _timer0_overflow_count to local R0~R4  \n"
+             "    mov r0, (_timer0_overflow_count)         \n"
+             "    mov r1, (_timer0_overflow_count)+1       \n"
+             "    mov r2, (_timer0_overflow_count)+2       \n"
+             "    mov r3, (_timer0_overflow_count)+3       \n"
+             "    mov r4, (_timer0_overflow_count)+4       \n"
+             ";if (interruptOn) EA = 1;                    \n"
+             "    mov _EA,c                                \n"
+             ";return timer0_overflow_count>>3             \n"
+             ";Or: return (timer0_overflow_count<<5)>>8    \n"
+             ";Or: return (timer0_overflow_count*32)>>8    \n"
+             "    mov b, #32                               \n"
+             "    mov a, r0                                \n"
+             "    mul ab                                   \n"
+             "    mov r0, b                                \n"
+             ";lowest 8 bit not used (a), r0 free to use   \n"
+             "    mov b, #32                               \n"
+             "    mov a, r1                                \n"
+             "    mul ab                                   \n"
+             "    add a, r0                                \n"
+             ";carry won't be set, if I calculated right   \n"
+             "    mov dpl, a                               \n"
+             "    mov r0, b                                \n"
+             
+             "    mov b, #32                               \n"
+             "    mov a, r2                                \n"
+             "    mul ab                                   \n"
+             "    add a, r0                                \n"
+             ";carry won't be set, if I calculated right   \n"
+             "    mov dph, a                               \n"
+             "    mov r0, b                                \n"
+             
+             "    mov b, #32                               \n"
+             "    mov a, r3                                \n"
+             "    mul ab                                   \n"
+             "    add a, r0                                \n"
+             ";carry won't be set, if I calculated right   \n"
+             "    mov r1, a                                \n"
+             "    mov r0, b                                \n"
+             
+             "    mov b, #32                               \n"
+             "    mov a, r4                                \n"
+             "    mul ab                                   \n"
+             "    add a, r0                                \n"
+             ";carry won't be set, if I calculated right   \n"
+             
+             ";calculation finished, a already in place    \n"
+             "    mov b, r1                                \n"
+             );
 }
 
 void delay(uint32_t ms)
