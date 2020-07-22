@@ -8,6 +8,8 @@
 extern __xdata __at (EP0_ADDR) uint8_t  Ep0Buffer[];
 extern __xdata __at (EP1_ADDR) uint8_t  Ep1Buffer[];
 
+volatile __xdata uint8_t USBByteCountEP1 = 0;      //Bytes of received data on USB endpoint
+
 void sendCharDebug(char c);//!!!!!!!!!!!
 
 void USBInit(){
@@ -33,17 +35,17 @@ void USB_EP1_IN(){
 void USB_EP1_OUT(){
     sendCharDebug('o');
     
-    if ( U_TOG_OK )                                                     // Discard unsynchronized packets
-    {
-        /*USBByteCountEP2 = USB_RX_LEN;
-        USBBufOutPointEP2 = 0;                                             //Reset Data pointer for fetching
-        if (USBByteCountEP2)*/
+    if ( U_TOG_OK ){               // Discard unsynchronized packets
         
-        for (uint8_t i=0;i<USB_RX_LEN;i++){
-            sendCharDebug(Ep1Buffer[i]);
-        }
+        USBByteCountEP1 = USB_RX_LEN;
+        if (USBByteCountEP1){
             
-        UEP2_CTRL = UEP2_CTRL & ~ MASK_UEP_R_RES | UEP_R_RES_NAK;       //Respond NAK after a packet. Let main code change response after handling.
+            for (uint8_t i=0;i<USB_RX_LEN;i++){
+                sendCharDebug(Ep1Buffer[i]);
+            }
+            
+            UEP1_CTRL = UEP1_CTRL & ~ MASK_UEP_R_RES | UEP_R_RES_NAK;       //Respond NAK after a packet. Let main code change response after handling.
+        }
     }
 }
 
