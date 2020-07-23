@@ -206,12 +206,6 @@
 #define SWD  P3_2
 #define LED  P3_3
 
-extern __idata uint8_t Ep2Oi;
-extern __idata uint8_t Ep2Oo;
-extern __idata uint8_t Ep3Ii;
-extern __idata uint8_t Ep3Io;
-extern __idata uint8_t Ep3Is[];
-
 extern __xdata uint8_t Ep0Buffer[];
 extern __xdata uint8_t Ep1Buffer[];
 

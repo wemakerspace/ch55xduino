@@ -27,17 +27,12 @@ void setup() {
 
 void loop() {
   if (USBByteCountEP1) {
+    DAP_Thread();
     USBByteCountEP1 = 0 ;
-    if (USBByteCountEP1 == 0) {
-      DAP_Thread();
-      UEP1_CTRL = UEP1_CTRL & ~ MASK_UEP_R_RES | UEP_R_RES_ACK; //enable receive
 
-      UEP1_T_LEN = 64;
-      UEP1_CTRL = UEP1_CTRL & ~ MASK_UEP_T_RES | UEP_T_RES_ACK; //enable send
-    }
+    UEP1_CTRL = UEP1_CTRL & ~ MASK_UEP_R_RES | UEP_R_RES_ACK; //enable receive
+
+    UEP1_T_LEN = 64;
+    UEP1_CTRL = UEP1_CTRL & ~ MASK_UEP_T_RES | UEP_T_RES_ACK; //enable send
   }
-
-
-
-
 }

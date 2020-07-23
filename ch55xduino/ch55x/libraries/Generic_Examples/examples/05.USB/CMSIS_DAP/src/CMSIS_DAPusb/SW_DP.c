@@ -51,18 +51,18 @@ void PORT_SWD_SETUP(void)
     // Set SWCLK HIGH
     //推挽输出
 
-    P3_MOD_OC = P3_MOD_OC & ~(1 << 3);
-    P3_DIR_PU = P3_DIR_PU | (1 << 3);
+    P3_MOD_OC = P3_MOD_OC & ~(1 << 1);
+    P3_DIR_PU = P3_DIR_PU | (1 << 1);
     SWK = 1;
     // Set SWDIO HIGH
     //推挽输出
-    P3_MOD_OC = P3_MOD_OC & ~(1 << 4);
-    P3_DIR_PU = P3_DIR_PU | (1 << 4);
+    P3_MOD_OC = P3_MOD_OC & ~(1 << 2);
+    P3_DIR_PU = P3_DIR_PU | (1 << 2);
     SWD = 1;
     // Set RESET HIGH
     //推挽输出
-    P1_MOD_OC = P1_MOD_OC & ~(1 << 1);
-    P1_DIR_PU = P1_DIR_PU | (1 << 1);
+    P3_MOD_OC = P3_MOD_OC & ~(1 << 0);
+    P3_DIR_PU = P3_DIR_PU | (1 << 0);
     RST = 1;
 }
 
