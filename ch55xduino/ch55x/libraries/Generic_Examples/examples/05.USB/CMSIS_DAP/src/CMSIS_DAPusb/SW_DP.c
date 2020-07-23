@@ -26,20 +26,21 @@
  *---------------------------------------------------------------------------*/
 
 #include "DAP.h"
+#include <Arduino.h>
 
 #define SW_CLOCK_CYCLE() \
-  SWK = 0;               \
-  SWK = 1;
+  SWK = 0; delayMicroseconds(1);              \
+  SWK = 1; delayMicroseconds(1);
 
 #define SW_WRITE_BIT(bits) \
   SWD = (bits)&1;          \
-  SWK = 0;                 \
-  SWK = 1;
+  SWK = 0;  delayMicroseconds(1);               \
+  SWK = 1; delayMicroseconds(1);
 
 #define SW_READ_BIT(bits) \
-  SWK = 0;                \
+  SWK = 0;   delayMicroseconds(1);             \
   bits = SWD;             \
-  SWK = 1;
+  SWK = 1;   delayMicroseconds(1);
 
 /** Setup SWD I/O pins: SWCLK, SWDIO, and nRESET.
 Configures the DAP Hardware I/O pins for Serial Wire Debug (SWD) mode:
@@ -51,17 +52,20 @@ void PORT_SWD_SETUP(void)
     // Set SWCLK HIGH
     //推挽输出
 
-    P3_MOD_OC = P3_MOD_OC & ~(1 << 1);
+    //P3_MOD_OC = P3_MOD_OC & ~(1 << 1);
+    P3_MOD_OC = P3_MOD_OC | (1 << 1);
     P3_DIR_PU = P3_DIR_PU | (1 << 1);
     SWK = 1;
     // Set SWDIO HIGH
     //推挽输出
-    P3_MOD_OC = P3_MOD_OC & ~(1 << 2);
+    //P3_MOD_OC = P3_MOD_OC & ~(1 << 2);
+    P3_MOD_OC = P3_MOD_OC | (1 << 2);
     P3_DIR_PU = P3_DIR_PU | (1 << 2);
     SWD = 1;
     // Set RESET HIGH
     //推挽输出
-    P3_MOD_OC = P3_MOD_OC & ~(1 << 0);
+    //P3_MOD_OC = P3_MOD_OC & ~(1 << 0);
+    P3_MOD_OC = P3_MOD_OC | (1 << 0);
     P3_DIR_PU = P3_DIR_PU | (1 << 0);
     RST = 1;
 }
@@ -93,6 +97,7 @@ void SWJ_Sequence(uint8_t count, const uint8_t *datas)
             SWD = 0;
         }
         SWK = 0;
+        delayMicroseconds(1);
         SWK = 1;
         val >>= 1;
         n--;

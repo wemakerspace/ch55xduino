@@ -277,13 +277,13 @@ static uint8_t DAP_SWJ_Pins(const uint8_t *req, uint8_t *res)
 //   response: pointer to response datas
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-__idata uint8_t fast_clock;
-__idata uint8_t clock_delay;
+__xdata uint32_t fast_clock;
+__xdata uint8_t clock_delay;
 static uint8_t DAP_SWJ_Clock(const uint8_t *req, uint8_t *res)
 {
     /**/
-    fast_clock = *req;
-    fast_clock = 0;
+    fast_clock = *((uint32_t *)req);
+    
     clock_delay = 0;
 
     *res = DAP_OK;
@@ -960,8 +960,6 @@ static uint8_t DAP_WriteAbort(const uint8_t *req, uint8_t *res)
     return num;
 }
 
-void sendCharDebug(char c);//!!!!!!!!!!!
-
 // DAP Thread.
 void DAP_Thread(void)
 {
@@ -971,10 +969,6 @@ void DAP_Thread(void)
     {
         uint8_t __xdata *req = &Ep1Buffer[0];
         uint8_t __xdata *res = &Ep1Buffer[64];
-        //Ep2Oo += 64;
-        sendCharDebug(req[0]);
-        sendCharDebug(req[1]);
-        
 
         *res++ = *req;
         switch (*req++)
