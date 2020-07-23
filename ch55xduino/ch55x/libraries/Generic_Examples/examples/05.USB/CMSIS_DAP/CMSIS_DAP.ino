@@ -1,7 +1,11 @@
 /*
   CMSIS_DAP
 
-
+  Modified form ljbfly's implementation, working but a lot to improve
+  RST   -> P30
+  SWCLK -> P31
+  SWDIO -> P32
+  These pins works in OC mode with pull-up resistor (70K). Should be safe to connect 3.3V part.
 
   created 2020
   by Deqing Sun for use with CH55xduino
