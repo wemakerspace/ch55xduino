@@ -50,7 +50,7 @@ __code uint8_t CfgDesc[] ={
     0x01,         /* bEndpointAddress */
     0x03,                             /* bmAttributes */
     0x40, 0x00,    /* wMaxPacketSize */
-    5,        /* bInterval */
+    1,        /* bInterval */
     
     /* EP Descriptor: interrupt out. */
     0x07,                       /* bLength */
@@ -58,7 +58,7 @@ __code uint8_t CfgDesc[] ={
     0x81,       /* bEndpointAddress */
     0x03,                             /* bmAttributes */
     0x40, 0x00,    /* wMaxPacketSize */
-    5         /* bInterval */
+    1         /* bInterval */
     
     
 };

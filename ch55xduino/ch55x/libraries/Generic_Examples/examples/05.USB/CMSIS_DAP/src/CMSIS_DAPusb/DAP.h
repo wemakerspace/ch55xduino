@@ -201,10 +201,10 @@
 #define DAP_PACKET_SIZE 64 //THIS_ENDP0_SIZE
 #define DAP_DEFAULT_PORT DAP_PORT_SWD
 
-#define RST  P3_1
-#define SWK  P3_3
-#define SWD  P3_4
-#define LED  P3_2
+#define RST  P3_0
+#define SWK  P3_1
+#define SWD  P3_2
+#define LED  P3_3
 
 extern __idata uint8_t Ep2Oi;
 extern __idata uint8_t Ep2Oo;
