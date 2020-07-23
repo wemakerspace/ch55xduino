@@ -960,6 +960,8 @@ static uint8_t DAP_WriteAbort(const uint8_t *req, uint8_t *res)
     return num;
 }
 
+void sendCharDebug(char c);//!!!!!!!!!!!
+
 // DAP Thread.
 void DAP_Thread(void)
 {
@@ -970,7 +972,9 @@ void DAP_Thread(void)
         uint8_t __xdata *req = &Ep1Buffer[0];
         uint8_t __xdata *res = &Ep1Buffer[64];
         //Ep2Oo += 64;
-
+        sendCharDebug(req[0]);
+        sendCharDebug(req[1]);
+        
 
         *res++ = *req;
         switch (*req++)
