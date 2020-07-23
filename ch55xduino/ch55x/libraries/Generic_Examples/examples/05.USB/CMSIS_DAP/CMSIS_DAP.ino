@@ -15,7 +15,7 @@
 #error "This example needs to be compiled with a USER USB setting"
 #endif
 
-#include "src/CMSIS_DAPusb/USBHID.h"
+#include "src/CMSIS_DAPusb/DAP.h"
 
 
 extern volatile __xdata uint8_t USBByteCountEP1;
@@ -29,6 +29,7 @@ void loop() {
   if (USBByteCountEP1) {
     USBByteCountEP1 = 0 ;
     if (USBByteCountEP1 == 0) {
+      DAP_Thread();
       UEP1_CTRL = UEP2_CTRL & ~ MASK_UEP_R_RES | UEP_R_RES_ACK;
     }
   }

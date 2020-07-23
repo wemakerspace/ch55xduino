@@ -31,9 +31,9 @@
 //   id:      info identifier
 //   info:    pointer to info datas
 //   return:  number of bytes in info datas
-static UINT8I DAP_Info(UINT8 id, UINT8 *info)
+static uint8_t DAP_Info(uint8_t id, uint8_t *info)
 {
-    UINT8I length = 0U;
+    uint8_t length = 0U;
 
     switch (id)
     {
@@ -47,7 +47,7 @@ static UINT8I DAP_Info(UINT8 id, UINT8 *info)
         length = 0;
         break;
     case DAP_ID_FW_VER:
-        length = (UINT8)sizeof(DAP_FW_VER);
+        length = (uint8_t)sizeof(DAP_FW_VER);
         memcpy(info, DAP_FW_VER, length);
         break;
     case DAP_ID_DEVICE_VENDOR:
@@ -67,8 +67,8 @@ static UINT8I DAP_Info(UINT8 id, UINT8 *info)
 
         break;
     case DAP_ID_PACKET_SIZE:
-        info[0] = (UINT8)(DAP_PACKET_SIZE >> 0);
-        info[1] = (UINT8)(DAP_PACKET_SIZE >> 8);
+        info[0] = (uint8_t)(DAP_PACKET_SIZE >> 0);
+        info[1] = (uint8_t)(DAP_PACKET_SIZE >> 8);
         length = 2U;
         break;
     case DAP_ID_PACKET_COUNT:
@@ -87,12 +87,12 @@ static UINT8I DAP_Info(UINT8 id, UINT8 *info)
 //   response: pointer to response datas
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static UINT8I DAP_Delay(const UINT8 *req, UINT8 *res)
+static uint8_t DAP_Delay(const uint8_t *req, uint8_t *res)
 {
-    UINT16I delay;
+    uint16_t delay;
 
-    delay = (UINT16)(*(req + 0)) |
-            (UINT16)(*(req + 1) << 8);
+    delay = (uint16_t)(*(req + 0)) |
+            (uint16_t)(*(req + 1) << 8);
 
     while (--delay)
     {
@@ -107,7 +107,7 @@ static UINT8I DAP_Delay(const UINT8 *req, UINT8 *res)
 //   response: pointer to response datas
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static UINT8I DAP_HostStatus(const UINT8 *req, UINT8 *res)
+static uint8_t DAP_HostStatus(const uint8_t *req, uint8_t *res)
 {
 
     switch (*req)
@@ -132,10 +132,10 @@ static UINT8I DAP_HostStatus(const UINT8 *req, UINT8 *res)
 //   response: pointer to response datas
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-UINT8I debug_port;
-static UINT8I DAP_Connect(const UINT8 *req, UINT8 *res)
+__idata uint8_t debug_port;
+static uint8_t DAP_Connect(const uint8_t *req, uint8_t *res)
 {
-    UINT8I port;
+    uint8_t port;
 
     if (*req == DAP_PORT_AUTODETECT)
     {
@@ -157,7 +157,7 @@ static UINT8I DAP_Connect(const UINT8 *req, UINT8 *res)
         break;
     }
 
-    *res = (UINT8)port;
+    *res = (uint8_t)port;
     return 1;
 }
 
@@ -165,7 +165,7 @@ static UINT8I DAP_Connect(const UINT8 *req, UINT8 *res)
 //   response: pointer to response datas
 //   return:   number of bytes in response
 #define PORT_OFF() PORT_SWD_SETUP()
-static UINT8I DAP_Disconnect(UINT8 *res)
+static uint8_t DAP_Disconnect(uint8_t *res)
 {
 
     debug_port = DAP_PORT_DISABLED;
@@ -178,7 +178,7 @@ static UINT8I DAP_Disconnect(UINT8 *res)
 // Process Reset Target command and prepare response
 //   response: pointer to response datas
 //   return:   number of bytes in response
-static UINT8I DAP_ResetTarget(UINT8 *res)
+static uint8_t DAP_ResetTarget(uint8_t *res)
 {
     *(res + 1) = 0; //RESET_TARGET();
     *(res + 0) = DAP_OK;
@@ -190,16 +190,16 @@ static UINT8I DAP_ResetTarget(UINT8 *res)
 //   response: pointer to response datas
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static UINT8I DAP_SWJ_Pins(const UINT8 *req, UINT8 *res)
+static uint8_t DAP_SWJ_Pins(const uint8_t *req, uint8_t *res)
 {
-    UINT8I value;
-    UINT8I select;
-    UINT16I wait;
+    uint8_t value;
+    uint8_t select;
+    uint16_t wait;
 
-    value = (UINT8I) * (req + 0);
-    select = (UINT8I) * (req + 1);
-    wait = (UINT16I)(*(req + 2) << 0) | (UINT16I)(*(req + 3) << 8);
-    if ((UINT8I)(*(req + 4)) || (UINT8I)(*(req + 5)))
+    value = (uint8_t) * (req + 0);
+    select = (uint8_t) * (req + 1);
+    wait = (uint16_t)(*(req + 2) << 0) | (uint16_t)(*(req + 3) << 8);
+    if ((uint8_t)(*(req + 4)) || (uint8_t)(*(req + 5)))
         wait |= 0x8000;
 
     if ((select & DAP_SWJ_SWCLK_TCK_BIT) != 0U)
@@ -260,14 +260,14 @@ static UINT8I DAP_SWJ_Pins(const UINT8 *req, UINT8 *res)
         while (wait--);
     }
 
-    value = ((UINT8I)SWK << DAP_SWJ_SWCLK_TCK) |
-            ((UINT8I)SWD << DAP_SWJ_SWDIO_TMS) |
+    value = ((uint8_t)SWK << DAP_SWJ_SWCLK_TCK) |
+            ((uint8_t)SWD << DAP_SWJ_SWDIO_TMS) |
             (0 << DAP_SWJ_TDI) |
             (0 << DAP_SWJ_TDO) |
             (0 << DAP_SWJ_nTRST) |
-            ((UINT8I)RST << DAP_SWJ_nRESET);
+            ((uint8_t)RST << DAP_SWJ_nRESET);
 
-    *res = (UINT8)value;
+    *res = (uint8_t)value;
 
     return 1;
 }
@@ -277,9 +277,9 @@ static UINT8I DAP_SWJ_Pins(const UINT8 *req, UINT8 *res)
 //   response: pointer to response datas
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-UINT8I fast_clock;
-UINT8I clock_delay;
-static UINT8I DAP_SWJ_Clock(const UINT8 *req, UINT8 *res)
+__idata uint8_t fast_clock;
+__idata uint8_t clock_delay;
+static uint8_t DAP_SWJ_Clock(const uint8_t *req, uint8_t *res)
 {
     /**/
     fast_clock = *req;
@@ -295,9 +295,9 @@ static UINT8I DAP_SWJ_Clock(const UINT8 *req, UINT8 *res)
 //   response: pointer to response datas
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static UINT8I DAP_SWJ_Sequence(const UINT8 *req, UINT8 *res)
+static uint8_t DAP_SWJ_Sequence(const uint8_t *req, uint8_t *res)
 {
-    UINT8I count;
+    uint8_t count;
 
     count = *req++;
     if (count == 0U)
@@ -316,11 +316,11 @@ static UINT8I DAP_SWJ_Sequence(const UINT8 *req, UINT8 *res)
 //   response: pointer to response datas
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-UINT8I turnaround;
-UINT8I data_phase;
-static UINT8I DAP_SWD_Configure(const UINT8 *req, UINT8 *res)
+__idata uint8_t turnaround;
+__idata uint8_t data_phase;
+static uint8_t DAP_SWD_Configure(const uint8_t *req, uint8_t *res)
 {
-    UINT8I value;
+    uint8_t value;
 
     value = *req;
     turnaround = (value & 0x03U) + 1U;
@@ -335,13 +335,13 @@ static UINT8I DAP_SWD_Configure(const UINT8 *req, UINT8 *res)
 //   response: pointer to response datas
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static UINT8I DAP_SWD_Sequence(const UINT8 *req, UINT8 *res)
+static uint8_t DAP_SWD_Sequence(const uint8_t *req, uint8_t *res)
 {
-    UINT8I sequence_info;
-    UINT8I sequence_count;
-    UINT8I request_count;
-    UINT8I response_count;
-    UINT8I count;
+    uint8_t sequence_info;
+    uint8_t sequence_count;
+    uint8_t request_count;
+    uint8_t response_count;
+    uint8_t count;
 
     *res++ = DAP_OK;
 
@@ -392,17 +392,17 @@ static UINT8I DAP_SWD_Sequence(const UINT8 *req, UINT8 *res)
 //   response: pointer to response datas
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-UINT8I idle_cycles;
-UINT16I retry_count;
-UINT16I match_retry;
-static UINT8I DAP_TransferConfigure(const UINT8 *req, UINT8 *res)
+__idata uint8_t idle_cycles;
+__idata uint16_t retry_count;
+__idata uint16_t match_retry;
+static uint8_t DAP_TransferConfigure(const uint8_t *req, uint8_t *res)
 {
 
     idle_cycles = *(req + 0);
-    retry_count = (UINT16I) * (req + 1) |
-                  (UINT16I)(*(req + 2) << 8);
-    match_retry = (UINT16I) * (req + 3) |
-                  (UINT16I)(*(req + 4) << 8);
+    retry_count = (uint16_t) * (req + 1) |
+                  (uint16_t)(*(req + 2) << 8);
+    match_retry = (uint16_t) * (req + 3) |
+                  (uint16_t)(*(req + 4) << 8);
 
     *res = DAP_OK;
     return 1;
@@ -414,22 +414,22 @@ static UINT8I DAP_TransferConfigure(const UINT8 *req, UINT8 *res)
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
 
-UINT8I datas[4];
-UINT8I match_mask[4];
-UINT8I match_value[4];
-UINT8I DAP_TransferAbort = 0U;
-UINT8I request_count;
-UINT8I request_value;
-UINT8I response_count;
-UINT8I response_value;
-UINT16I retry;
-static UINT8I DAP_SWD_Transfer(const UINT8 *req, UINT8 *res)
+__xdata uint8_t datas[4];
+__idata uint8_t match_mask[4];
+__idata uint8_t match_value[4];
+__idata uint8_t DAP_TransferAbort = 0U;
+__idata uint8_t request_count;
+__idata uint8_t request_value;
+__idata uint8_t response_count;
+__idata uint8_t response_value;
+__idata uint16_t retry;
+static uint8_t DAP_SWD_Transfer(const uint8_t *req, uint8_t *res)
 {
-    const UINT8 *request_head;
-    UINT8 *response_head;
+    const uint8_t *request_head;
+    uint8_t *response_head;
 
-    UINT8I post_read;
-    UINT8I check_write;
+    uint8_t post_read;
+    uint8_t check_write;
 
     request_head = req;
 
@@ -461,7 +461,7 @@ static UINT8I DAP_SWD_Transfer(const UINT8 *req, UINT8 *res)
                     // Read previous AP datas and post next AP read
                     do
                     {
-                        response_value = SWD_Transfer(request_value, &datas);
+                        response_value = SWD_Transfer(request_value, datas);
                     }
                     while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_TransferAbort);
                 }
@@ -470,7 +470,7 @@ static UINT8I DAP_SWD_Transfer(const UINT8 *req, UINT8 *res)
                     // Read previous AP datas
                     do
                     {
-                        response_value = SWD_Transfer(DP_RDBUFF | DAP_TRANSFER_RnW, &datas);
+                        response_value = SWD_Transfer(DP_RDBUFF | DAP_TRANSFER_RnW, datas);
                     }
                     while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_TransferAbort);
                     post_read = 0U;
@@ -480,18 +480,18 @@ static UINT8I DAP_SWD_Transfer(const UINT8 *req, UINT8 *res)
                     break;
                 }
                 // Store previous AP datas
-                *res++ = (UINT8)datas[0];
-                *res++ = (UINT8)datas[1];
-                *res++ = (UINT8)datas[2];
-                *res++ = (UINT8)datas[3];
+                *res++ = (uint8_t)datas[0];
+                *res++ = (uint8_t)datas[1];
+                *res++ = (uint8_t)datas[2];
+                *res++ = (uint8_t)datas[3];
             }
             if ((request_value & DAP_TRANSFER_MATCH_VALUE) != 0U)
             {
                 // Read with value match
-                match_value[0] = (UINT8)(*(req + 0));
-                match_value[1] = (UINT8)(*(req + 1));
-                match_value[2] = (UINT8)(*(req + 2));
-                match_value[3] = (UINT8)(*(req + 3));
+                match_value[0] = (uint8_t)(*(req + 0));
+                match_value[1] = (uint8_t)(*(req + 1));
+                match_value[2] = (uint8_t)(*(req + 2));
+                match_value[3] = (uint8_t)(*(req + 3));
                 req += 4;
                 match_retry = match_retry;
                 if ((request_value & DAP_TRANSFER_APnDP) != 0U)
@@ -514,7 +514,7 @@ static UINT8I DAP_SWD_Transfer(const UINT8 *req, UINT8 *res)
                     retry = retry_count;
                     do
                     {
-                        response_value = SWD_Transfer(request_value, &datas);
+                        response_value = SWD_Transfer(request_value, datas);
                     }
                     while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_TransferAbort);
                     if (response_value != DAP_TRANSFER_OK)
@@ -566,7 +566,7 @@ static UINT8I DAP_SWD_Transfer(const UINT8 *req, UINT8 *res)
                     // Read DP register
                     do
                     {
-                        response_value = SWD_Transfer(request_value, &datas);
+                        response_value = SWD_Transfer(request_value, datas);
                     }
                     while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_TransferAbort);
                     if (response_value != DAP_TRANSFER_OK)
@@ -592,7 +592,7 @@ static UINT8I DAP_SWD_Transfer(const UINT8 *req, UINT8 *res)
                 retry = retry_count;
                 do
                 {
-                    response_value = SWD_Transfer(DP_RDBUFF | DAP_TRANSFER_RnW, &datas);
+                    response_value = SWD_Transfer(DP_RDBUFF | DAP_TRANSFER_RnW, datas);
                 }
                 while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_TransferAbort);
                 if (response_value != DAP_TRANSFER_OK)
@@ -607,10 +607,10 @@ static UINT8I DAP_SWD_Transfer(const UINT8 *req, UINT8 *res)
                 post_read = 0U;
             }
             // Load datas
-            datas[0] = (UINT8)(*(req + 0));
-            datas[1] = (UINT8)(*(req + 1));
-            datas[2] = (UINT8)(*(req + 2));
-            datas[3] = (UINT8)(*(req + 3));
+            datas[0] = (uint8_t)(*(req + 0));
+            datas[1] = (uint8_t)(*(req + 1));
+            datas[2] = (uint8_t)(*(req + 2));
+            datas[3] = (uint8_t)(*(req + 3));
             req += 4;
             if ((request_value & DAP_TRANSFER_MATCH_MASK) != 0U)
             {
@@ -627,7 +627,7 @@ static UINT8I DAP_SWD_Transfer(const UINT8 *req, UINT8 *res)
                 retry = retry_count;
                 do
                 {
-                    response_value = SWD_Transfer(request_value, &datas);
+                    response_value = SWD_Transfer(request_value, datas);
                 }
                 while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_TransferAbort);
                 if (response_value != DAP_TRANSFER_OK)
@@ -673,7 +673,7 @@ static UINT8I DAP_SWD_Transfer(const UINT8 *req, UINT8 *res)
             retry = retry_count;
             do
             {
-                response_value = SWD_Transfer(DP_RDBUFF | DAP_TRANSFER_RnW, &datas);
+                response_value = SWD_Transfer(DP_RDBUFF | DAP_TRANSFER_RnW, datas);
             }
             while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_TransferAbort);
             if (response_value != DAP_TRANSFER_OK)
@@ -681,10 +681,10 @@ static UINT8I DAP_SWD_Transfer(const UINT8 *req, UINT8 *res)
                 goto end;
             }
             // Store previous datas
-            *res++ = (UINT8)datas[0];
-            *res++ = (UINT8)datas[1];
-            *res++ = (UINT8)datas[2];
-            *res++ = (UINT8)datas[3];
+            *res++ = (uint8_t)datas[0];
+            *res++ = (uint8_t)datas[1];
+            *res++ = (uint8_t)datas[2];
+            *res++ = (uint8_t)datas[3];
         }
         else if (check_write)
         {
@@ -699,10 +699,10 @@ static UINT8I DAP_SWD_Transfer(const UINT8 *req, UINT8 *res)
     }
 
 end:
-    *(response_head + 0) = (UINT8)response_count;
-    *(response_head + 1) = (UINT8)response_value;
+    *(response_head + 0) = (uint8_t)response_count;
+    *(response_head + 1) = (uint8_t)response_value;
 
-    return ((UINT8I)(res - response_head));
+    return ((uint8_t)(res - response_head));
 }
 
 // Process Dummy Transfer command and prepare response
@@ -710,11 +710,11 @@ end:
 //   response: pointer to response datas
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-//static UINT8 DAP_Dummy_Transfer(const UINT8 *req, UINT8 *res)
+//static uint8_t DAP_Dummy_Transfer(const uint8_t *req, uint8_t *res)
 //{
-//  UINT8 *request_head;
-//  UINT8 request_count;
-//  UINT8 request_value;
+//  uint8_t *request_head;
+//  uint8_t request_count;
+//  uint8_t request_value;
 
 //  request_head = req;
 
@@ -753,9 +753,9 @@ end:
 //   response: pointer to response datas
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static UINT8I DAP_Transfer(const UINT8 *req, UINT8 *res)
+static uint8_t DAP_Transfer(const uint8_t *req, uint8_t *res)
 {
-    UINT8I num = 0;
+    uint8_t num = 0;
 
 //  switch (debug_port)
 //  {
@@ -774,10 +774,10 @@ static UINT8I DAP_Transfer(const UINT8 *req, UINT8 *res)
 //   request:  pointer to request datas
 //   response: pointer to response datas
 //   return:   number of bytes in response
-static UINT8I DAP_SWD_TransferBlock(const UINT8 *req, UINT8 *res)
+static uint8_t DAP_SWD_TransferBlock(const uint8_t *req, uint8_t *res)
 {
 
-    UINT8 *response_head;
+    uint8_t *response_head;
     response_count = 0U;
     response_value = 0U;
     response_head = res;
@@ -787,8 +787,8 @@ static UINT8I DAP_SWD_TransferBlock(const UINT8 *req, UINT8 *res)
 
     req++; // Ignore DAP index
 
-    request_count = (UINT16)(*(req + 0) << 0) |
-                    (UINT16)(*(req + 1) << 8);
+    request_count = (uint16_t)(*(req + 0) << 0) |
+                    (uint16_t)(*(req + 1) << 8);
     req += 2;
     if (request_count == 0U)
     {
@@ -824,7 +824,7 @@ static UINT8I DAP_SWD_TransferBlock(const UINT8 *req, UINT8 *res)
             retry = retry_count;
             do
             {
-                response_value = SWD_Transfer(request_value, &datas);
+                response_value = SWD_Transfer(request_value, datas);
             }
             while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_TransferAbort);
             if (response_value != DAP_TRANSFER_OK)
@@ -832,10 +832,10 @@ static UINT8I DAP_SWD_TransferBlock(const UINT8 *req, UINT8 *res)
                 goto end;
             }
             // Store datas
-            *res++ = (UINT8)datas[0];
-            *res++ = (UINT8)datas[1];
-            *res++ = (UINT8)datas[2];
-            *res++ = (UINT8)datas[3];
+            *res++ = (uint8_t)datas[0];
+            *res++ = (uint8_t)datas[1];
+            *res++ = (uint8_t)datas[2];
+            *res++ = (uint8_t)datas[3];
             response_count++;
         }
     }
@@ -845,17 +845,17 @@ static UINT8I DAP_SWD_TransferBlock(const UINT8 *req, UINT8 *res)
         while (request_count--)
         {
             // Load datas
-            datas[0] = (UINT8)(*(req + 0));
-            datas[1] = (UINT8)(*(req + 1));
-            datas[2] = (UINT8)(*(req + 2));
-            datas[3] = (UINT8)(*(req + 3));
+            datas[0] = (uint8_t)(*(req + 0));
+            datas[1] = (uint8_t)(*(req + 1));
+            datas[2] = (uint8_t)(*(req + 2));
+            datas[3] = (uint8_t)(*(req + 3));
 
             req += 4;
             // Write DP/AP register
             retry = retry_count;
             do
             {
-                response_value = SWD_Transfer(request_value, &datas);
+                response_value = SWD_Transfer(request_value, datas);
             }
             while ((response_value == DAP_TRANSFER_WAIT) && retry-- && !DAP_TransferAbort);
             if (response_value != DAP_TRANSFER_OK)
@@ -874,11 +874,11 @@ static UINT8I DAP_SWD_TransferBlock(const UINT8 *req, UINT8 *res)
     }
 
 end:
-    *(response_head + 0) = (UINT8)(response_count >> 0);
-    *(response_head + 1) = (UINT8)(response_count >> 8);
-    *(response_head + 2) = (UINT8)response_value;
+    *(response_head + 0) = (uint8_t)(response_count >> 0);
+    *(response_head + 1) = (uint8_t)(response_count >> 8);
+    *(response_head + 2) = (uint8_t)response_value;
 
-    return ((UINT8I)(res - response_head));
+    return ((uint8_t)(res - response_head));
 }
 
 // Process Transfer Block command and prepare response
@@ -886,9 +886,9 @@ end:
 //   response: pointer to response datas
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static UINT8I DAP_TransferBlock(const UINT8 *req, UINT8 *res)
+static uint8_t DAP_TransferBlock(const uint8_t *req, uint8_t *res)
 {
-    UINT8I num;
+    uint8_t num;
 
     switch (debug_port)
     {
@@ -912,7 +912,7 @@ static UINT8I DAP_TransferBlock(const UINT8 *req, UINT8 *res)
     else
     {
         // Write registers block
-        num |= (4U + (((UINT8I)(*(req + 1)) | (UINT8I)(*(req + 2) << 8)) * 4)) << 16;
+        num |= (4U + (((uint8_t)(*(req + 1)) | (uint8_t)(*(req + 2) << 8)) * 4)) << 16;
     }
 
     return (num);
@@ -922,16 +922,16 @@ static UINT8I DAP_TransferBlock(const UINT8 *req, UINT8 *res)
 //   request:  pointer to request datas
 //   response: pointer to response datas
 //   return:   number of bytes in response
-static UINT8I DAP_SWD_WriteAbort(const UINT8 *req, UINT8 *res)
+static uint8_t DAP_SWD_WriteAbort(const uint8_t *req, uint8_t *res)
 {
     // Load datas (Ignore DAP index)
-    datas[0] = (UINT8I)(*(req + 1));
-    datas[1] = (UINT8I)(*(req + 2));
-    datas[2] = (UINT8I)(*(req + 3));
-    datas[3] = (UINT8I)(*(req + 4));
+    datas[0] = (uint8_t)(*(req + 1));
+    datas[1] = (uint8_t)(*(req + 2));
+    datas[2] = (uint8_t)(*(req + 3));
+    datas[3] = (uint8_t)(*(req + 4));
 
     // Write Abort register
-    SWD_Transfer(DP_ABORT, &datas);
+    SWD_Transfer(DP_ABORT, datas);
 
     *res = DAP_OK;
     return (1U);
@@ -942,9 +942,9 @@ static UINT8I DAP_SWD_WriteAbort(const UINT8 *req, UINT8 *res)
 //   response: pointer to response datas
 //   return:   number of bytes in response (lower 16 bits)
 //             number of bytes in request (upper 16 bits)
-static UINT8I DAP_WriteAbort(const UINT8 *req, UINT8 *res)
+static uint8_t DAP_WriteAbort(const uint8_t *req, uint8_t *res)
 {
-    UINT8I num;
+    uint8_t num;
 
     switch (debug_port)
     {
@@ -963,13 +963,13 @@ static UINT8I DAP_WriteAbort(const UINT8 *req, UINT8 *res)
 // DAP Thread.
 void DAP_Thread(void)
 {
-    UINT8I num;
+    uint8_t num;
 
-    if (Ep2Oi != Ep2Oo)
+    if (1)
     {
-        PUINT8 req = &Ep2BufferO[Ep2Oo];
-        PUINT8 res = &Ep3BufferI[Ep3Ii];
-        Ep2Oo += 64;
+        uint8_t __xdata *req = &Ep1Buffer[0];
+        uint8_t __xdata *res = &Ep1Buffer[64];
+        //Ep2Oo += 64;
 
 
         *res++ = *req;
@@ -985,7 +985,7 @@ void DAP_Thread(void)
 
         case ID_DAP_Info:
             num = DAP_Info(*req, res + 1);
-            *res = (UINT8)num;
+            *res = (uint8_t)num;
             num++;
             break;
 
@@ -1036,7 +1036,7 @@ void DAP_Thread(void)
         case ID_DAP_WriteABORT:
             num = DAP_WriteAbort(req, res);
             break;
-        
+
         case ID_DAP_ExecuteCommands:
         case ID_DAP_QueueCommands:
         default:
@@ -1045,7 +1045,6 @@ void DAP_Thread(void)
             break;
         }
 
-        Ep3Is[0]/*(Ep3Ii>>6)]*/ = num + 1;
-        Ep3Ii += 64;
+        Ep1Buffer[64] = num + 1;
     }
 }

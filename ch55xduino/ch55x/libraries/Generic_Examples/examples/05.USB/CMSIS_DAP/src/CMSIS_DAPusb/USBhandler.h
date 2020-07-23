@@ -6,10 +6,6 @@
 #include "include/ch554_usb.h"
 #include "USBconstant.h"
 
-extern __xdata __at (EP0_ADDR) uint8_t  Ep0Buffer[];
-extern __xdata __at (EP1_ADDR) uint8_t  Ep1Buffer[];
-extern __xdata __at (EP2_ADDR) uint8_t  Ep2Buffer[];
-
 extern uint16_t SetupLen;
 extern uint8_t SetupReq,UsbConfig;
 extern const __code uint8_t *pDescr;

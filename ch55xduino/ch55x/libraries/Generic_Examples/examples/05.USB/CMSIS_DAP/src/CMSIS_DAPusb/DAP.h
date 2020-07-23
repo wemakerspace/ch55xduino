@@ -28,13 +28,13 @@
 #ifndef __DAP_H__
 #define __DAP_H__
 
-#include "CH552.H"
+#include "include/ch554.h"
 #include <stdio.h>
+#include <stdint.h>
 #include <string.h>
-#include <intrins.h>
 
 // DAP Firmware Version
-#define DAP_FW_VER "2.0.0"
+#define DAP_FW_VER "1.0.0"
 
 // DAP Command IDs
 #define ID_DAP_Info 0x00U
@@ -201,28 +201,28 @@
 #define DAP_PACKET_SIZE 64 //THIS_ENDP0_SIZE
 #define DAP_DEFAULT_PORT DAP_PORT_SWD
 
-sbit RST = P1 ^ 1;
-sbit SWK = P3 ^ 3;
-sbit SWD = P3 ^ 4;
-sbit LED = P3 ^ 2;
+#define RST  P3_1
+#define SWK  P3_3
+#define SWD  P3_4
+#define LED  P3_2
 
-extern UINT8I Ep2Oi;
-extern UINT8I Ep2Oo;
-extern UINT8I Ep3Ii;
-extern UINT8I Ep3Io;
-extern UINT8I Ep3Is[];
+extern __idata uint8_t Ep2Oi;
+extern __idata uint8_t Ep2Oo;
+extern __idata uint8_t Ep3Ii;
+extern __idata uint8_t Ep3Io;
+extern __idata uint8_t Ep3Is[];
 
-extern UINT8X Ep2BufferO[];
-extern UINT8X Ep3BufferI[];
+extern __xdata uint8_t Ep0Buffer[];
+extern __xdata uint8_t Ep1Buffer[];
 
-extern UINT8I turnaround;
-extern UINT8I data_phase;
-extern UINT8I idle_cycles;
+extern __idata uint8_t turnaround;
+extern __idata uint8_t data_phase;
+extern __idata uint8_t idle_cycles;
 
 extern void DAP_Thread(void);
 extern void PORT_SWD_SETUP(void);
-extern UINT8I SWD_Transfer(UINT8 reqI, UINT8I *datas);
-extern void SWJ_Sequence(UINT8I count, const UINT8 *datas);
-extern void SWD_Sequence(UINT8I info, const UINT8 *swdo, UINT8 *swdi);
+extern uint8_t SWD_Transfer(uint8_t reqI, uint8_t __xdata *datas);
+extern void SWJ_Sequence(uint8_t count, const uint8_t *datas);
+extern void SWD_Sequence(uint8_t info, const uint8_t *swdo, uint8_t *swdi);
 
 #endif /* __DAP_H__ */

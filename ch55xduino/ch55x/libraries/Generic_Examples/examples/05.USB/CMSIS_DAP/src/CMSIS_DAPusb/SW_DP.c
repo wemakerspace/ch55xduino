@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright (c) 2013-2017 ARM Limited. All rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
@@ -70,10 +70,10 @@ void PORT_SWD_SETUP(void)
 //   count:  sequence bits count
 //   datas:   pointer to sequence bits datas
 //   return: none
-void SWJ_Sequence(UINT8I count, const UINT8 *datas)
+void SWJ_Sequence(uint8_t count, const uint8_t *datas)
 {
-    UINT8I val;
-    UINT8I n;
+    uint8_t val;
+    uint8_t n;
 
     val = 0U;
     n = 0U;
@@ -104,11 +104,11 @@ void SWJ_Sequence(UINT8I count, const UINT8 *datas)
 //   swdo:   pointer to SWDIO generated datas
 //   swdi:   pointer to SWDIO captured datas
 //   return: none
-void SWD_Sequence(UINT8I info, const UINT8 *swdo, UINT8 *swdi)
+void SWD_Sequence(uint8_t info, const uint8_t *swdo, uint8_t *swdi)
 {
-    UINT8I val;
-    UINT8I bits;
-    UINT8I n, k;
+    uint8_t val;
+    uint8_t bits;
+    uint8_t n, k;
 
     n = info & SWD_SEQUENCE_CLK;
     if (n == 0U)
@@ -128,7 +128,7 @@ void SWD_Sequence(UINT8I info, const UINT8 *swdo, UINT8 *swdi)
                 val |= bits << 7;
             }
             val >>= k;
-            *swdi++ = (UINT8)val;
+            *swdi++ = (uint8_t)val;
         }
     }
     else
@@ -149,14 +149,14 @@ void SWD_Sequence(UINT8I info, const UINT8 *swdo, UINT8 *swdi)
 //   request: A[3:2] RnW APnDP
 //   datas:    DATA[31:0]
 //   return:  ACK[2:0]
-UINT8I SWD_Transfer(UINT8I req, UINT8I *datas)
+uint8_t SWD_Transfer(uint8_t req, uint8_t __xdata *datas)
 {
-    UINT8I ack;
-    UINT8I bits;
-    UINT8I val;
-    UINT8I parity;
+    uint8_t ack;
+    uint8_t bits;
+    uint8_t val;
+    uint8_t parity;
 
-    UINT8I m, n;
+    uint8_t m, n;
 
     /* Packet req */
     parity = 0U;
@@ -261,7 +261,7 @@ UINT8I SWD_Transfer(UINT8I req, UINT8I *datas)
             }
         }
         SWD = 1;
-        return ((UINT8)ack);
+        return ((uint8_t)ack);
     }
 
     if ((ack == DAP_TRANSFER_WAIT) || (ack == DAP_TRANSFER_FAULT))
@@ -289,7 +289,7 @@ UINT8I SWD_Transfer(UINT8I req, UINT8I *datas)
             }
         }
         SWD = 1;
-        return ((UINT8)ack);
+        return ((uint8_t)ack);
     }
 
     /* Protocol error */
@@ -298,5 +298,5 @@ UINT8I SWD_Transfer(UINT8I req, UINT8I *datas)
         SW_CLOCK_CYCLE(); /* Back off datas phase */
     }
     SWD = 1;
-    return ((UINT8)ack);
+    return ((uint8_t)ack);
 }

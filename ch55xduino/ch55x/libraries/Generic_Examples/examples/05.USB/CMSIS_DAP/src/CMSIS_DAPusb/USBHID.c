@@ -5,8 +5,8 @@
 #include "USBconstant.h"
 #include "USBhandler.h"
 
-extern __xdata __at (EP0_ADDR) uint8_t  Ep0Buffer[];
-extern __xdata __at (EP1_ADDR) uint8_t  Ep1Buffer[];
+extern __xdata  uint8_t  Ep0Buffer[];
+extern __xdata  uint8_t  Ep1Buffer[];
 
 volatile __xdata uint8_t USBByteCountEP1 = 0;      //Bytes of received data on USB endpoint
 
