@@ -22,7 +22,7 @@ void USBInit(){
 
 void USB_EP1_IN(){
     UEP1_T_LEN = 0;                                                    // No data to send anymore
-    UEP1_CTRL = UEP2_CTRL & ~ MASK_UEP_T_RES | UEP_T_RES_NAK;           //Respond NAK by default
+    UEP1_CTRL = UEP1_CTRL & ~ MASK_UEP_T_RES | UEP_T_RES_NAK;           //Respond NAK by default
 
 }
 
