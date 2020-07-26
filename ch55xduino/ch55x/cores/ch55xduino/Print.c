@@ -87,167 +87,10 @@ uint8_t Print_println(writefunc_p writefunc)
 }
 
 
-__code uint8_t div10Byte2QuotientLut[10] = {(uint8_t)(256 * 0 / 10), (uint8_t)(256 * 1 / 10), (uint8_t)(256 * 2 / 10), (uint8_t)(256 * 3 / 10), (uint8_t)(256 * 4 / 10), (uint8_t)(256 * 5 / 10), (uint8_t)(256 * 6 / 10), (uint8_t)(256 * 7 / 10), (uint8_t)(256 * 8 / 10), (uint8_t)(256 * 9 / 10)};
-__code uint8_t div10Byte2RemainderLut[10] = {(uint8_t)(256 * 0 % 10), (uint8_t)(256 * 1 % 10), (uint8_t)(256 * 2 % 10), (uint8_t)(256 * 3 % 10), (uint8_t)(256 * 4 % 10), (uint8_t)(256 * 5 % 10), (uint8_t)(256 * 6 % 10), (uint8_t)(256 * 7 % 10), (uint8_t)(256 * 8 % 10), (uint8_t)(256 * 9 % 10)};
-__code uint16_t div10Byte3QuotientLut[10] = {(uint16_t)(65536L * 0 / 10), (uint16_t)(65536L * 1 / 10), (uint16_t)(65536L * 2 / 10), (uint16_t)(65536L * 3 / 10), (uint16_t)(65536L * 4 / 10), (uint16_t)(65536L * 5 / 10), (uint16_t)(65536L * 6 / 10), (uint16_t)(65536L * 7 / 10), (uint16_t)(65536L * 8 / 10), (uint16_t)(65536L * 9 / 10)};
-__code uint8_t div10Byte3RemainderLut[10] = {(uint8_t)(65536L * 0 % 10), (uint8_t)(65536L * 1 % 10), (uint8_t)(65536L * 2 % 10), (uint8_t)(65536L * 3 % 10), (uint8_t)(65536L * 4 % 10), (uint8_t)(65536L * 5 % 10), (uint8_t)(65536L * 6 % 10), (uint8_t)(65536L * 7 % 10), (uint8_t)(65536L * 8 % 10), (uint8_t)(65536L * 9 % 10)};
-__code uint32_t div10Byte4QuotientLut[10] = {(uint32_t)(16777216L * 0 / 10), (uint32_t)(16777216L * 1 / 10), (uint32_t)(16777216L * 2 / 10), (uint32_t)(16777216L * 3 / 10), (uint32_t)(16777216L * 4 / 10), (uint32_t)(16777216L * 5 / 10), (uint32_t)(16777216L * 6 / 10), (uint32_t)(16777216L * 7 / 10), (uint32_t)(16777216L * 8 / 10), (uint32_t)(16777216L * 9 / 10)};
-__code uint8_t div10Byte4RemainderLut[10] = {(uint8_t)(16777216L * 0 % 10), (uint8_t)(16777216L * 1 % 10), (uint8_t)(16777216L * 2 % 10), (uint8_t)(16777216L * 3 % 10), (uint8_t)(16777216L * 4 % 10), (uint8_t)(16777216L * 5 % 10), (uint8_t)(16777216L * 6 % 10), (uint8_t)(16777216L * 7 % 10), (uint8_t)(16777216L * 8 % 10), (uint8_t)(16777216L * 9 % 10)};
-
-uint32_t uint32DivBy10(uint32_t n, __idata uint8_t *reminder) {
-    n; reminder; //remove warning
-    //n->’dpl’,’dph’,’b’ & ’acc’
-    __asm__ ( ";Back up a, b to R3, R2                               \n"
-             "    mov r3,a                                          \n"
-             "    mov r2,b                                          \n"
-             
-             "    mov a,dpl                                         \n"
-             "    mov b,#10                                         \n"
-             "    div ab                                            \n"
-             
-             ";R4~R7 store result                                   \n"
-             ";R0 store mod                                         \n"
-             
-             "    mov r4,a                                          \n"
-             "    mov r0,b                                          \n"
-             
-             "    mov a,dph                                         \n"
-             "    mov b,#10                                         \n"
-             "    div ab                                            \n"
-             "    mov r5,a                                          \n"
-             
-             ";use lut to calculate reminder on 2nd byte correctly  \n"
-             "    mov dptr,#_div10Byte2QuotientLut                  \n"
-             "    mov a,b                                           \n"
-             "    movc a,@a+dptr                                    \n"
-             
-             ";add quotient from reminder on 2nd byte               \n"
-             "    add a,r4                                          \n"
-             "    mov r4,a                                          \n"
-             "    clr a                                             \n"
-             "    addc a,r5                                         \n"
-             "    mov r5,a                                          \n"
-             
-             ";add reminder                                         \n"
-             "    mov dptr,#_div10Byte2RemainderLut                 \n"
-             "    mov a,b                                           \n"
-             "    movc a,@a+dptr                                    \n"
-             "    add a,r0                                          \n"
-             "    mov r0,a                                          \n"
-             
-             ";do byte 3                                            \n"
-             "    mov a,r2                                          \n"
-             "    mov b,#10                                         \n"
-             "    div ab                                            \n"
-             "    mov r6,a                                          \n"
-             
-             ";use lut to calculate reminder on 3rd byte correctly  \n"
-             "    mov dptr,#_div10Byte3QuotientLut                  \n"
-             "    mov a,b                                           \n"
-             ";a is within 0~9, use RL to double                    \n"
-             "    rl a                                              \n"
-             "    movc a,@a+dptr                                    \n"
-             
-             ";add quotient from reminder on 3rd byte               \n"
-             "    add a,r4                                          \n"
-             "    mov r4,a                                          \n"
-             "    mov a,b                                           \n"
-             "    rl a                                              \n"
-             "    inc a                                             \n"
-             "    movc a,@a+dptr                                    \n"
-             "    addc a,r5                                         \n"
-             "    mov r5,a                                          \n"
-             "    clr a                                             \n"
-             "    addc a,r6                                         \n"
-             "    mov r6,a                                          \n"
-             
-             ";add reminder                                         \n"
-             "    mov dptr,#_div10Byte3RemainderLut                 \n"
-             "    mov a,b                                           \n"
-             "    movc a,@a+dptr                                    \n"
-             "    add a,r0                                          \n"
-             "    mov r0,a                                          \n"
-             
-             ";do byte 4                                            \n"
-             "    mov a,r3                                          \n"
-             "    mov b,#10                                         \n"
-             "    div ab                                            \n"
-             "    mov r7,a                                          \n"
-             
-             ";use lut to calculate reminder on 4th byte correctly  \n"
-             "    mov dptr,#_div10Byte4QuotientLut                  \n"
-             "    mov a,b                                           \n"
-             ";a is within 0~9, use RL to double                    \n"
-             "    rl a                                              \n"
-             "    rl a                                              \n"
-             "    movc a,@a+dptr                                    \n"
-             
-             ";add quotient from reminder on 3rd byte               \n"
-             "    add a,r4                                          \n"
-             "    mov r4,a                                          \n"
-             "    mov a,b                                           \n"
-             "    rl a                                              \n"
-             "    rl a                                              \n"
-             "    inc a                                             \n"
-             "    movc a,@a+dptr                                    \n"
-             "    addc a,r5                                         \n"
-             "    mov r5,a                                          \n"
-             "    mov a,b                                           \n"
-             "    rl a                                              \n"
-             "    rl a                                              \n"
-             "    inc a                                             \n"
-             "    inc a                                             \n"
-             "    movc a,@a+dptr                                    \n"
-             "    addc a,r6                                         \n"
-             "    mov r6,a                                          \n"
-             "    clr a                                             \n"
-             "    addc a,r7                                         \n"
-             "    mov r7,a                                          \n"
-             
-             ";add reminder                                         \n"
-             "    mov dptr,#_div10Byte3RemainderLut                 \n"
-             "    mov a,b                                           \n"
-             "    movc a,@a+dptr                                    \n"
-             "    add a,r0                                          \n"
-             "    mov r0,a                                          \n"
-             
-             
-             ";div sum of reminder  \n"
-             "    mov a,r0                                          \n"
-             "    mov b,#10                                         \n"
-             "    div ab                                            \n"
-             "    add a,r4                                          \n"
-             "    mov r4,a                                          \n"
-             "    clr a                                             \n"
-             "    addc a,r5                                         \n"
-             "    mov r5,a                                          \n"
-             "    clr a                                             \n"
-             "    addc a,r6                                         \n"
-             "    mov r6,a                                          \n"
-             "    clr a                                             \n"
-             "    addc a,r7                                         \n"
-             "    mov r7,a                                          \n"
-             
-             ";final reminder                                       \n"
-             "    mov a,_uint32DivBy10_PARM_2                       \n"
-             "    mov r1,a                                          \n"
-             "    mov a,b                                           \n"
-             "    mov @r1,a                                         \n"
-             
-             "    mov dpl,r4                                        \n"
-             "    mov dph,r5                                        \n"
-             "    mov b,r6                                          \n"
-             "    mov a,r7                                          \n"
-             );
-}
-
-
-
 uint8_t Print_print_ub(writefunc_p writefunc, __xdata unsigned long n, __xdata uint8_t base)
 {
     __xdata char buf[8 * sizeof(long) + 1]; // Assumes 8-bit chars plus zero byte.
     __xdata char *str = &buf[sizeof(buf) - 1];
-    __idata char c;
     
     *str = '\0';
     
@@ -255,24 +98,9 @@ uint8_t Print_print_ub(writefunc_p writefunc, __xdata unsigned long n, __xdata u
     if (base < 2) base = 10;
     
     do {
-        switch (base){
-            case 2:
-                c = *((uint8_t *)(&n)) % 2; //if we don't do pointer casting and use n, sdcc will do meanless movement on high 3 bytes.
-                n /= 2;
-                break;
-            case 8:
-                c = *((uint8_t *)(&n)) % 8;
-                n /= 8;
-                break;
-            case 16:
-                c = *((uint8_t *)(&n)) % 16;
-                n /= 16;
-                break;
-            default:
-                //base 10 and other
-                n = uint32DivBy10(n, &c);
-        }
-
+        char c = n % base;
+        n /= base;
+        
         *--str = c < 10 ? c + '0' : c + 'A' - 10;
     } while(n);
     
