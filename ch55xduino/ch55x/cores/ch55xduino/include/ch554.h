@@ -22,6 +22,39 @@ Header file for CH554 microcontrollers.
 /*  sbit are bit addressable, others are byte addressable */
 
 /*  System Registers  */
+SFR(R0_BANK0, 0x00);
+SFR(R1_BANK0, 0x01);
+SFR(R2_BANK0, 0x02);
+SFR(R3_BANK0, 0x03);
+SFR(R4_BANK0, 0x04);
+SFR(R5_BANK0, 0x05);
+SFR(R6_BANK0, 0x06);
+SFR(R7_BANK0, 0x07);
+SFR(R0_BANK1, 0x08);
+SFR(R1_BANK1, 0x09);
+SFR(R2_BANK1, 0x0A);
+SFR(R3_BANK1, 0x0B);
+SFR(R4_BANK1, 0x0C);
+SFR(R5_BANK1, 0x0D);
+SFR(R6_BANK1, 0x0E);
+SFR(R7_BANK1, 0x0F);
+SFR(R0_BANK2, 0x10);
+SFR(R1_BANK2, 0x11);
+SFR(R2_BANK2, 0x12);
+SFR(R3_BANK2, 0x13);
+SFR(R4_BANK2, 0x14);
+SFR(R5_BANK2, 0x15);
+SFR(R6_BANK2, 0x16);
+SFR(R7_BANK2, 0x17);
+SFR(R0_BANK3, 0x18);
+SFR(R1_BANK3, 0x19);
+SFR(R2_BANK3, 0x1A);
+SFR(R3_BANK3, 0x1B);
+SFR(R4_BANK3, 0x1C);
+SFR(R5_BANK3, 0x1D);
+SFR(R6_BANK3, 0x1E);
+SFR(R7_BANK3, 0x1F);
+
 SFR(PSW,	0xD0);	// program status word
    SBIT(CY,	0xD0, 7);	// carry flag
    SBIT(AC,	0xD0, 6);	// auxiliary carry flag
@@ -44,6 +77,7 @@ SFR(SP,	0x81);	// stack pointer
 SFR(DPL,	0x82);	// data pointer low
 SFR(DPH,	0x83);	// data pointer high
 SFR(SAFE_MOD,	0xA1);	// WriteOnly: writing safe mode
+SFR16(DPTR, 0x82);
 //sfr CHIP_ID         = 0xA1;         // ReadOnly: reading chip ID
 #define CHIP_ID           SAFE_MOD
 SFR(GLOBAL_CFG,	0xB1);	// global config, Write@SafeMode
