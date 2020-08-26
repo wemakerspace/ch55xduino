@@ -69,7 +69,7 @@ byte savebytes[128];
 int savecount = 0;
 #endif // DEBUG 
 
-__xdata uint8_t logicdata[MAX_CAPTURE_SIZE/2];
+__xdata uint8_t logicdata[MAX_CAPTURE_SIZE / 2];
 unsigned int logicIndex = 0;
 unsigned int triggerIndex = 0;
 unsigned int readCount = MAX_CAPTURE_SIZE;
@@ -105,7 +105,7 @@ void loop()
 
   if (USBSerial_available() > 0) {
     cmdByte = USBSerial_read();
-
+    sendP11CharDebug('C');
     sendP11CharDebug(cmdByte);//!!!!!
     switch (cmdByte) {
       case SUMP_RESET:  //0x00
@@ -124,7 +124,7 @@ void loop()
         // Zero out any previous samples before arming.
         // Done here instead via reset due to spurious resets.
 
-        for (i = 0 ; i < (sizeof(logicdata)/sizeof(logicdata[0])); i++) {
+        for (i = 0 ; i < (sizeof(logicdata) / sizeof(logicdata[0])); i++) {
           logicdata[i] = 0;
         }
         //   depending on the sample rate we need to delay in microseconds
@@ -135,30 +135,30 @@ void loop()
           // 4.0MHz
           captureInline6mhz();
         }
- /*       else if (divider == 49) {
-          // 2.0MHz
-#if !defined(__AVR_ATmega168__)
-          captureInline2mhz();
-#endif
-        }
-        else if (useMicro) {
-          if (trigger && (delayTime != 1)) {
-            triggerMicro();
-          }
-          else {
-            captureMicro();
-          }
-        }
-        else {
-          captureMilli();
-        }*/
+        /*       else if (divider == 49) {
+                 // 2.0MHz
+          #if !defined(__AVR_ATmega168__)
+                 captureInline2mhz();
+          #endif
+               }
+               else if (useMicro) {
+                 if (trigger && (delayTime != 1)) {
+                   triggerMicro();
+                 }
+                 else {
+                   captureMicro();
+                 }
+               }
+               else {
+                 captureMilli();
+               }*/
         break;
       case SUMP_TRIGGER_MASK:  //0xC0
         //  the trigger mask byte has a '1' for each enabled trigger so
         //   we can just use it directly as our trigger mask.
         getCmd();
 
-        trigger = (cmdBytes[0] & 0x0F) << 4; //we use P14~P17
+        trigger = cmdBytes[0] << 4; //we use P14~P17
 
         sendP11CharDebug('T'); sendP11CharDebug(trigger);
 
@@ -167,9 +167,9 @@ void loop()
         // trigger_values can be used directly as the value of each bit
         // defines whether we're looking for it to be high or low.
         getCmd();
-        trigger_values = cmdBytes[0];
+        trigger_values = cmdBytes[0] << 4;
 
-        sendP11CharDebug('V'); sendP11CharDebug(trigger);
+        sendP11CharDebug('V'); sendP11CharDebug(trigger_values);
         break;
       case SUMP_TRIGGER_CONFIG:  //0xC1
         // read the rest of the command bytes, but ignore them.
@@ -211,6 +211,7 @@ void loop()
         /* read the rest of the command bytes and check if RLE is enabled. */
         getCmd();
         rleEnabled = ((cmdBytes[1] & 0b1000000) != 0);
+        sendP11CharDebug('F'); sendP11CharDebug(cmdBytes[0]);sendP11CharDebug(cmdBytes[1]);
         break;
 
 
@@ -297,16 +298,16 @@ void get_metadata() {
   USBSerial_write((uint8_t)0x21);
   USBSerial_write((uint8_t)0x00);
   USBSerial_write((uint8_t)0x00);
-  // 1536 bytes 
+  // 1536 bytes
   USBSerial_write((uint8_t)0x06);
   USBSerial_write((uint8_t)0x00);
 
-  // sample rate (4MHz) !!!!!?
+  // sample rate (5MHz)
   USBSerial_write((uint8_t)0x23);
   USBSerial_write((uint8_t)0x00);
-  USBSerial_write((uint8_t)0x3D);
-  USBSerial_write((uint8_t)0x09);
-  USBSerial_write((uint8_t)0x00);
+  USBSerial_write((uint8_t)0x4C);
+  USBSerial_write((uint8_t)0x4B);
+  USBSerial_write((uint8_t)0x40);
 
   // number of probes (4 for ch55x)
   USBSerial_write((uint8_t)0x40);
