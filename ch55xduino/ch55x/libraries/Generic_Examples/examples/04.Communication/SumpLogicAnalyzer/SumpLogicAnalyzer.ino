@@ -27,6 +27,7 @@ void get_metadata(void);
 #define SUMP_RESET 0x00
 #define SUMP_ARM   0x01
 #define SUMP_QUERY 0x02
+#define SUMP_RETURN_CAPTURE_DATA  0x08
 #define SUMP_XON   0x11
 #define SUMP_XOFF  0x13
 
@@ -34,6 +35,13 @@ void get_metadata(void);
 #define SUMP_TRIGGER_MASK 0xC0
 #define SUMP_TRIGGER_VALUES 0xC1
 #define SUMP_TRIGGER_CONFIG 0xC2
+
+#define SUMP_TRIGGER_VALUES_2 0xC5
+#define SUMP_TRIGGER_VALUES_3 0xC9
+#define SUMP_TRIGGER_VALUES_4 0xCD
+#define SUMP_TRIGGER_CONFIG_2 0xC6
+#define SUMP_TRIGGER_CONFIG_3 0xCA
+#define SUMP_TRIGGER_CONFIG_4 0xCE
 
 /* Most flags (except RLE) are ignored. */
 #define SUMP_SET_DIVIDER 0x80
@@ -120,7 +128,7 @@ void loop()
         USBSerial_write('L');
         USBSerial_write('S');
         break;
-      case SUMP_ARM:
+      case SUMP_ARM:    //0x01
         // Zero out any previous samples before arming.
         // Done here instead via reset due to spurious resets.
 
@@ -153,6 +161,10 @@ void loop()
                  captureMilli();
                }*/
         break;
+
+      case SUMP_RETURN_CAPTURE_DATA:  //0x08
+        break;
+
       case SUMP_TRIGGER_MASK:  //0xC0
         //  the trigger mask byte has a '1' for each enabled trigger so
         //   we can just use it directly as our trigger mask.
@@ -206,12 +218,24 @@ void loop()
         delayCount = 4 * (((cmdBytes[3] << 8) | cmdBytes[2]) + 1);
         if (delayCount > MAX_CAPTURE_SIZE)
           delayCount = MAX_CAPTURE_SIZE;
+        sendP11CharDebug('n'); sendP11CharDebug(cmdBytes[0]); sendP11CharDebug(cmdBytes[1]); sendP11CharDebug(cmdBytes[2]); sendP11CharDebug(cmdBytes[3]);
         break;
+
+      case SUMP_TRIGGER_VALUES_2:
+      case SUMP_TRIGGER_VALUES_3:
+      case SUMP_TRIGGER_VALUES_4:
+      case SUMP_TRIGGER_CONFIG_2:
+      case SUMP_TRIGGER_CONFIG_3:
+      case SUMP_TRIGGER_CONFIG_4:
+        getCmd();
+        //ignore
+        break;
+
       case SUMP_SET_FLAGS:
         /* read the rest of the command bytes and check if RLE is enabled. */
         getCmd();
         rleEnabled = ((cmdBytes[1] & 0b1000000) != 0);
-        sendP11CharDebug('F'); sendP11CharDebug(cmdBytes[0]);sendP11CharDebug(cmdBytes[1]);
+        sendP11CharDebug('F'); sendP11CharDebug(cmdBytes[0]); sendP11CharDebug(cmdBytes[1]);
         break;
 
 
