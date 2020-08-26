@@ -36,6 +36,9 @@ void get_metadata(void);
 #define SUMP_TRIGGER_VALUES 0xC1
 #define SUMP_TRIGGER_CONFIG 0xC2
 
+#define SUMP_TRIGGER_MASK_2 0xC4
+#define SUMP_TRIGGER_MASK_3 0xC8
+#define SUMP_TRIGGER_MASK_4 0xCC
 #define SUMP_TRIGGER_VALUES_2 0xC5
 #define SUMP_TRIGGER_VALUES_3 0xC9
 #define SUMP_TRIGGER_VALUES_4 0xCD
@@ -220,7 +223,9 @@ void loop()
           delayCount = MAX_CAPTURE_SIZE;
         sendP11CharDebug('n'); sendP11CharDebug(cmdBytes[0]); sendP11CharDebug(cmdBytes[1]); sendP11CharDebug(cmdBytes[2]); sendP11CharDebug(cmdBytes[3]);
         break;
-
+      case SUMP_TRIGGER_MASK_2:
+      case SUMP_TRIGGER_MASK_3:
+      case SUMP_TRIGGER_MASK_4:
       case SUMP_TRIGGER_VALUES_2:
       case SUMP_TRIGGER_VALUES_3:
       case SUMP_TRIGGER_VALUES_4:
