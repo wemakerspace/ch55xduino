@@ -1,4 +1,4 @@
-void captureInline6mhz() {
+/*void captureInline6mhz() {
 
   //  basic trigger, wait until all trigger conditions are met on port.
   //  this needs further testing, but basic tests work as expected.
@@ -241,4 +241,4 @@ void captureInline6mhz() {
     }
   }
 
-}
+}*/

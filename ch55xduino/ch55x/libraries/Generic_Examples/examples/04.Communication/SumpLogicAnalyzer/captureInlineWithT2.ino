@@ -53,7 +53,6 @@ void captureInlineWithT2() {
   //a5-> MOVX @DPTR1,A & INC DPTR1
 
   //===768 pairs
-  //P3_3 = 1;
 
   TR2 = 1;
   uint8_t i = 192;
@@ -95,7 +94,6 @@ void captureInlineWithT2() {
           "  mov a,r6      \n"  //1+2+2 = 5clk for loop
           "  jnz loop8Samples$\n");
 
-  //P3_3 = 0;
 
   //===768 pairs end
 

@@ -8,18 +8,11 @@
    Makefile.
 */
 
-//void triggerMicro(void);
-//void captureMicro(void);
-//void captureMilli(void);
+
 void getCmd(void);
-//void setupDelay(void);
-void blinkled(void);
 void get_metadata(void);
-//void debugprint(void);
-//void debugdump(void);
-//void prettydump(void);
-//void captureInline4mhz(void);
-//void captureInline2mhz(void);
+void captureInline5mhz(void);
+void captureInlineWithT2(void);
 
 #define LED_BUILTIN 33
 
@@ -56,18 +49,7 @@ void get_metadata(void);
 #define SUMP_SELF_TEST 0x03
 #define SUMP_GET_METADATA 0x04
 
-
-
-
-//#define DEBUG_MENU
-//#define DEBUG
-
-#ifdef DEBUG
-#define MAX_CAPTURE_SIZE (768-128)
-#else
 #define MAX_CAPTURE_SIZE (768*2)
-#endif // DEBUG 
-
 
 // SUMP command from host (via serial)
 // SUMP commands are either 1 byte, or for the extended commands, 5 bytes.
@@ -75,10 +57,6 @@ void get_metadata(void);
 uint8_t cmdByte = 0;
 uint8_t cmdBytes[5];
 
-#ifdef DEBUG
-byte savebytes[128];
-int savecount = 0;
-#endif // DEBUG 
 
 __xdata uint8_t logicdata[MAX_CAPTURE_SIZE / 2];
 unsigned int logicIndex = 0;
@@ -94,19 +72,10 @@ boolean rleEnabled = 0;
 
 __idata uint8_t swapByte; //for XCHD instruction
 
-#pragma callee_saves sendP11CharDebug
-void sendP11CharDebug(char c);
-
-
-
 
 
 void setup() {
-
-
   pinMode(LED_BUILTIN, OUTPUT);
-
-  pinMode(11, OUTPUT);//!!!!!
 }
 
 
@@ -116,8 +85,6 @@ void loop()
 
   if (USBSerial_available() > 0) {
     cmdByte = USBSerial_read();
-    sendP11CharDebug('C');
-    sendP11CharDebug(cmdByte);//!!!!!
     switch (cmdByte) {
       case SUMP_RESET:  //0x00
         //   We don't do anything here as some unsupported extended commands have
@@ -144,10 +111,10 @@ void loop()
         //   captureMicro() instead of triggerMicro().
         if (divider <= 19) {
           captureInline5mhz();
-        }else{
+        } else {
           // 2.0MHz+
           captureInlineWithT2();
-        } 
+        }
         break;
 
       case SUMP_RETURN_CAPTURE_DATA:  //0x08
@@ -160,8 +127,6 @@ void loop()
 
         trigger = cmdBytes[0] << 4; //we use P14~P17
 
-        sendP11CharDebug('T'); sendP11CharDebug(trigger);
-
         break;
       case SUMP_TRIGGER_VALUES:  //0xC1
         // trigger_values can be used directly as the value of each bit
@@ -169,7 +134,6 @@ void loop()
         getCmd();
         trigger_values = cmdBytes[0] << 4;
 
-        sendP11CharDebug('V'); sendP11CharDebug(trigger_values);
         break;
       case SUMP_TRIGGER_CONFIG:  //0xC1
         // read the rest of the command bytes, but ignore them.
@@ -185,8 +149,7 @@ void loop()
         divider += cmdBytes[1];
         divider = divider << 8;
         divider += cmdBytes[0];
-        sendP11CharDebug('D'); sendP11CharDebug(cmdBytes[0]); sendP11CharDebug(cmdBytes[1]); sendP11CharDebug(cmdBytes[2]);
-        //!!!!!setupDelay();
+
         break;
       case SUMP_SET_READ_DELAY_COUNT:
         /*
@@ -206,7 +169,7 @@ void loop()
         delayCount = 4 * (((cmdBytes[3] << 8) | cmdBytes[2]) + 1);
         if (delayCount > MAX_CAPTURE_SIZE)
           delayCount = MAX_CAPTURE_SIZE;
-        sendP11CharDebug('n'); sendP11CharDebug(cmdBytes[0]); sendP11CharDebug(cmdBytes[1]); sendP11CharDebug(cmdBytes[2]); sendP11CharDebug(cmdBytes[3]);
+
         break;
       case SUMP_TRIGGER_MASK_2:
       case SUMP_TRIGGER_MASK_3:
@@ -225,9 +188,8 @@ void loop()
         /* read the rest of the command bytes and check if RLE is enabled. */
         getCmd();
         rleEnabled = ((cmdBytes[1] & 0b1000000) != 0);
-        sendP11CharDebug('F'); sendP11CharDebug(cmdBytes[0]); sendP11CharDebug(cmdBytes[1]);
+        
         break;
-
 
       case SUMP_GET_METADATA:
         // We return a description of our capabilities.
@@ -260,22 +222,11 @@ void blinkled() {
    We need to make sure we don't overrun the debug buffer.
 */
 void getCmd() {
-  delay(10);  //!!!!!!todo: reduce
+  delay(10);  //!!!!todo: reduce
   cmdBytes[0] = USBSerial_read();
   cmdBytes[1] = USBSerial_read();
   cmdBytes[2] = USBSerial_read();
   cmdBytes[3] = USBSerial_read();
-
-#ifdef DEBUG
-  if (savecount < 120 ) {
-    savebytes[savecount++] = ' ';
-    savebytes[savecount++] = cmdByte;
-    savebytes[savecount++] = cmdBytes[0];
-    savebytes[savecount++] = cmdBytes[1];
-    savebytes[savecount++] = cmdBytes[2];
-    savebytes[savecount++] = cmdBytes[3];
-  }
-#endif /* DEBUG */
 }
 
 /*

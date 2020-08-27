@@ -25,7 +25,6 @@ void captureInline5mhz() {
   //a5-> MOVX @DPTR1,A & INC DPTR1
 
   //===768 pairs
-  //P3_3 = 1;
 
   __asm__("  mov r6,#153      \n"
 
@@ -54,8 +53,7 @@ void captureInline5mhz() {
 
           "  mov a,r6      \n"  //1+2+2 = 5clk for loop
           "  jnz loop10Samples$\n");
-
-  //P3_3 = 0;
+          
 
   //765 pair finished, 3 more needed.
   __asm__(
