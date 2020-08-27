@@ -1,13 +1,63 @@
-//https://github.com/gillham/logic_analyzer/blob/master/logic_analyzer.ino
-//https://www.sump.org/projects/analyzer/protocol/
-//http://dangerousprototypes.com/docs/The_Logic_Sniffer%27s_extended_SUMP_protocol
+/*
+ *
+ * SUMP Protocol Implementation for CH55x boards.
+ *
+ * Copyright (c) 2011,2012,2013,2014,2015 Andrew Gillham
+ * Copyright (c) 2020 Deqing Sun
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY ANDREW GILLHAM ``AS IS'' AND ANY EXPRESS OR
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+ * IN NO EVENT SHALL ANDREW GILLHAM BE LIABLE FOR ANY DIRECT, INDIRECT,
+ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
+ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *
+ */
+
+/*
+ *
+ * This Arduino sketch implements a SUMP protocol compatible with the standard
+ * SUMP client as well as the alternative client from here:
+ *  https://sigrok.org/wiki/PulseView
+ *
+ * This SUMP protocol compatible logic analyzer for the CH55x board supports
+ * 4 channels consisting of digital pins P14 to P17 (CH0~CH3)
+ *
+ * To use this with the original or alternative SUMP clients,
+ * use these settings:
+ *
+ * Sampling rate: 5MHz (or lower)
+ * Channel Groups: 0 (zero) only
+ * Recording Size: 1536
+ * Noise Filter: doesn't matter
+ * RLE: disabled (unchecked)
+ *
+ * Tested with PulseView 0.4.2 and ch552
+ *
+ * Release: v0.1 August 27, 2020.
+ *
+ */
 
 /*
    Function prototypes so this can compile from the cli.
    You'll need the 'arduino-core' package and to check the paths in the
    Makefile.
 */
-
 
 void getCmd(void);
 void get_metadata(void);
