@@ -142,27 +142,12 @@ void loop()
         //   or milliseconds.  We can't do the complex trigger at 1MHz
         //   so in that case (delayTime == 1 and triggers enabled) use
         //   captureMicro() instead of triggerMicro().
-        if (true || divider == 24) {
-          // 4.0MHz
+        if (divider <= 19) {
           captureInline5mhz();
-        }
-        /*       else if (divider == 49) {
-                 // 2.0MHz
-          #if !defined(__AVR_ATmega168__)
-                 captureInline2mhz();
-          #endif
-               }
-               else if (useMicro) {
-                 if (trigger && (delayTime != 1)) {
-                   triggerMicro();
-                 }
-                 else {
-                   captureMicro();
-                 }
-               }
-               else {
-                 captureMilli();
-               }*/
+        }else{
+          // 2.0MHz+
+          captureInlineWithT2();
+        } 
         break;
 
       case SUMP_RETURN_CAPTURE_DATA:  //0x08
