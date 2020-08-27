@@ -144,7 +144,7 @@ void loop()
         //   captureMicro() instead of triggerMicro().
         if (true || divider == 24) {
           // 4.0MHz
-          captureInline6mhz();
+          captureInline5mhz();
         }
         /*       else if (divider == 49) {
                  // 2.0MHz
