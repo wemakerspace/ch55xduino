@@ -76,6 +76,7 @@ __idata uint8_t swapByte; //for XCHD instruction
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, LOW);
 }
 
 
@@ -105,16 +106,15 @@ void loop()
         for (i = 0 ; i < (sizeof(logicdata) / sizeof(logicdata[0])); i++) {
           logicdata[i] = 0;
         }
-        //   depending on the sample rate we need to delay in microseconds
-        //   or milliseconds.  We can't do the complex trigger at 1MHz
-        //   so in that case (delayTime == 1 and triggers enabled) use
-        //   captureMicro() instead of triggerMicro().
+
+        digitalWrite(LED_BUILTIN, HIGH);
         if (divider <= 19) {
           captureInline5mhz();
         } else {
           // 2.0MHz+
           captureInlineWithT2();
         }
+        digitalWrite(LED_BUILTIN, LOW);
         break;
 
       case SUMP_RETURN_CAPTURE_DATA:  //0x08
@@ -188,7 +188,7 @@ void loop()
         /* read the rest of the command bytes and check if RLE is enabled. */
         getCmd();
         rleEnabled = ((cmdBytes[1] & 0b1000000) != 0);
-        
+
         break;
 
       case SUMP_GET_METADATA:
@@ -206,23 +206,14 @@ void loop()
   }
 }
 
-void blinkled() {
-  digitalWrite(LED_BUILTIN, HIGH);
-  delay(200);
-  digitalWrite(LED_BUILTIN, LOW);
-  delay(200);
-}
-
 
 /*
    Extended SUMP commands are 5 bytes.  A command byte followed by 4 bytes
    of options. We already read the command byte, this gets the remaining
    4 bytes of the command.
-   If we're debugging we save the received commands in a debug buffer.
-   We need to make sure we don't overrun the debug buffer.
 */
 void getCmd() {
-  delay(10);  //!!!!todo: reduce
+  delay(1);  
   cmdBytes[0] = USBSerial_read();
   cmdBytes[1] = USBSerial_read();
   cmdBytes[2] = USBSerial_read();
