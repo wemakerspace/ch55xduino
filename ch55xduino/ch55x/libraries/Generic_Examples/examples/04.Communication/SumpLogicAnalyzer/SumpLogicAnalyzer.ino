@@ -109,14 +109,10 @@ uint8_t cmdBytes[5];
 
 
 __xdata uint8_t logicdata[MAX_CAPTURE_SIZE / 2];
-unsigned int logicIndex = 0;
-unsigned int triggerIndex = 0;
 unsigned int readCount = MAX_CAPTURE_SIZE;
 unsigned int delayCount = 0;
 uint8_t trigger = 0;
 uint8_t trigger_values = 0;
-unsigned int useMicro = 0;
-unsigned int delayTime = 0;
 unsigned long divider = 0;
 boolean rleEnabled = 0;
 
