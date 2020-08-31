@@ -52,6 +52,19 @@ void USB_EP0_SETUP(){
                 {
                     switch( SetupReq )
                     {
+                        case HID_GET_REPORT:
+                            break;
+                        case HID_GET_IDLE:
+                            break;
+                        case HID_GET_PROTOCOL:
+                            break;
+                        case HID_SET_REPORT:
+                            //CH9325 use set report to set UART parameters, but we don't care
+                            break;
+                        case HID_SET_IDLE:
+                            break;
+                        case HID_SET_PROTOCOL:
+                            break;
                         default:
                             len = 0xFF;                                                                        //command not supported
                             break;
@@ -346,14 +359,26 @@ void USB_EP0_IN(){
 }
 
 void USB_EP0_OUT(){
-    UEP0_T_LEN = 0;
-    UEP0_CTRL |= UEP_R_RES_ACK | UEP_T_RES_NAK;  //Respond Nak
+    switch(SetupReq)
+    {
+        case HID_SET_REPORT:
+        {
+            UEP0_T_LEN = 0;
+            UEP0_CTRL ^= bUEP_R_TOG;                    //Switch between DATA0 and DATA
+        }
+            break;
+        default:
+            UEP0_T_LEN = 0;
+            UEP0_CTRL |= UEP_R_RES_ACK | UEP_T_RES_NAK;  //Respond Nak
+            break;
+    }
 }
 
 #pragma save
 #pragma nooverlay
 void USBInterrupt(void) {   //inline not really working in multiple files in SDCC
     if(UIF_TRANSFER) {
+        sendCharDebug('U');
         // Dispatch to service functions
         uint8_t callIndex=USB_INT_ST & MASK_UIS_ENDP;
         switch (USB_INT_ST & MASK_UIS_TOKEN) {
