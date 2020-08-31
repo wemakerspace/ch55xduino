@@ -67,46 +67,19 @@ __code uint8_t CfgDesc[] ={
 __code uint16_t ReportDescLen = sizeof(ReportDesc);
 
 __code uint8_t ReportDesc[] ={
-    0x06, 0x00, 0xFF,   // Usage Page = 0xFF00 (Vendor Defined Page 1)
-    0x09, 0x01,         // Usage (Vendor Usage 1)
-    0xA1, 0x01,         // Collection (Application)
-    
-  /*
-   // 0x85, 1,    // Report ID
-    
-    0x15, 0x00,         // Logical Minimum (data bytes in the report may have minimum value = 0x00)
-    0x26, 0xFF, 0x00,   // Logical Maximum (data bytes in the report may have maximum value = 0x00FF = unsigned 255)
-    0x75, 0x08,         // Report Size: 8-bit field size
-    0x95, 0x08,         // Report Count: Make sixty-four 8-bit fields (the next time the parser hits an "Input", "Output", or "Feature" item)
-    0x09, 0x01,         // Usage (Vendor Usage 1)
-    
-    0xB1, 0x00,         // Feature (Data, Array, Abs): Ins
-    
-    */
-    
-  //  0x85, 2,    // Report ID
-
-    0x15, 0x00,         // Logical Minimum (data bytes in the report may have minimum value = 0x00)
-    0x26, 0xFF, 0x00,   // Logical Maximum (data bytes in the report may have maximum value = 0x00FF = unsigned 255)
-    0x75, 0x08,         // Report Size: 8-bit field size
-    0x95, 0x08,         // Report Count: Make sixty-four 8-bit fields (the next time the parser hits an "Input", "Output", or "Feature" item)
-    0x09, 0x01,         // Usage (Vendor Usage 1)
-    0x81, 0x00,         // Input (Data, Array, Abs): Instantiates input packet fields based on the above report size, count, logical min/max, and usage.
-
-    
-   // 0x85, 3,    // Report ID
-    
-    0x15, 0x00,         // Logical Minimum (data bytes in the report may have minimum value = 0x00)
-    0x26, 0xFF, 0x00,   // Logical Maximum (data bytes in the report may have maximum value = 0x00FF = unsigned 255)
-    0x75, 0x08,         // Report Size: 8-bit field size
-    0x95, 0x08,         // Report Count: Make sixty-four 8-bit fields (the next time the parser hits an "Input", "Output", or "Feature" item)
-    0x09, 0x01,         // Usage (Vendor Usage 1)
-    0x91, 0x00,         // Output (Data, Array, Abs): Instantiates output packet fields. Uses same report size and count as "Input" fields, since nothing new/different was specified to the parser since the "Input" item.
-    
-
-    
-    
-    0xC0                // End Collection
+    0x06, 0xAB, 0xFF,//RAWHID_USAGE_PAGE
+    0x0A, 0x00, 0x02, //RAWHID_USAGE
+    0xA1, 0x01,                     /* Collection 0x01 */
+    0x75, 0x08,                     /* report size = 8 bits */
+    0x15, 0x00,                     /* logical minimum = 0 */
+    0x26, 0xFF, 0x00,               /* logical maximum = 255  */
+    0x95, 8,              /* report count */
+    0x09, 0x01,                     /* usage */
+    0x81, 0x02,                     /* Input (array) */
+    0x95, 8,              /* report count */
+    0x09, 0x02,                     /* usage */
+    0x91, 0x02,                     /* Output (array) */
+    0xC0                            /* end collection */
 };
 
 __code uint16_t CfgDescLen = sizeof(CfgDesc);
