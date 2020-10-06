@@ -133,6 +133,8 @@ void yield(void);
 #define lowByte(w) ((uint8_t) ((w) & 0xff))
 #define highByte(w) ((uint8_t) ((w) >> 8))
 
+//#define bitSet(value, bit) (__asm__("bset\t"))
+//#define bitClear(value, bit) (__asm__("bres\t"))
 #define bitRead(value, bit) (((value) >> (bit)) & 0x01)
 #define bitSet(value, bit) ((value) |= (1UL << (bit)))
 #define bitClear(value, bit) ((value) &= ~(1UL << (bit)))
@@ -147,8 +149,19 @@ void yield(void);
 #define _NOP() do { __asm__ volatile ("nop"); } while (0)
 #endif
 
+/* for SDCC this is supposed to be "__critical{" and "}", but up to
+ * sdcc version 3.6.4 it is wrongly implemented. */
+/* so geht es nicht:
+#define BEGIN_CRITICAL		__asm__("push\tcc");__asm__("sim");
+#define END_CRITICAL		__asm__("pop\tcc");
+*/
 #define BEGIN_CRITICAL		__critical {
 #define END_CRITICAL		}
+/* klappt:
+#define BEGIN_CRITICAL
+#define END_CRITICAL
+*/
+
 
 
 typedef unsigned int word;
@@ -300,5 +313,8 @@ char USBSerial_read();
 #define Serial0_println_fd(P,Q) ( Print_print_fd(Serial0_write,(P),(Q) ) + Print_println(Serial0_write) )
 #define Serial0_println_c(P) ( (Serial0_write(P)) + Print_println(Serial0_write) )
 
+//10K lifecycle DataFlash access on CH551/CH552.
+void eeprom_write_byte (uint8_t addr, __xdata uint8_t val);
+uint8_t eeprom_read_byte (uint8_t addr);
 
 #endif
