@@ -314,7 +314,8 @@ char USBSerial_read();
 #define Serial0_println_c(P) ( (Serial0_write(P)) + Print_println(Serial0_write) )
 
 //10K lifecycle DataFlash access on CH551/CH552.
-void eeprom_write_byte (uint8_t addr, __xdata uint8_t val);
+#define eeprom_write_byte(ADDR,VAL) ( eeprom_write_byte_2_params((ADDR<<8)|(VAL)) )
+void eeprom_write_byte_2_params (uint16_t addr_val);
 uint8_t eeprom_read_byte (uint8_t addr);
 
 #endif
