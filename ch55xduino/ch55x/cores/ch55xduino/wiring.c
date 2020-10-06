@@ -9,6 +9,8 @@ void USBDeviceEndPointCfg();
 extern __idata volatile uint32_t timer0_overflow_count;
 extern __idata volatile uint8_t timer0_overflow_count_5th_byte;
 
+#pragma callee_saves sendCharDebug
+void sendCharDebug(char c); //8Mbps under 24M clk
 uint32_t micros(){
     /*uint32_t m;
      uint8_t t;
@@ -59,31 +61,52 @@ uint32_t micros(){
             );
     
 #if F_CPU == 16000000
-    //1m = 250t 1t=0.75us (m*250+t-6)*3/4
-    //t=((t>>1)-3);
+    //1m = 250t 1t=0.75us (m*250+t-6)*3/2/2
+    //m in r0~r3
+    //t in r4
+    //t=((3*t)>>1)-9);
     //m=(m*375)=m<<8+m*119;
     //return (m+t)>>1
     
+    //!!!!!!!
+    /*__asm__ (
+    "    inc r2                                   \n"
+    "    inc r3                                   \n"
+             "    mov a,#100                                 \n"
+             "    add a,r3                                 \n"
+             "    mov r3,a                                 \n"
+             );*///!!!!!!
+    
+    
     __asm__ (
-             ";1m = 250t 1t=0.5us (m*250+t-6)/2  t is 6~255\n"
-             ";we need to return m*125+t-3                 \n"
-             ";t=(t>>1)-3;                                 \n"
-             "    mov a,r4                                 \n"
-             "    clr c                                    \n"
-             "    rrc a                                    \n"
-             "    mov r4,a                                 \n"
-             "    dec r4                                   \n"
-             "    dec r4                                   \n"
-             "    dec r4                                   \n"
+             ";1m = 250t 1t=0.5us (m*250+t-6)*3/2/2  t is 6~255\n"
+             ";we need to return (m<<8+m*119+((3*t)>>1)-9))>>1 \n"
              
-             ";m=m*125;                                    \n"
-             "    mov b, #125                              \n"
+             ";m=m*119;                                    \n"
+             "    mov a, r0                                \n"
+             "    mov r6, a                                \n"
+             "    mov a, r1                                \n"
+             "    mov r7, a                                \n"
+             "    push ar3                                 \n"
+             "    push ar2                                 \n"
+             
+             "    mov dpl, r0                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             "    mov dpl, r1                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             "    mov dpl, r2                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             "    mov dpl, r3                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             
+             
+             "    mov b, #119                              \n"
              "    mov a, r0                                \n"
              "    mul ab                                   \n"
              "    mov r0, a                                \n"
              "    mov r5, b                                \n"
              
-             "    mov b, #125                              \n"
+             "    mov b, #119                              \n"
              "    mov a, r1                                \n"
              "    mul ab                                   \n"
              "    add a, r5                                \n"
@@ -92,7 +115,7 @@ uint32_t micros(){
              "    addc a, b                                \n"
              "    mov r5, a                                \n"
              
-             "    mov b, #125                              \n"
+             "    mov b, #119                              \n"
              "    mov a, r2                                \n"
              "    mul ab                                   \n"
              "    add a, r5                                \n"
@@ -101,14 +124,125 @@ uint32_t micros(){
              "    addc a, b                                \n"
              "    mov r5, a                                \n"
              
-             "    mov b, #125                              \n"
+             "    mov b, #119                              \n"
              "    mov a, r3                                \n"
              "    mul ab                                   \n"
              "    add a, r5                                \n"
              "    mov r3, a                                \n"
+             "    clr a                                    \n"
+             "    addc a, b                                \n"
+             "    mov r5, a                                \n"
+             
+             ";m=m+m<<8;                                   \n"
+             
+             "    mov a, r6                                \n"
+             "    add a, r1                                \n"
+             "    mov r1, a                                \n"
+             "    mov a, r7                                \n"
+             "    addc a, r2                                \n"
+             "    mov r2, a                                \n"
+             "    pop a                                    \n"
+             "    addc a, r3                                \n"
+             "    mov r3, a                                \n"
+             "    pop a                                    \n"
+             "    addc a, r5                                \n"
+             "    mov r5, a                                \n"
+             
+             
+             
+             
+             "    mov dpl, r0                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             "    mov dpl, r1                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             "    mov dpl, r2                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             "    mov dpl, r3                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             "    mov dpl, r5                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             
+             
+             
+             
+             "    mov dpl, r4                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             ";t=((3*t)>>1));                             \n"
+             
+             "    mov b, #3                                \n"
+             "    mov a, r4                                \n"
+             "    mul ab                                   \n"
+             "    mov r4, a                                \n"
+             "    mov a, b                                 \n"
+             "    clr c                                    \n"
+             "    rrc a                                    \n"
+             "    mov r6, a                                \n"
+             "    mov a, r4                                \n"
+             "    rrc a                                    \n"
+             "    mov r4, a                                \n"
+             "    ;sub r4:r6 by 9                          \n"
+            // TODO: R4 may overflow, skip-9 for now (4.5us offset may not be an issue?)
+             
+
+             "    mov dpl, r4                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             "    mov dpl, r6                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             
+             ";get m+t                                     \n"
+             "    mov r7, #0                               \n"
+             "    mov a, r4                                \n"
+             "    add a, r0                                \n"
+             "    mov r0, a                                \n"
+             "    mov a, r6                                \n"
+             "    addc a, r1                               \n"
+             "    mov r1, a                                \n"
+             "    mov a, r7                                \n"
+             "    addc a, r2                               \n"
+             "    mov r2, a                                \n"
+             "    mov a, r7                                \n"
+             "    addc a, r3                               \n"
+             "    mov r3, a                                \n"
+             "    mov a, r7                                \n"
+             "    addc a, r5                               \n"
+             "    mov r5, a                                \n"
+             
+             
+             "    mov dpl, r0                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             "    mov dpl, r1                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             "    mov dpl, r2                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             "    mov dpl, r3                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             "    mov dpl, r5                               \n"
+             "    lcall    _sendCharDebug                   \n"
+             
+             
+             
+             
              
              ";return m+t                                  \n"
-             "    mov r5, #0                               \n"
+             "    clr c                                    \n"
+             "    mov a, r5                                \n"
+             "    rrc a                                    \n"
+             "    mov r5, a                                \n"
+             "    mov a, r3                                \n"
+             "    rrc a                                    \n"
+             "    mov r3, a                                \n"
+             "    mov a, r2                                \n"
+             "    rrc a                                    \n"
+             "    mov b, a                                 \n"
+             "    mov a, r1                                \n"
+             "    rrc a                                    \n"
+             "    mov dph, a                               \n"
+             "    mov a, r0                                \n"
+             "    rrc a                                    \n"
+             "    mov dpl, a                               \n"
+             "    mov a, r3                                \n"
+             
+             /*"    mov r5, #0                               \n"
              "    mov a, r4                                \n"
              "    add a, r0                                \n"
              "    mov dpl, a                               \n"
@@ -119,9 +253,10 @@ uint32_t micros(){
              "    addc a, r5                               \n"
              "    mov b, a                                 \n"
              "    mov a, r3                                \n"
-             "    addc a, r5                               \n"
+             "    addc a, r5                               \n"*/
              
              );
+    //’dpl’ (LSB),’dph’,’b’ & ’acc’
 #else
     //24M CLK
     
@@ -143,9 +278,10 @@ __asm__ (
              "    clr c                                    \n"
              "    rrc a                                    \n"
              "    mov r4,a                                 \n"
-             "    dec r4                                   \n"
-             "    dec r4                                   \n"
-             "    dec r4                                   \n"
+             //"    dec r4                                   \n"
+             //"    dec r4                                   \n"
+             //"    dec r4                                   \n"
+         // TODO: R4 may overflow, disable for now (3us offset may not be an issue?)
              
              ";m=m*125;                                    \n"
              "    mov b, #125                              \n"
