@@ -9,8 +9,6 @@ void USBDeviceEndPointCfg();
 extern __idata volatile uint32_t timer0_overflow_count;
 extern __idata volatile uint8_t timer0_overflow_count_5th_byte;
 
-//#pragma callee_saves sendCharDebug
-//void sendCharDebug(char c); //8Mbps under 24M clk
 uint32_t micros(){
     /*uint32_t m;
      uint8_t t;
@@ -285,44 +283,46 @@ uint32_t millis()
              ";if (interruptOn) EA = 1;                    \n"
              "    mov _EA,c                                \n"
              );
-             
-             
+
 #if F_CPU == 16000000
-    __asm__ (";return (timer0_overflow_count*24)>>8        \n"
-             "    mov b, #32                               \n"
+    __asm__ (";return (timer0_overflow_count*48)>>8        \n"
+             
+             "    mov b, #48                               \n"
              "    mov a, r0                                \n"
              "    mul ab                                   \n"
              "    mov r0, b                                \n"
              ";lowest 8 bit not used (a), r0 free to use   \n"
-             "    mov b, #32                               \n"
+             "    mov b, #48                               \n"
              "    mov a, r1                                \n"
              "    mul ab                                   \n"
              "    add a, r0                                \n"
-             ";carry won't be set, if I calculated right   \n"
+             "    mov r5, psw   ;keep c                    \n"
              "    mov dpl, a                               \n"
              "    mov r0, b                                \n"
              
-             "    mov b, #32                               \n"
+             "    mov b, #48                               \n"
              "    mov a, r2                                \n"
              "    mul ab                                   \n"
-             "    add a, r0                                \n"
-             ";carry won't be set, if I calculated right   \n"
+             "    mov psw, r5   ;restore c                 \n"
+             "    addc a, r0                               \n"
+             "    mov r5, psw   ;keep c                    \n"
              "    mov dph, a                               \n"
              "    mov r0, b                                \n"
              
-             "    mov b, #32                               \n"
+             "    mov b, #48                               \n"
              "    mov a, r3                                \n"
              "    mul ab                                   \n"
-             "    add a, r0                                \n"
-             ";carry won't be set, if I calculated right   \n"
+             "    mov psw, r5   ;restore c                 \n"
+             "    addc a, r0                               \n"
+             "    mov r5, psw   ;keep c                    \n"
              "    mov r1, a                                \n"
              "    mov r0, b                                \n"
              
-             "    mov b, #32                               \n"
+             "    mov b, #48                               \n"
              "    mov a, r4                                \n"
              "    mul ab                                   \n"
-             "    add a, r0                                \n"
-             ";carry won't be set, if I calculated right   \n"
+             "    mov psw, r5   ;restore c                 \n"
+             "    addc a, r0                               \n"
              
              ";calculation finished, a already in place    \n"
              "    mov b, r1                                \n"
