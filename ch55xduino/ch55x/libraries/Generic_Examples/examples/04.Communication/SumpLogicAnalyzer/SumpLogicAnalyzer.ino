@@ -123,15 +123,22 @@ __idata uint8_t swapByte; //for XCHD instruction
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
+
+  pinMode(11, OUTPUT);
 }
 
-
+void sendP11CharDebug(char c);
 void loop()
 {
   int i;
 
   if (USBSerial_available() > 0) {
     cmdByte = USBSerial_read();
+
+sendP11CharDebug('C');
+sendP11CharDebug(cmdByte);
+
+    
     switch (cmdByte) {
       case SUMP_RESET:  //0x00
         //   We don't do anything here as some unsupported extended commands have

@@ -10,6 +10,9 @@ extern __xdata  uint8_t  Ep1Buffer[];
 
 volatile __xdata uint8_t USBByteCountEP1 = 0;      //Bytes of received data on USB endpoint
 
+#pragma callee_saves sendCharDebug
+void sendCharDebug(char c);
+
 void USBInit(){
     USBDeviceCfg();                                                       //Device mode configuration
     USBDeviceEndPointCfg();                                               //Endpoint configuration   
@@ -21,12 +24,19 @@ void USBInit(){
 
 
 void USB_EP1_IN(){
+    sendCharDebug('I');
+    //Ep1Buffer[64]++;
     UEP1_T_LEN = 0;                                                    // No data to send anymore
     UEP1_CTRL = UEP1_CTRL & ~ MASK_UEP_T_RES | UEP_T_RES_NAK;           //Respond NAK by default
 
 }
 
 void USB_EP1_OUT(){
+    sendCharDebug('O');
+    sendCharDebug(USB_RX_LEN);
+    /*/UEP1_T_LEN = 0;
+    UEP1_CTRL = UEP1_CTRL & ~ MASK_UEP_T_RES | UEP_T_RES_ACK;*/
+    
     if ( U_TOG_OK ){               // Discard unsynchronized packets
         USBByteCountEP1 = USB_RX_LEN;
         if (USBByteCountEP1){

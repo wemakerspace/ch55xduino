@@ -22,8 +22,19 @@ volatile uint8_t usbMsgFlags=0;    // uint8_t usbMsgFlags copied from VUSB
 
 inline void NOP_Process(void) {}
 
+#pragma callee_saves sendCharDebug
+void sendCharDebug(char c);
+
 void USB_EP0_SETUP(){
     uint8_t len = USB_RX_LEN;
+    
+    sendCharDebug('S');
+    /*for (uint8_t i=0;i<8;i++){
+        sendCharDebug(Ep0Buffer[i]);
+    }*/
+
+    
+    
     if(len == (sizeof(USB_SETUP_REQ)))
     {
         SetupLen = ((uint16_t)UsbSetupBuf->wLengthH<<8) | (UsbSetupBuf->wLengthL);
@@ -40,6 +51,7 @@ void USB_EP0_SETUP(){
             {
                 case USB_REQ_TYP_VENDOR:    
                 {
+
                     switch( SetupReq )
                     {
                         default:
