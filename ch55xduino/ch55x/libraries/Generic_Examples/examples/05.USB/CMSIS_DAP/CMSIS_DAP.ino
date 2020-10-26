@@ -30,9 +30,10 @@ void setup() {
 }
 
 void loop() {
+  uint8_t dapSendLength = 0;
   if (USBByteCountEP1) {
-    DAP_Thread();
-    USBByteCountEP1 = 0 ;
+    dapSendLength = DAP_Thread();
+    USBByteCountEP1 = 0;
 
     UEP1_CTRL = UEP1_CTRL & ~ MASK_UEP_R_RES | UEP_R_RES_ACK; //enable receive
 
