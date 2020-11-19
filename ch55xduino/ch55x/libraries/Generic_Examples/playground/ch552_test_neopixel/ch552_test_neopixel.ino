@@ -9,10 +9,10 @@ void setup() {
   pinMode(15, OUTPUT);
 }
 __xdata uint8_t ledData[8];
-void neopixel_show_long(uint32_t dataAndLen) {
+void neopixel_show_long_P1_5(uint32_t dataAndLen) {
   //’dpl’ (LSB),’dph’,’b’ & ’acc’
   //DPTR is the array address, B is the low byte of length
-
+#if F_CPU == 24000000
   __asm__ ("    mov r3, b                           \n"
 
            ";save EA to R6                          \n"
@@ -27,7 +27,7 @@ void neopixel_show_long(uint32_t dataAndLen) {
            //CH552 can save 1 instruction of jump/branch insctruction go to an even addr
            ".even                                   \n"
            "startNewByte$:                          \n"
-           "    movx  a,@dptr                       \n"  
+           "    movx  a,@dptr                       \n"
            "    inc dptr                            \n"
            "loopbit$:                               \n"
            "    setb _P1_5                          \n"
@@ -72,6 +72,9 @@ void neopixel_show_long(uint32_t dataAndLen) {
            "skipRestoreEA_NP$:                      \n"
 
           );
+#else
+#error Only support 24M clock for neopixel now
+#endif
 }
 
 // the loop function runs over and over again forever
@@ -80,6 +83,6 @@ void loop() {
   ledData[1] = 0x00;  //R
   ledData[2] = 0x0F;  //B
 
-  neopixel_show_long((((uint16_t)ledData) & 0xFFFF) | (((uint32_t)3 & 0xFF) << 16));
+  neopixel_show_long_P1_5((((uint16_t)ledData) & 0xFFFF) | (((uint32_t)3 & 0xFF) << 16));
   delay(10);
 }
