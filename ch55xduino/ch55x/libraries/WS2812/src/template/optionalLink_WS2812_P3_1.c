@@ -66,7 +66,7 @@ void neopixel_show_long_P3_1(uint32_t dataAndLen) {
            "    djnz r2,loopbit$                    \n"
            "    djnz r3,startNewByte$               \n"
            "    nop                                 \n"
-           "    setb _P3_1                          \n"
+           "    clr _P3_1                          \n"
 
            ";restore EA from R6                     \n"
            "    mov a,r6                            \n"

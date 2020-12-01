@@ -12,7 +12,7 @@
 
 #include "WS2812.h"
 
-void neopixel_show_long_P3_0(uint32_t dataAndLen) {
+void neopixel_show_long_P1_6(uint32_t dataAndLen) {
   //'dpl' (LSB),'dph','b' & 'acc'
   //DPTR is the array address, B is the low byte of length
 #if F_CPU == 24000000
@@ -33,7 +33,7 @@ void neopixel_show_long_P3_0(uint32_t dataAndLen) {
            "    movx  a,@dptr                       \n"
            "    inc dptr                            \n"
            "loopbit$:                               \n"
-           "    setb _P3_0                          \n"
+           "    setb _P1_6                          \n"
            "    rlc a                               \n"
            "    nop                                 \n"  //make it even
            "    jnc bit7skipLowNop$                 \n"
@@ -48,7 +48,7 @@ void neopixel_show_long_P3_0(uint32_t dataAndLen) {
            "    nop                                 \n"
            "    nop                                 \n"
            "bit7skipLowNop$:                        \n"
-           "    clr _P3_0                           \n"
+           "    clr _P1_6                           \n"
            "    jc bit7skipHighNop$                 \n"
            "    nop                                 \n"
            "    nop                                 \n"
@@ -66,7 +66,7 @@ void neopixel_show_long_P3_0(uint32_t dataAndLen) {
            "    djnz r2,loopbit$                    \n"
            "    djnz r3,startNewByte$               \n"
            "    nop                                 \n"
-           "    setb _P3_0                          \n"
+           "    clr _P1_6                          \n"
 
            ";restore EA from R6                     \n"
            "    mov a,r6                            \n"
