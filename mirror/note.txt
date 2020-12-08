@@ -1,0 +1,2 @@
+https://gh-proxy.deqing.workers.dev/https://github.com/DeqingSun/ch55xduino/releases/download/0.0.7/ch55xduino-core-0.0.7.tar.bz2
+
