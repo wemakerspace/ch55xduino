@@ -21,12 +21,12 @@
                         {
                             "name": "MCS51Tools",
                             "version": "2020.12.01",
-                            "packager": "CH55xDuino"
+                            "packager": "TomatoCube*CH552"
                         },
                         {
                             "name": "sdcc",
                             "version": "build.11630",
-                            "packager": "CH55xDuino"
+                            "packager": "TomatoCube*CH552"
                         }
                     ],
                     "url": "https://github.com/TomatoCube18/ch55xduino/releases/download/0.0.7_TC/ch55xduino_tc-core-0.0.7.tar.bz2",
