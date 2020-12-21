@@ -12,7 +12,7 @@
                 {
                     "name": "CH55xDuino MCS51 plain C core (non-C++)",
                     "architecture": "mcs51",
-                    "version": "0.0.8",
+                    "version": "0.0.7",
                     "category": "Contributed",
                     "boards": [
                         {"name": "CH552 Board"}
