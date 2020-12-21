@@ -1,13 +1,14 @@
 # Ch55xduino: Small Devices Arduino for ch55x devices
 
+**Forked from the wonderful work by DeqingSun ~ Ch55xduino**
+https://github.com/DeqingSun/ch55xduino
+
 **Getting started on the Ch55x the easy way. Forked from Sduino project, also based on 
 ch554_sdcc project**
 
 Ch55xduino is an Arduino-like programming API for the CH55X, a family of low-cost MCS51 USB MCU. The project tries to remove the difficulty of setting up a compiling environment. Users can simply write code in Arduino IDE and hit one button to flash the chip to get code running. No configuration or guesswork needed. 
 
 CH551, CH552, CH554, may be the lowest part count system that works with Arduino. The minimal system only requires one chip, 2 decoupling capacitors, and one optional pull-up resistor. These features made it ideal for DIY projects. 
-
-![Script running gif](https://raw.githubusercontent.com/DeqingSun/ch55xduino/ch55xduino/docs/blinkLED.gif)
 
 At this moment the project is still working-in-progress. Support most Arduino functions (Except pulse, shift, tone). Refer to examples in this repo for more info.
 
@@ -18,7 +19,7 @@ Arduino Boards Manager. This is the recommanded way of installation now.
 
 Start the Arduino-IDE. In *File->Preferences*, *Settings* tab, enter
 
-> https://raw.githubusercontent.com/DeqingSun/ch55xduino/ch55xduino/package_ch55xduino_mcs51_index.json
+> https://raw.githubusercontent.com/TomatoCube18/ch55xduino/ch55xduino/package_ch55xduino_mcs51_index.json
 
 as an *Additional Boards Manager URL*.
 
@@ -37,12 +38,6 @@ Now you should find a new entry *CH55x Boards* in the list at
 * If your board is never used with ch55xduino before, you need to make the ch55x chip enter bootloader mode. You need to disconnect USB and unpower ch55x, connect the pull-up resistor on D+ line (generally a 10K resistor between D+ and 5V, controlled by a push-button or adjacent pads). Then you connect USB. and hit *Upload*. Also, a blank new chip will enter the bootloader automatically.
 * If you have used ch55xduino once and your code doesn't crash the USB subsystem, you can simply press *Upload*. Arduino and the firmware will kick the chip into the bootloader automatically.
 
-### Installation without Github access
-
-If you can not access github directly, use this link to a proxy instead.
-
-> https://gh-proxy.deqing.workers.dev/raw.githubusercontent.com/DeqingSun/ch55xduino/playground/mirror/package_ch55xduino_mcs51_proxy_index.json
-
 ### USB and Serial upload
 
 Ch55xduino supports both USB and Serial upload methods. If the USB port of the CH55x chip is connected to a host computer, the USB method is recommended.
@@ -53,7 +48,7 @@ If you want to leave the bootloader, you may send the following bytes at 57600 b
 
 ### Driver for windows
 
-![Zadig image](https://raw.githubusercontent.com/DeqingSun/ch55xduino/ch55xduino/docs/Zadig_bootloader.png)
+![Zadig image](https://raw.githubusercontent.com/TomatoCube18/ch55xduino/ch55xduino/docs/Zadig_bootloader.png)
 
 [Zadig](https://zadig.akeo.ie/) is the recommended tool to install drivers in Windows. The bootloader (4348,55E0) should be installed with WinUSB or libusb-win32 driver.
 
@@ -62,16 +57,6 @@ You can use USB Serial (CDC) driver for default CDC USB stack. If you tried to e
 ### Permission for Linux
 
 By default, Linux will not expose enough permission for Arduino to upload the code with the USB bootloader. Copy ```99-ch55xbl.rules``` in this repo to ```/etc/udev/rules.d/``` and restart your computer. Otherwise, the upload tool may not find the bootloader device.
-
-## Reference board
-
-![Front image](https://raw.githubusercontent.com/DeqingSun/ch55xduino/ch55xduino/docs/simpleCH552Front.jpg)
-
-![Back image](https://raw.githubusercontent.com/DeqingSun/ch55xduino/ch55xduino/docs/simpleCH552Back.jpg)
-
-There is a small CH552 breakout board design in the "pcb" folder. When fabricated with 1.6mm board thickness, some USB receptacle may be too loose for the PCB. Just add some tape behind the USB connector to increase the thickness.
-
-The button footprint was designed for 6mm buttons, but 5mm one works too.
 
 ## Difference to regular Arduino
 
