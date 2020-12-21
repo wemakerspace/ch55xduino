@@ -6,7 +6,7 @@
 # For more info on this file:
 # https://github.com/arduino/Arduino/wiki/Arduino-IDE-1.5-3rd-party-Hardware-specification
 
-name=CH55x Boards
+name=TomatoCube* CH55x Boards
 version=0.1.0
 
 # General folder structure variables
