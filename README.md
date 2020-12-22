@@ -19,7 +19,7 @@ Arduino Boards Manager. This is the recommanded way of installation now.
 
 Start the Arduino-IDE. In *File->Preferences*, *Settings* tab, enter
 
-> https://raw.githubusercontent.com/TomatoCube18/ch55xduino/ch55xduino/package_ch55xduino_mcs51_index.json
+> https://raw.githubusercontent.com/TomatoCube18/ch55xduino/ch55xduino/package_tc_ch55xduino_mcs51_index.json
 
 as an *Additional Boards Manager URL*.
 
