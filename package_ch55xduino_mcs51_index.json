@@ -15,7 +15,7 @@
                     "version": "0.0.7",
                     "category": "Contributed",
                     "boards": [
-                        {"name": "CH552 Board"}
+                        {"name": "TomatoCube CH552 Board"}
                     ],
                     "toolsDependencies": [
                         {
